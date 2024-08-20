@@ -15,8 +15,10 @@ import UserAvatar from "./Profile/userAvatar";
 import DashBoardCard from "./Cards/dashBoardCard";
 import SalesBarCharts from "./Admin/salesBarCharts";
 import SalesCategoryDoughnut from "./Admin/salesCategoryouhnutCharts";
-
+import CustomerMap from "./Admin/customerMapLineChart";
+import ProductTableTwo from "./Admin/productTableTwo";
 
 export {ProductTable, InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
   ProductPageHead, ModalManager, SellingPriceTable, PageHead, PriceFormulaModal, CustomerTable,
-OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut }
+OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
+CustomerMap, ProductTableTwo }

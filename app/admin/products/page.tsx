@@ -5,9 +5,9 @@ const ProductPage = () => {
   
 
   return(
-    <RootLayout pageTitle="Products" showInputSearch={true}>
+   
       <ClientProductPage />
-    </RootLayout>
+    
      
   )
 };

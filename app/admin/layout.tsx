@@ -1,13 +1,7 @@
-// RootLayout.tsx (Server Component)
 import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "../globals.css";
-import {
-  DatePickerWithRange,
-  InputSearch,
-  PageHead,
-  SideBarNav,
-} from '@/components/custom-ui/reuseables';
+import { SideBarNav } from '@/components/custom-ui/reuseables';
 import React from 'react';
 import Link from 'next/link';
 
@@ -20,14 +14,10 @@ export const metadata: Metadata = {
 
 interface RootLayoutProps {
   children: React.ReactNode;
-  pageTitle: string;
-  showInputSearch: boolean;
 }
 
 export default function RootLayout({
   children,
-  pageTitle,
-  showInputSearch
 }: RootLayoutProps) {
   return (
     <html lang="en">
@@ -37,23 +27,12 @@ export default function RootLayout({
           <SideBarNav />
           
           {/* Main content area */}
-          <div className="sm:ml-64">
-            <header className="flex h-[75px] pt-4 items-center justify-between border-b bg-muted/40 px-4 lg:px-6">
-              <Link href="#" className="lg:hidden" prefetch={false}>
-                <span className="sr-only">Home</span>
-              </Link>
-              <PageHead pageTitle={pageTitle} />
-              <div className="w-full lg:max-w-md">
-                {showInputSearch && <InputSearch />}
-              </div>
-              <DatePickerWithRange />
-            </header>
+            <div className="flex-1 flex flex-col ml-64">
 
-            {/* Scrollable main content */}
-            <main className="flex-1 p-4 md:p-6">
-              <div className="overflow-y-auto">
-                              {children}
-              </div>
+            <main className="flex-1 p-4 md:p-6 overflow-y-auto">
+              
+                {children}
+             
             </main>
           </div>
         </div>

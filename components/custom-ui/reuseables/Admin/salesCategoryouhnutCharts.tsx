@@ -1,27 +1,31 @@
 "use client";
 
 import React from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
+import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Pie, PieChart, Cell, Tooltip } from "recharts";
 import { User } from "lucide-react";
+import { DatePickerWithRange } from '../DateRange/dateRangePicker';
 
 const SalesCategoryDoughnut = () => {
   const productSales = [
-    { category: "Apparel", value: 25000, color: "#4299E1", icon: <User className="w-4 h-4"/> },
-    { category: "Electronics", value: 18000, color: "#6B46C1", icon: <User className="w-4 h-4"/>},
-    { category: "Home Goods", value: 15000, color: "#38A169", icon: <User className="w-4 h-4"/> },
+    { category: "Living Room", value: 25000, color: "#4299E1", icon: <User className="w-4 h-4"/> },
+    { category: "Office", value: 18000, color: "#6B46C1", icon: <User className="w-4 h-4"/>},
+    { category: "Bedroom", value: 15000, color: "#38A169", icon: <User className="w-4 h-4"/> },
     { category: "Outdoor", value: 12000, color: "#DD6B20", icon: <User className="w-4 h-4"/> },
-    { category: "Toys", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/> },
-    { category: "Kids Toys", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/>},
+    { category: "Dinning", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/> },
+    { category: "Kitchen", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/>},
   ];
 
   return (
     <Card className="h-auto w-full">
       <CardHeader>
-        <CardTitle>Product Sales by Category</CardTitle>
+          <div className="flex justify-between">
+         <h4 className="font-semibold text-lg">Product Sales</h4>
+         <DatePickerWithRange />
+        </div>
       </CardHeader>
       <CardContent className="flex flex-col md:flex-row items-center justify-center gap-8">
-        <div className="grid gap-4 flex-1 max-w-[300px]">
+        <div className="grid gap-4 flex-1 max-w-[400px]">
           {productSales.map((sale) => (
             <div key={sale.category} className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: sale.color }} />

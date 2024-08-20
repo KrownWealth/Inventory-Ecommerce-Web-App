@@ -1,9 +1,10 @@
 import RootLayout from "./layout";
-import { DashBoardCard, SalesBarCharts, SalesCategoryDoughnut } from "@/components/custom-ui/reuseables";
+import { CustomerMap, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut, InputSearch, DatePickerWithRange, PageHead } from "@/components/custom-ui/reuseables";
 import { IoMdBasket } from "react-icons/io";
 import { ImUsers, ImPriceTags } from "react-icons/im";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { IoMdTrendingUp } from "react-icons/io";
+import Link from "next/link";
 
 const AdminHome = () => {
   const dashBoardContent = [
@@ -14,8 +15,15 @@ const AdminHome = () => {
   ];
 
   return (
-    <RootLayout pageTitle="Dashboard" showInputSearch={true}>
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+    <>
+      <header className="flex h-[75px] pt-4 items-center justify-between border-b bg-muted/40 px-4 lg:px-6">
+        <Link href="#" className="lg:hidden" prefetch={false}>
+          <span className="sr-only">Home</span>
+        </Link>
+        <PageHead pageTitle="Dashboard" />
+        <DatePickerWithRange />
+      </header>
+      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4 mb-4">
         {dashBoardContent.map((content, index) => (
           <DashBoardCard
             key={index}
@@ -30,14 +38,15 @@ const AdminHome = () => {
           />
         ))}
       </div>
-      <SalesBarCharts />
+      <div className="mb-4"><SalesBarCharts /></div>
       <div className='grid grid-cols-2 gap-4 mb-4 '>
-      
-         <SalesCategoryDoughnut />
+
         <SalesCategoryDoughnut />
-       
+        <CustomerMap />
+
       </div>
-    </RootLayout>
+    </>
+
   );
 };
 

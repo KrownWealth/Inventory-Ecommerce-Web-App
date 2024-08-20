@@ -3,18 +3,21 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ProductType } from '@/types';
+import { ChevronDown } from 'lucide-react';
+import FilterByCategory from '../Filter/filterByCategory';
 
 interface ProductPageHeadProps {
   setIsModalOpen: (open: boolean) => void;
   handleAddProductOpen: () => void; 
-  pageTitle: string;
+ filterText: string;
   btnText?: string;
 }
 
-const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOpen, pageTitle, btnText }) => {
+const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOpen, filterText, btnText }) => {
   return (
-    <div className="flex items-center py-8">
-      <h1 className="font-semibold text-lg lg:text-2xl">{pageTitle}</h1>
+    <div className="flex items-center py-4">
+      <FilterByCategory />
+      
       <Button onClick={handleAddProductOpen} className="ml-auto text-sm lg:text-lg" size="sm">
         {btnText}
       </Button>
