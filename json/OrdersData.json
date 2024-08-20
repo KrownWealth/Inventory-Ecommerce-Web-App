@@ -1,0 +1,36 @@
+[
+  {
+    "order_id": "ORD001",
+    "productName": "Adeola Adeoye",
+    "departureDate": "24/5/24",
+    "deliveryDate": "24/5/24",
+    "totalAmount": "30",
+    "status": "pending"
+  },
+  {
+    "order_id": "ORD002",
+    "productName": "Adeola Adeoye",
+    "departureDate": "24/5/24",
+    "deliveryDate": "25/5/24",
+    "status": "fulfilled",
+    "totalAmount": "30"
+    
+  },
+  {
+    "order_id": "ORD003",
+    "productName": "Adeola Adeoye",
+    "departureDate": "24/5/24",
+    "deliveryDate": "24/5/24",
+    "totalAmount": "30",
+    "status": "pending"
+  },
+  {
+    "order_id": "ORD004",
+    "productName": "Adeola Adeoye",
+    "departureDate": "24/5/24",
+    "deliveryDate": "24/5/24",
+    "totalAmount": "30",
+    "status": "pending"
+  }
+  
+]

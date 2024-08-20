@@ -1,0 +1,30 @@
+[
+  {
+    "id": "CUS001",
+    "name": "Adeola Adeoye",
+    "email": "adeoye@gmail.com",
+    "totalOrder": "30",
+    "totalSpent": "300"
+  },
+  {
+    "id": "CUS002",
+    "name": "Adeola Adeoye",
+    "email": "adeoye@gmail.com",
+    "totalOrder": "30",
+    "totalSpent": "300"
+  },
+  {
+    "id": "CUS003",
+    "name": "Adeola Adeoye",
+    "email": "adeoye@gmail.com",
+    "totalOrder": "30",
+    "totalSpent": "300"
+  },
+  {
+    "id": "CUS004",
+    "name": "Adeola Adeoye",
+    "email": "adeoye@gmail.com",
+    "totalOrder": "30",
+    "totalSpent": "300"
+  }
+]

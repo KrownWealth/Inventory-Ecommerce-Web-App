@@ -1,0 +1,47 @@
+[
+  {
+    "id": "PRD001",
+    "product_id": "PRD003",
+    "name": "Glimmer Lamps",
+    "price": "49.99",
+    "sellingPrice": "",
+    "stock": "300",
+    "category": "Lighting"
+  },
+  {
+    "id": "PRD002",
+    "product_id": "PRD003",
+    "name": "Glimmer Lamps",
+    "price": "49.99",
+    "sellingPrice": "",
+    "stock": "300",
+    "category": "Kitchen Appliances"
+  },
+  {
+    "id": "PRD003",
+    "product_id": "PRD003",
+    "name": "Glimmer Lamps",
+    "price": "49.99",
+    "sellingPrice": "",
+    "stock": "300",
+    "category": "Apparel"
+  },
+  {
+    "id": "PRD004",
+    "product_id": "PRD003",
+    "name": "Glimmer Lamps",
+    "price": "49.99",
+    "sellingPrice": "",
+    "stock": "300",
+    "category": "Home Appliances"
+  },
+  {
+    "id": "PRD005",
+    "product_id": "PRD003",
+    "name": "Glimmer Lamps",
+    "price": "49.99",
+    "sellingPrice": "",
+    "stock": "300",
+    "category": "Gardening"
+  }
+]
