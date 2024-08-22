@@ -1,6 +1,5 @@
 "use client";
-
-import { TrendingUp } from "lucide-react";
+import { MdOutlineTrendingUp } from "react-icons/md";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
 
 import {
@@ -57,7 +56,7 @@ const CustomerMap = () => {
         </div>
         <div className="flex items-center justify-center gap-2 font-medium leading-none">
           Customer increase by 5.2% this month{" "}
-          <TrendingUp className="h-4 w-4" />
+          <MdOutlineTrendingUp className="h-4 w-4" />
         </div>
       </CardHeader>
       <CardContent>

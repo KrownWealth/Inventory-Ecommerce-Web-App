@@ -2,8 +2,8 @@
 
 import * as React from "react"
 import { addDays, format } from "date-fns"
-import { Calendar as CalendarIcon } from "lucide-react"
 import { DateRange } from "react-day-picker"
+import { FaCalendar } from "react-icons/fa"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
@@ -34,7 +34,7 @@ export function DatePickerWithRange({
               !date && "text-muted-foreground"
             )}
           >
-            <CalendarIcon className="mr-2 h-4 w-4" />
+            <FaCalendar className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <>

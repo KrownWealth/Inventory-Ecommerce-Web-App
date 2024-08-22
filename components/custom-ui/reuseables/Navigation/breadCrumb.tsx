@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { usePathname } from 'next/navigation'
-import { Slash } from 'lucide-react'
+import { FaSlash } from 'react-icons/fa'
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -37,7 +37,7 @@ export function BreadcrumbWithCustomSeparator() {
           return (
             <React.Fragment key={index}>
               <BreadcrumbSeparator>
-                <Slash />
+                <FaSlash className="h-4 w-4" />
               </BreadcrumbSeparator>
               <BreadcrumbItem>
                 <BreadcrumbPage>{breadcrumbLabel}</BreadcrumbPage>

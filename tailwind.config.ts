@@ -19,6 +19,13 @@ const config = {
     },
     extend: {
       colors: {
+        pricesageOrange: "#f45c23",
+        pricesagePaleOrange: "#edac8a",
+        pricesageBurntOrange: "#983e1d",
+        pricesageBrown: "#474241",
+        pricesageLightBrown: "#c3a59d",
+        pricesagePaleBlue: "#8caeae",
+        pricesageBlack: "#343434",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

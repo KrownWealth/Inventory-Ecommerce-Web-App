@@ -4,10 +4,10 @@ import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoveVerticalIcon } from 'lucide-react';
 import { ProductType } from '@/types';
 import { ProductTableData } from '@/json';
 import { FormattedPrice } from '@/lib';
+import { FaArrowsAltV } from 'react-icons/fa';
 
 interface ProductTableProps {
   setIsModalOpen: (open: boolean) => void;
@@ -48,7 +48,7 @@ const ProductTable: React.FC<ProductTableProps> = ({ setIsModalOpen, handleEditP
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <MoveVerticalIcon className="h-4 w-4" />
+                      <FaArrowsAltV className="h-4 w-4" />
                       <span className="sr-only">Toggle menu</span>
                     </Button>
                   </DropdownMenuTrigger>

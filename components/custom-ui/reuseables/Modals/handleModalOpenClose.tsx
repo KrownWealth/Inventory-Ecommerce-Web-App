@@ -4,12 +4,12 @@ import React from 'react';
 import AddProductModal from './addProductModal';
 import EditProductModal from './editProductModal';
 import AddProductPageHead from '../Headings/productPageHead';
-import { ProductType } from '@/types';
+import { ProductsType } from '@/types';
 
 interface ModalManagerProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  selectedProduct: ProductType | null;
+  selectedProduct: ProductsType | null;
   activeModal: 'add' | 'edit' | null;
   handleAddProductOpen: () => void; 
 }

@@ -3,17 +3,17 @@
 import React from 'react';
 import { Card, CardHeader, CardContent } from "@/components/ui/card";
 import { Pie, PieChart, Cell, Tooltip } from "recharts";
-import { User } from "lucide-react";
+import { FaUser } from 'react-icons/fa';
 import { DatePickerWithRange } from '../DateRange/dateRangePicker';
 
 const SalesCategoryDoughnut = () => {
   const productSales = [
-    { category: "Living Room", value: 25000, color: "#4299E1", icon: <User className="w-4 h-4"/> },
-    { category: "Office", value: 18000, color: "#6B46C1", icon: <User className="w-4 h-4"/>},
-    { category: "Bedroom", value: 15000, color: "#38A169", icon: <User className="w-4 h-4"/> },
-    { category: "Outdoor", value: 12000, color: "#DD6B20", icon: <User className="w-4 h-4"/> },
-    { category: "Dinning", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/> },
-    { category: "Kitchen", value: 10000, color: "#E53E3E", icon: <User className="w-4 h-4"/>},
+    { category: "Living Room", value: 25000, color: "#4299E1", icon: <FaUser className="w-4 h-4"/> },
+    { category: "Office", value: 18000, color: "#6B46C1", icon: <FaUser className="w-4 h-4"/>},
+    { category: "Bedroom", value: 15000, color: "#38A169", icon: <FaUser className="w-4 h-4"/> },
+    { category: "Outdoor", value: 12000, color: "#DD6B20", icon: <FaUser className="w-4 h-4"/> },
+    { category: "Dinning", value: 10000, color: "#E53E3E", icon: <FaUser className="w-4 h-4"/> },
+    { category: "Kitchen", value: 10000, color: "#E53E3E", icon: <FaUser className="w-4 h-4"/>},
   ];
 
   return (

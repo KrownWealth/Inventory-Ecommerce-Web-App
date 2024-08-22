@@ -1,0 +1,122 @@
+[
+  {
+    "id": "PRD001",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Living Room"
+  },
+  {
+    "id": "PRD002",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Kitchen"
+  },
+  {
+    "id": "PRD003",
+    "img": "/vercel.svg",
+    "name": "Plastic Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Bedroom"
+  },
+  {
+    "id": "PRD004",
+    "img": "/vercel.svg",
+    "name": "Poly Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Dining Room"
+  },
+  {
+    "id": "PRD005",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Office"
+  },
+  {
+    "id": "PRD006",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Dining Room"
+  },
+  {
+    "id": "PRD007",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Living Room"
+  },
+  {
+    "id": "PRD008",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Bedroom"
+  },
+  {
+    "id": "PRD009",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Office"
+  },
+  {
+    "id": "PRD0010",
+    "img": "/vercel.svg",
+    "name": "Calvin Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Dining Room"
+  },
+  {
+    "id": "PRD0011",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Living Room"
+  },
+  {
+    "id": "PRD0012",
+    "img": "/vercel.svg",
+    "name": "Wooden Chair",
+    "costPrice": "300",
+    "stock": "20",
+    "material": "Wood",
+    "description": "A short description here",
+    "category": "Kitchen"
+  }
+]

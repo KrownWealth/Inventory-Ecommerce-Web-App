@@ -4,16 +4,16 @@ import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
-import { MoveVerticalIcon } from 'lucide-react';
 import { OrderType } from '@/types';
 import { OrderData } from '@/json';
 import { FormattedPrice } from '@/lib';
+import { FaArrowsAltV } from 'react-icons/fa';
 
 
 const OrdersTable = () => {
   const dynamicTable = [
     { tableHead: "Order ID" },
-    { tableHead: "Product Name" },
+    { tableHead: "Customer Name" },
     { tableHead: "Departure Date" },
     { tableHead: "Delivery Date" },
     { tableHead: "Status" },
@@ -44,7 +44,7 @@ const OrdersTable = () => {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <MoveVerticalIcon className="h-4 w-4" />
+                      <FaArrowsAltV className="h-4 w-4" />
                       <span className="sr-only">Toggle menu</span>
                     </Button>
                   </DropdownMenuTrigger>
