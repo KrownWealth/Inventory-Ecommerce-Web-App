@@ -1,5 +1,6 @@
 import { FormSchema } from "@/lib";
 import { z } from "zod";
+import { ChangeEvent } from "react";
 
 export type FormFieldType = {
   label: string;
@@ -11,7 +12,7 @@ export type FormFieldType = {
   placeholder: string;
   startcnt?: React.ReactNode;
   endContent?: React.ReactNode;
-  onChange: (value: string) => void;
+  onChange: (e: ChangeEvent<HTMLInputElement>) => void; 
   value: string;
   isRequired?: string;
   required?: boolean;

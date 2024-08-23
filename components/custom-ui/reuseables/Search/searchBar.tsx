@@ -23,7 +23,7 @@ function InputSearch({ placeholder }: { placeholder: string }) {
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
-      e.preventDefault(); // Prevent form submission
+      e.preventDefault(); 
       const term = (e.target as HTMLInputElement).value;
       handleSearch(term);
     }

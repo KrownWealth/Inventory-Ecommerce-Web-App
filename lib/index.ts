@@ -4,6 +4,7 @@ import { fetchProductsPages } from "./functions";
 import { cn } from "./utils";
 import { toastNotification, ToastContainer, toast } from "./toastContainer";
 import FormSchema from "./formSchema";
+import { login, signup } from "./functions";
 
 export {FormattedPrice, formatNumber, fetchProductsPages, cn, 
-  toastNotification, ToastContainer, toast, FormSchema }
+  toastNotification, ToastContainer, toast, FormSchema, login, signup }

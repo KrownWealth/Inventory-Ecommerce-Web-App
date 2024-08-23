@@ -1,4 +1,4 @@
-import React, { ChangeEvent } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { Input } from '../ui/input';
 import { Label } from '../ui/label';
 import { FormFieldType } from '@/types';
@@ -20,25 +20,24 @@ const FormField: React.FC<FormFieldType> = ({
   required,
   height,
 }) => {
+  const [isVisible, setIsVisible] = useState(false)
+  const handlePasswordVisible=()=>{
+    setIsVisible(true)
+  }
   return (
     <div className='flex flex-col space-y-1.5 mb-4'>
-      <Label
-        htmlFor={htmlFor}
-        className={cn(' text-sm text-black')}
-      >
+      <Label htmlFor={htmlFor} className={cn('text-sm text-black')}>
         {label} {isRequired && <sup className='text-danger'>*</sup>}
       </Label>
       <Input
         type={type}
         id={id}
         required={required}
-        value={value}
+        value={value} // The value must always be synced with the parent state
         startContent={startcnt}
         endContent={endContent}
         placeholder={placeholder}
-        onChange={(e: ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value)
-        }
+        onChange={onChange} // Passing the entire event to onChange
         className='bg-slate-50'
       />
       {isInvalid && <div className='text-red-500'>{errorMessage}</div>}

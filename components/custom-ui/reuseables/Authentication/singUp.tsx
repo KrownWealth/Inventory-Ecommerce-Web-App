@@ -16,21 +16,24 @@ import { FaRegEnvelope, FaRegEye, FaRegUser } from "react-icons/fa";
 export function SignUp() {
   const {
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isValid },
+    register,
+    watch,
+    setValue,
+    trigger, 
   } = useForm<FormSchemaType>({
     resolver: zodResolver(FormSchema),
+    mode: "onChange", 
     defaultValues: {
-      username: "",
       email: "",
       password: "",
     },
   });
 
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const emailValue = watch("email");
+  const passwordValue = watch("password");
+
+  
 
   const handleFormSubmit = (data: FormSchemaType) => {
     // Simulate authentication request
@@ -41,26 +44,12 @@ export function SignUp() {
     } catch (error) {
       toast.error("Authentication failed. Please try again.");
     }
+    
   };
 
   return (
     <div className="flex flex-col">
       <form onSubmit={handleSubmit(handleFormSubmit)}>
-        <FormField
-          label="Username"
-          type="text"
-          id="username"
-          htmlFor="username"
-          placeholder="Please enter your username"
-          isRequired="*"
-          required={true}
-          value={formData.username}
-          onChange={(value) => setFormData({ ...formData, username: value })}
-          isInvalid={!!errors.username}
-          errorMessage={errors.username?.message}
-          startcnt={<FaRegUser className="w-4 h-4"/>}
-
-        />
         <FormField
           label="Email"
           type="email"
@@ -68,13 +57,15 @@ export function SignUp() {
           htmlFor="email"
           placeholder="Enter your email"
           isRequired="*"
-          required={true}
-          value={formData.email}
-          onChange={(value) => setFormData({ ...formData, email: value })}
+          required
+          value={emailValue}
+          onChange={(e) => {
+            setValue("email", e.target.value); 
+            trigger("email");
+          }}
           isInvalid={!!errors.email}
           errorMessage={errors.email?.message}
-          startcnt={<FaRegEnvelope className="w-4 h-4"/>}
-
+          endContent={<FaRegEnvelope className="w-4 h-4" />}
         />
         <FormField
           label="Password"
@@ -84,11 +75,14 @@ export function SignUp() {
           placeholder="Enter your password"
           isRequired="*"
           required
-          value={formData.password}
-          onChange={(value) => setFormData({ ...formData, password: value })}
+          value={passwordValue}
+          onChange={(e) => {
+            setValue("password", e.target.value); 
+            trigger("password"); 
+          }}
           isInvalid={!!errors.password}
           errorMessage={errors.password?.message}
-          startcnt={<FaRegEye className="h-4 w-4"/>}
+          endContent={<FaRegEye className="w-4 h-4" />}
         />
         <div className="flex justify-between text-pricesageBlack">
           <div className="flex items-center space-x-2">
