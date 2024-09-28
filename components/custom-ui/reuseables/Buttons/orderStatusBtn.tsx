@@ -8,9 +8,9 @@ interface OrderStatusBtnProps{
 
 const OrderStatusBtn:React.FC<OrderStatusBtnProps> = ({ btnText, icon }) => {
   return (
-    <Button className='flex justify-between items-center'>
-      <span>{btnText}</span>
-      {icon}
+    <Button className='flex justify-between items-center text-sm '>
+     {btnText}
+       <span className="w-3 h-4">{icon}</span>
     </Button>
   )
 }

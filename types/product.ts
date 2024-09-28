@@ -1,20 +1,33 @@
 export type ProductType={
   id: string
+  image: string
   name: string
-  costPrice: string
-  stock: string
-  category: string
+  price: number
+  category: {
+    id: string;
+    name: string;
+  } | null; 
+  description: string
+  // rating?: number
+}
+
+export interface CategoryType {
+    id: string;
+    name: string;
 }
 
 export type ProductsType={
   id: string
+  image: string; 
   name: string
-  costPrice: string
-  img: string
- material: string
-  category: string
+  price: number
+  stock: number
+  category: {
+        id: string;
+        name: string;
+    } | null;
   description: string
-  stock: string
-
-
+  status: string
+  createdAt: Date
+  updatedAt: Date
 }

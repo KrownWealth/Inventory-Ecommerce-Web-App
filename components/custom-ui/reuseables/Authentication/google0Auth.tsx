@@ -16,7 +16,7 @@ const SignupWithGoogle = () => {
                   <div className="flex-grow h-px bg-black" />
                 </div>
 
-              </div>
+      </div>
   )
 }
 

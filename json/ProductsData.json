@@ -1,52 +1,57 @@
 [
   {
     "id": "PRD001",
-    "img": "/vercel.svg",
+    "img": "/images/armchair1.jpg",
     "name": "Wooden Chair",
     "costPrice": "300",
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Living Room"
   },
   {
     "id": "PRD002",
-    "img": "/vercel.svg",
+    "img": "/images/armchair3.jpg",
     "name": "Wooden Chair",
     "costPrice": "300",
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Kitchen"
   },
   {
     "id": "PRD003",
-    "img": "/vercel.svg",
+    "img": "/images/armchair1.jpg",
     "name": "Plastic Chair",
     "costPrice": "300",
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Bedroom"
   },
   {
     "id": "PRD004",
-    "img": "/vercel.svg",
+   "img": "/images/armchair1.jpg",
     "name": "Poly Chair",
     "costPrice": "300",
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Dining Room"
   },
   {
     "id": "PRD005",
-    "img": "/vercel.svg",
+    "img": "/images/armchair1.jpg",
     "name": "Wooden Chair",
     "costPrice": "300",
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Office"
   },
   {
@@ -57,6 +62,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Dining Room"
   },
   {
@@ -67,6 +73,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Living Room"
   },
   {
@@ -77,6 +84,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Bedroom"
   },
   {
@@ -87,6 +95,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Office"
   },
   {
@@ -97,6 +106,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Dining Room"
   },
   {
@@ -107,6 +117,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Living Room"
   },
   {
@@ -117,6 +128,7 @@
     "stock": "20",
     "material": "Wood",
     "description": "A short description here",
+    "rating": "five star",
     "category": "Kitchen"
   }
 ]

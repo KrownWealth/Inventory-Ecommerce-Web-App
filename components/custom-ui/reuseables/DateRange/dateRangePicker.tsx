@@ -18,8 +18,8 @@ export function DatePickerWithRange({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const [date, setDate] = React.useState<DateRange | undefined>({
-    from: new Date(2022, 0, 20),
-    to: addDays(new Date(2022, 0, 20), 20),
+    from: new Date(2024, 0, 20),
+    to: addDays(new Date(2024, 0, 20), 10), 
   })
 
   return (
@@ -30,19 +30,22 @@ export function DatePickerWithRange({
             id="date"
             variant={"outline"}
             className={cn(
-              "w-[220px] justify-start text-left font-normal",
-              !date && "text-muted-foreground"
+              "justify-start text-left font-normal",
+              !date ? "text-muted-foreground text-sm" : ""
             )}
-          >
+          >         
             <FaCalendar className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
-                <>
-                  {format(date.from, "LLL dd, y")} -{" "}
-                  {format(date.to, "LLL dd, y")}
-                </>
+                <div className="flex flex-col text-xs">
+                  Filter 
+                  <span>
+                    {format(date.from, "LLL dd, yy")} -{" "}
+                  {format(date.to, "LLL dd, yy")}
+                  </span>
+                </div>
               ) : (
-                format(date.from, "LLL dd, y")
+                format(date.from, "LLL dd, yy")
               )
             ) : (
               <span>Pick a date</span>

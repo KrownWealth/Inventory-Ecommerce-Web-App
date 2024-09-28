@@ -26,6 +26,7 @@ const config = {
         pricesageLightBrown: "#c3a59d",
         pricesagePaleBlue: "#8caeae",
         pricesageBlack: "#343434",
+        pricesageBlackTwo: "#010101",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",

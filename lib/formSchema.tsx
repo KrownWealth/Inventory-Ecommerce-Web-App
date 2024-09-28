@@ -1,13 +1,22 @@
 import { z } from "zod";
 
-const FormSchema = z.object({
-  username: z.string().min(4, {
-    message: "Please enter your full name",
-  }),
-  email: z.string().email("Please enter a valid email address"),
-  password: z.string().min(4, {
-    message: "Password must be at least 4 characters.",
-  }),
-});
-export default FormSchema
+export const formSchema = (
+  validationFn: (value: string) => boolean,
+  errorMessage: string
+) => {
+  return z.string().refine(validationFn, { message: errorMessage });
+};
 
+export const EmailSchema = z
+  .string()
+  .email("Please enter a valid email address");
+
+ export const PasswordSchema = formSchema(
+  (value) => value.length >= 4,
+  "Password must be at least 6 characters long"
+);
+
+export const UsernameSchema = z.string().min(4, {
+    message: "Please enter your full name",
+  });
+ 

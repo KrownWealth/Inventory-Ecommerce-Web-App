@@ -16,11 +16,11 @@ const SidebarHeaderLogo: React.FC<SidebarHeaderProps> = ({ isCollapsed, toggleSi
           <span className={`${isCollapsed ? 'hidden' : 'block'}`}>PriceMarkup</span>
         </Link>
         <button
-          className="absolute -right-3 top-1/2 transform -translate-y-1/2 p-1 z-10"
+          className="absolute -right-3 top-1/2 transform -translate-y-1/2 p-1 z-10 hidden lg:block"
           onClick={toggleSidebar}
           aria-label="Toggle sidebar"
         >
-          {isCollapsed ? <FaRegArrowAltCircleRight className="h-6 w-6" /> : <FaRegArrowAltCircleLeft className="h-6 w-6" />}
+          {isCollapsed ? <FaRegArrowAltCircleRight className="h-6 w-6 " /> : <FaRegArrowAltCircleLeft className="h-6 w-6" />}
         </button>
       </div>
   )

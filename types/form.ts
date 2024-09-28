@@ -1,5 +1,3 @@
-import { FormSchema } from "@/lib";
-import { z } from "zod";
 import { ChangeEvent } from "react";
 
 export type FormFieldType = {
@@ -12,11 +10,9 @@ export type FormFieldType = {
   placeholder: string;
   startcnt?: React.ReactNode;
   endContent?: React.ReactNode;
-  onChange: (e: ChangeEvent<HTMLInputElement>) => void; 
+  onChange: (value: string) => void; // Change event handler signature
   value: string;
   isRequired?: string;
   required?: boolean;
   height?: string;
 };
-
-export type FormSchemaType = z.infer<typeof FormSchema>;

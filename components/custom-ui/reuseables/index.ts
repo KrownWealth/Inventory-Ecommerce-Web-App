@@ -21,14 +21,23 @@ import ProductTableTwo from "./Admin/productTableTwo";
 import { ProductCardSkeleton } from "./Skeleton/productTableSkeleton";
 import ProductsPagination from "./Pagination/productPagination";
 
-import { SignUp } from "./Authentication/singUp";
-import { Login } from "./Authentication/login";
+
 import SignupWithGoogle from "./Authentication/google0Auth";
 
 import LanguagSelect from "./Localization/languagesSelect";
+import {Quote} from "./Authentication/quote";
+import { LogoOnAuth } from "./Navigation/logoOnAuth";
+import { WelcomeText } from "./Headings/welcomeText";
+
+import { UserAvatarDropdown } from "./Navigation/avatarDropdown";
+import { ProductCard } from "./Cards/ProductCard";
+import UserSearch from "./Search/userSearchBar";
+
+
+
 
 export {ProductTable, InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
   ProductPageHead, ModalManager, SellingPriceTable, PageHead, PriceFormulaModal, CustomerTable,
 OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
-CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable, SignUp, LanguagSelect,
-SignupWithGoogle, Login}
+CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect,
+SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch }

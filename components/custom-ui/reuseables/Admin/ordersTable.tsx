@@ -22,7 +22,7 @@ const OrdersTable = () => {
   ];
 
   return (
-    <div className="border shadow-sm rounded-lg overflow-auto lg:w-full w-[280px]">
+    <div className="border shadow-sm rounded-lg overflow-auto md:w-full w-[328px]">
       <Table>
         <TableHeader>
           <TableRow>

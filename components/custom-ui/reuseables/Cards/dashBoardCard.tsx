@@ -28,7 +28,7 @@ const DashBoardCard: React.FC<DashBoardCardProps> = ({
     : formatNumber(Number(totalCustomers || totalProducts || totalOrders || '0'));
 
   return (
-    <Card>
+    <Card className="w-full">
       <CardHeader className='p-3'>
         <CardTitle className="flex items-center space-x-2">
           {icon}
