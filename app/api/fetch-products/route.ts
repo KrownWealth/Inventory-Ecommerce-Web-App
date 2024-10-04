@@ -5,7 +5,12 @@ const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany();
+    const products = await prisma.product.findMany({
+      include: {
+        category: true, 
+      },
+    });
+
     const totalProducts = await prisma.product.count();
     return NextResponse.json({
       products,
@@ -16,6 +21,3 @@ export async function GET() {
     return NextResponse.json({ error: "Failed to fetch products." }, { status: 400 });
   }
 }
-
-
-

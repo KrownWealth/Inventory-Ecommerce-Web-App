@@ -112,7 +112,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       stock: Number(productData.stock),
     });
 
-    // This is where image URL is included in the new product data
     const newProductData = {
       name: validatedData.name,
       price: validatedData.price,
@@ -141,7 +140,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       message: 'Product added successfully',
     });
 
-    // Reset and close modal after submission
     setProductData({
       id: "",
       name: "",

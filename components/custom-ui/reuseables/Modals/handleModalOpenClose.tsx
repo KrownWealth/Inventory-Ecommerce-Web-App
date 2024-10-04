@@ -1,3 +1,6 @@
+"use client"
+
+import React from "react";
 import EditProductModal from "./editProductModal";
 import { ProductsType } from "@/types";
 import AddProductModal from "./addProductModal";
@@ -10,8 +13,9 @@ interface ModalManagerProps {
   activeModal: 'add' | 'edit' | null;
   handleAddProductOpen: () => void;
   setProductInfo: React.Dispatch<React.SetStateAction<ProductsType[]>>;
+  handleCategoryChange: (categoryId: string | undefined) => void;
+  selectedCategory: string | null; 
 }
-
 
 const ModalManager: React.FC<ModalManagerProps> = ({
   isModalOpen,
@@ -19,13 +23,16 @@ const ModalManager: React.FC<ModalManagerProps> = ({
   selectedProduct,
   activeModal,
   handleAddProductOpen,
-  setProductInfo
+  setProductInfo,
+  handleCategoryChange,
+  selectedCategory, // Include selectedCategory
 }) => {
   return (
-    <>
+    <div>
       <AddProductPageHead
         setIsModalOpen={() => setIsModalOpen(true)}
         handleAddProductOpen={handleAddProductOpen}
+        handleCategoryChange={handleCategoryChange}
         filterText='Filter by Category'
         btnText='Add Product'
       />
@@ -40,19 +47,19 @@ const ModalManager: React.FC<ModalManagerProps> = ({
         <EditProductModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          productId={selectedProduct.id} 
+          productId={selectedProduct.id}
           productName={selectedProduct.name}
           productPrice={selectedProduct.price}
           stock={selectedProduct.stock}
-          categoryId={selectedProduct.category?.id || ""} 
-          image={selectedProduct.image} 
+          categoryName={selectedProduct.category?.id || ""}
+          image={selectedProduct.image}
           status={selectedProduct.status}
           description={selectedProduct.description}
           setProductInfo={setProductInfo}
         />
       )}
-    </>
+    </div>
   );
 };
 
-export default ModalManager
+export default ModalManager;

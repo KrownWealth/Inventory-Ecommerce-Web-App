@@ -5,7 +5,7 @@ import { useSearchParams, usePathname, useRouter } from 'next/navigation';
 import { Input } from '@/components/ui/input';
 import { PiMagnifyingGlass } from 'react-icons/pi';
 import { useDebouncedCallback } from 'use-debounce';
-import { Button } from '@/components/ui/button';
+
 
 function UserSearch() {
   const searchParams = useSearchParams();
@@ -41,8 +41,7 @@ function UserSearch() {
           placeholder="Search for product here..."
           onKeyDown={handleKeyDown}
           onChange={(e) => handleSearch(e.target.value)}
-          defaultValue={searchParams.get('query')?.toString()}
-          endContent={<Button className='bg-pricesageBlackTwo text-white font-medium absolute rounded-l-none right-0 top-1/2 h-full -translate-y-1/2 peer-focus:text-gray-900'>Search</Button>}
+          defaultValue={searchParams.get('query') || ''}
           className="peer block w-full rounded-l-md border border-gray-200 py-[9px] pl-10 text-sm outline-2 placeholder:text-gray-600"
         />
       </div>

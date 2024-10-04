@@ -1,18 +1,29 @@
 "use client"
 
 import React from 'react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 
-const ProductsPagination = ({ totalPages, currentPage, query }: { totalPages: number; currentPage: number; query: string; }) => {
+interface ProductsPaginationProps {
+  totalPages: number;
+  currentPage: number; 
+  onPageChange: (page: number) => void; 
+}
+
+const ProductsPagination: React.FC<ProductsPaginationProps> = ({ totalPages, currentPage, onPageChange }) => {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
-  const searchParams = new URLSearchParams(useSearchParams());
 
-  const handlePageChange = (page: number) => {
-    searchParams.set('page', page.toString());
-    if (query) {
-      searchParams.set('query', query);
-    }
-    router.push(`?${searchParams.toString()}`);
+  const createPageURL = (pageNumber: number | string) => {
+    const params = new URLSearchParams(searchParams);
+    params.set('page', pageNumber.toString());
+    return `${pathname}?${params.toString()}`;
+  };
+
+  const handlePageChange = (pageNumber: number) => {
+    const newURL = createPageURL(pageNumber);
+    router.replace(newURL);
+    onPageChange(pageNumber); 
   };
 
   return (

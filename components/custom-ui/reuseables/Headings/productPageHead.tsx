@@ -1,22 +1,21 @@
-"use client"
+"use client";
 
 import React from 'react';
 import { Button } from '@/components/ui/button';
-import { ProductType } from '@/types';
-import { ChevronDown } from 'lucide-react';
 import FilterByCategory from '../Filter/filterByCategory';
 
 interface ProductPageHeadProps {
   setIsModalOpen: (open: boolean) => void;
   handleAddProductOpen: () => void; 
- filterText: string;
+  filterText: string;
   btnText?: string;
+  handleCategoryChange: (categoryId: string | undefined) => void;
 }
 
-const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOpen, filterText, btnText }) => {
+const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOpen, btnText, handleCategoryChange }) => {
   return (
     <div className="flex items-center py-4">
-      <FilterByCategory />
+      <FilterByCategory onCategoryChange={handleCategoryChange} /> 
       
       <Button onClick={handleAddProductOpen} className="ml-auto text-sm lg:text-lg" size="sm">
         {btnText}
