@@ -48,6 +48,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   setProductInfo,
 }) => {
   const [productData, setProductData] = useState({
+    id: "",
     name: "",
     price: "",
     stock: "",
@@ -142,6 +143,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
     // Reset and close modal after submission
     setProductData({
+      id: "",
       name: "",
       price: "",
       stock: "",
@@ -175,6 +177,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
               image={productData.image}
               setImage={handleImageChange} 
               onChangePicture={handleImageChange}
+              productId={productData.id}
             />
 
             <div className="grid sm:grid-cols-2 gap-3">

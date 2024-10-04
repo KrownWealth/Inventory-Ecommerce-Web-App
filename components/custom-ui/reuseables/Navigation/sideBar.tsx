@@ -1,33 +1,35 @@
-"use client";
+"use client"; 
 
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import SidebarHeaderLogo from './sideBarLogo';
 import SidebarMenu from './sideBarMenuItems';
 import SidebarFooter from './sideBarFooter';
 
-function SideBarNav() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
+interface SideBarNavProps {
+  isCollapsed: boolean;
+  setIsCollapsed: (collapsed: boolean) => void;
+}
+
+function SideBarNav({ isCollapsed, setIsCollapsed }: SideBarNavProps) {
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed);
+    setIsCollapsed(!isCollapsed); 
   };
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
-        setIsCollapsed(true);
-        setIsMobile(true);
+        setIsCollapsed(true); 
       } else {
-        setIsCollapsed(false);
-        setIsMobile(false);
+        setIsCollapsed(false); 
       }
     };
-    handleResize();
+
+    handleResize(); 
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+  }, [setIsCollapsed]);
 
   return (
     <aside
@@ -37,7 +39,7 @@ function SideBarNav() {
          }`}
     >
       <div className="flex flex-col h-full">
-        <div className="flex flex-col flex-grow px-3 pb-4 overflow-y-auto">
+        <div className="flex flex-col flex-grow px-3 pb-4">
           <SidebarHeaderLogo isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
           <SidebarMenu isCollapsed={isCollapsed} />
         </div>

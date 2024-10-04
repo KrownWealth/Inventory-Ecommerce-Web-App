@@ -24,7 +24,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ isCollapsed }) => {
 
   return (
    
-      <nav className="space-y-2 items-center justify-center pt-4">
+      <nav className="space-y-2 items-center justify-center pt-4 overflow-hidden">
       {menuItems.map((item) => (
         <Link
           key={item.href}

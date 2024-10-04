@@ -1,4 +1,4 @@
-'use client'; 
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
@@ -20,7 +20,7 @@ interface EditProductModalProps {
   productPrice: number;
   stock: number;
   status: string;
-  categoryId?: string;
+  categoryName?: string;
   description: string;
 }
 
@@ -31,7 +31,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   productName,
   productPrice,
   stock,
-  categoryId,
+  categoryName,
   image,
   status,
   description
@@ -40,8 +40,8 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     name: productName,
     price: productPrice,
     inventory: stock,
-    categoryId, 
-    image, 
+    categoryId: categoryName, 
+    image,
     status,
     description
   });
@@ -72,148 +72,170 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     fetchCategories();
   }, []);
 
-   
+  useEffect(() => {
+    if (isModalOpen) {
+      setProductData({
+        name: productName,
+        price: productPrice,
+        inventory: stock,
+        categoryId: categoryName,
+        image,
+        status,
+        description
+      });
+    }
+  }, [isModalOpen, productName, productPrice, stock, categoryName, image, status, description]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setProductData((prevData) => ({ ...prevData, [name]: value }));
   };
 
-   const handleImageChange = (imageUrl: string) => {
-    setProductData({ ...productData, image: imageUrl });
+  const handleImageChange = (imageUrl: string) => {
+    setProductData((prevData) => ({ ...prevData, image: imageUrl }));
   };
 
   const handleCategoryChange = (categoryId: string) => {
-    setProductData((prevData) => ({ ...prevData, categoryId }));
+    setProductData((prevData) => ({ ...prevData, categoryId })); 
   };
 
-  const handleImageUpload = (uploadedImageUrl: string) => {
-    setProductData((prevData) => ({ ...prevData, image: uploadedImageUrl }));
-  };
-
- const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
-  e.preventDefault();
-
-  try {
-    const response = await fetch(`/api/edit-products`, {
-      method: 'PATCH',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        id: productId,
-        name: productData.name,
-        price: productData.price,
-        stock: productData.inventory,
-        categoryId: productData.categoryId,
-        image: productData.image, 
-        status: productData.status,
-        description: productData.description,
-      }),
+  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+  
+    console.log('Editing product with data:', {
+      id: productId,
+      name: productData.name,
+      price: productData.price,
+      stock: productData.inventory,
+      categoryId: productData.categoryId,
+      image: productData.image,
+      status: productData.status,
+      description: productData.description,
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to update product');
+    try {
+      const response = await fetch(`/api/edit-products`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          id: productId,
+          name: productData.name,
+          price: productData.price,
+          stock: productData.inventory,
+          categoryId: productData.categoryId, 
+          image: productData.image, 
+          status: productData.status,
+          description: productData.description,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to update product');
+      }
+
+      const updatedProduct = await response.json(); 
+      
+      console.log('Product updated:', updatedProduct); 
+    } catch (error) {
+      console.error('Failed to update product:', error);
+      setIsModalOpen(false); 
     }
-
-    const updatedProduct = await response.json(); 
-    setIsModalOpen(false); 
-    console.log('Product updated:', updatedProduct); 
-  } catch (error) {
-    console.error('Failed to update product:', error);
-  }
-};
-
+  };
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white ">
+      <DialogContent className="sm:max-w-[600px] bg-white">
         <DialogHeader>
           <DialogTitle>Edit Product</DialogTitle>
         </DialogHeader>
         <form onSubmit={handleEdit} className="grid gap-6 py-6">
           <div className="grid gap-3">
             <AddProductImage
-            image={productData.image}
-            setImage={handleImageUpload}
-            onChangePicture={handleImageChange}  
+              image={productData.image}
+              setImage={handleImageChange}
+              productId={productId}
+              onChangePicture={handleImageChange} 
             />
-
-            
             <div className="grid sm:grid-cols-2 gap-3">
               <div className="grid gap-3">
-                 <Label htmlFor="name">Name</Label>
-            <Input
-              id="name"
-              name="name"
-              type="text"
-              className="w-full"
-              value={productData.name}
-              onChange={handleChange}
-            />
+                <Label htmlFor="name">Name</Label>
+                <Input
+                  id="name"
+                  name="name"
+                  type="text"
+                  className="w-full"
+                  value={productData.name}
+                  onChange={handleChange}
+                />
               </div>
-
-               <div className="grid gap-3">
-                 <div className="grid gap-3">
-              <Label htmlFor="price">Price</Label>
-              <Input
-                id="price"
-                name="price"
-                type="number"
-                className="w-full"
-                value={productData.price}
-                onChange={handleChange}
-              />
+              <div className="grid gap-3">
+                <Label htmlFor="price">Price</Label>
+                <Input
+                  id="price"
+                  name="price"
+                  type="number"
+                  className="w-full"
+                  value={productData.price}
+                  onChange={handleChange}
+                />
+              </div>
             </div>
-               </div>
+            <div className="grid sm:grid-cols-2 gap-3">
+              <div className="grid gap-3">
+                <Label htmlFor="inventory">Inventory</Label>
+                <Input
+                  id="inventory"
+                  name="inventory"
+                  type="number"
+                  className="w-full"
+                  value={productData.inventory}
+                  onChange={handleChange}
+                />
+              </div>
+              <div className="grid gap-3">
+                <Label htmlFor="category">Category</Label>
+                <Select
+                  name="categoryId"
+                  value={productData.categoryId} 
+                  onValueChange={handleCategoryChange} 
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {categories.map((cat) => (
+                      <SelectItem key={cat.id} value={cat.id}>
+                        {cat.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-           
-          <div className="grid sm:grid-cols-2 gap-3">
             <div className="grid gap-3">
-              <Label htmlFor="inventory">Inventory</Label>
-              <Input
-                id="inventory"
-                name="inventory"
-                type="number"
-                className="w-full"
-                value={productData.inventory}
-                onChange={handleChange}
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="category">Category</Label>
-              <Select
-                name="categoryId"
-                value={productData.categoryId} 
-                onValueChange={handleCategoryChange} 
-              >
-                <SelectTrigger className="w-full">
-                  <SelectValue placeholder="Select category" />
-                </SelectTrigger>
-                <SelectContent>
-                  {categories.map((cat) => (
-                    <SelectItem key={cat.id} value={cat.id}>
-                      {cat.name}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid gap-3">
               <Label htmlFor="description">Description</Label>
-              <Textarea id="description" name="description" className="w-full" />
+              <Textarea 
+                id="description" 
+                name="description" 
+                className="w-full" 
+                value={productData.description}
+                onChange={handleChange} // Bind value to state
+              />
             </div>
-
             <div className="grid gap-3">
               <Label htmlFor="status">Status</Label>
-              <Input id="status" name="status" type="text" className="w-full" onChange={handleChange} />
+              <Input 
+                id="status" 
+                name="status" 
+                type="text" 
+                className="w-full" 
+                value={productData.status}
+                onChange={handleChange} 
+              />
             </div>
-          
           </div>
-        
-
           <DialogFooter>
             <Button type="submit">Update Product</Button>
           </DialogFooter>
