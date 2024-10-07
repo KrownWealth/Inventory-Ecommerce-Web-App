@@ -40,7 +40,6 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ image, setImage, onCh
       const data = await response.json();
       const imageUrl = data.secure_url;
 
-      // If productId exists, we are updating an existing product
       if (productId) {
         await updateProductImage(productId, imageUrl);
       }
@@ -55,7 +54,6 @@ const AddProductImage: React.FC<AddProductImageProps> = ({ image, setImage, onCh
     }
   };
 
-  // Function to handle PATCH request
   const updateProductImage = async (id: string, imageUrl: string) => {
     try {
       const response = await fetch(`/api/edit-product`, {

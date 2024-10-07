@@ -1,11 +1,9 @@
-import ProductTable from "./Admin/productTable";
 import InputSearch from "./Search/searchBar";
 import SideBarNav from "./Navigation/sideBar";
 import UserProfile from "./Profile/userProfileDropdown";
 import { BreadcrumbWithCustomSeparator } from "./Navigation/breadCrumb";
 import ProductPageHead from "./Headings/productPageHead";
 import ModalManager from "./Modals/handleModalOpenClose";
-import SellingPriceTable from "./Admin/sellingPriceTable";
 import PageHead from "./Headings/PageHeading";
 import PriceFormulaModal from "./Modals/salesPriceFormula";
 import CustomerTable from "./Admin/customersTable";
@@ -32,12 +30,13 @@ import { WelcomeText } from "./Headings/welcomeText";
 import { UserAvatarDropdown } from "./Navigation/avatarDropdown";
 import { ProductCard } from "./Cards/ProductCard";
 import UserSearch from "./Search/userSearchBar";
+import AddCategoryModal from "./Modals/addCategoryModal";
+import CategoryTable from "./Admin/categoryTable";
 
 
 
-
-export {ProductTable, InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
-  ProductPageHead, ModalManager, SellingPriceTable, PageHead, PriceFormulaModal, CustomerTable,
+export { InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
+  ProductPageHead, ModalManager, PageHead, PriceFormulaModal, CustomerTable,
 OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
-CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect,
-SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch }
+CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect, CategoryTable,
+SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch, AddCategoryModal }

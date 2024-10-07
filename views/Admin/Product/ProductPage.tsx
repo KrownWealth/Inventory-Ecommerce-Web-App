@@ -7,6 +7,7 @@ import { ProductsType } from '@/types';
 import { toastNotification } from '@/lib';
 import { DateRange } from 'react-day-picker';
 import { useRouter } from 'next/navigation';
+import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
 
 const AdminProductView = ({
@@ -26,10 +27,9 @@ const AdminProductView = ({
 
   
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
-  //filter by date 
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(2024, 8, 1),
-    to: new Date(2024, 8, 30), 
+    to:  new Date(Date.now()), 
   });
 
   const router = useRouter();
@@ -138,14 +138,16 @@ const AdminProductView = ({
   }, [query, currentPage, selectedCategory, date]);
 
   return (
-    <div className="p-4">
-      <header className="py-4 flex h-[75px] items-center justify-between border-b bg-muted/40">
-        <Link href="#" className="lg:hidden" prefetch={false}>
+    <div className="py-4">
+      <header className="border-b ">
+       <div className="p-4 flex h-[75px] items-center justify-between bg-muted/40 px-6">
+         <Link href="#" className="lg:hidden" prefetch={false}>
           <span className="sr-only">Home</span>
         </Link>
         <PageHead pageTitle="Products" />
         <InputSearch placeholder="Search for products here..." />
         <DatePickerWithRange date={date} setDate={setDate} />
+       </div>
       </header>
 
       <ModalManager
@@ -159,17 +161,22 @@ const AdminProductView = ({
         handleCategoryChange={handleCategoryChange}
       />
 
-      <div className="flex flex-col">
+      <div className="flex flex-col p-4">
         {isLoading ? (
-          <div className="text-center">Loading products...</div>
+          <div className="flex items-center justify-center m-auto">
+            <AiOutlineLoading3Quarters className="h-24 w-24 animate-spin text-primary" />
+            <p className="text-muted-foreground">Loading product...</p>
+          </div>
         ) : productInfo.length > 0 ? (
           productInfo.map((product) => (
             <div key={product.id} className="mb-4">
               <ProductTableTwo
                 productId={product.id}
                 productName={product.name}
-                productPrice={product.price}
+                costPrice={product.costPrice}
+                sellingPrice={product.sellingPrice}
                 productImg={product.image}
+                // markupPercentage={product.markupPercentage}
                 productDescription={product.description}
                 categoryName={product.category ? product.category.name : 'No Category'}
                 createdDate={product.createdAt}

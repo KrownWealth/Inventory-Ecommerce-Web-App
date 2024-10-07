@@ -10,8 +10,10 @@ interface ProductTableProps {
   productImg: string
   productName: string
   productId: string
-  productPrice: number
+  costPrice: number
+  sellingPrice: number
   productDescription: string
+  // markupPercentage: number
   categoryName: string
   createdDate: Date
   updatedDate: Date
@@ -21,7 +23,7 @@ interface ProductTableProps {
 }
 const ProductTableTwo: React.FC<ProductTableProps> = ({ 
   productId, productImg, productName, categoryName, 
-  productPrice, productDescription, createdDate, updatedDate, onEdit, onDelete }) => {
+  costPrice, sellingPrice, productDescription, createdDate, updatedDate, onEdit, onDelete }) => {
 
 
     
@@ -50,19 +52,28 @@ const ProductTableTwo: React.FC<ProductTableProps> = ({
             <span className="text-sm text-left">{productName}</span>
           </div>
 
+          <div className="grid grid-cols-2 pb-2">
+            <span className="text-sm font-semibold text-green-600">Cost Price:</span>
+            <span className="text-sm text-left">{FormattedPrice(costPrice)}</span>
+          </div>
+           <div className="grid grid-cols-2 pb-2">
+            <span className="text-sm font-semibold text-green-600">Selling Price:</span>
+            <span className="text-sm text-left">{FormattedPrice(sellingPrice)}</span>
+          </div>
+
+           {/* <div className="grid grid-cols-2 pb-2">
+            <span className="text-sm font-semibold">Selling Price Percentage:</span>
+            <span className="text-sm text-left">{markupPercentage}</span>
+          </div> */}
+        </div>
+
+        {/* Product Meta */}
+        <div className="p-4">
            <div className="grid grid-cols-2 pb-2">
             <span className="text-sm font-semibold">Category:</span>
             <span className="text-sm text-left">{categoryName}</span>
           </div>
 
-          <div className="grid grid-cols-2">
-            <span className="text-sm font-semibold text-green-600">Price:</span>
-            <span className="text-sm text-left">{FormattedPrice(productPrice)}</span>
-          </div>
-        </div>
-
-        {/* Product Meta */}
-        <div className="p-4">
           <div className="grid grid-cols-2 pb-2">
             <span className="text-sm font-semibold">Description:</span>
             <span className="text-sm text-left">{productDescription}</span>

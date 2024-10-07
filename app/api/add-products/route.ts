@@ -12,25 +12,29 @@ cloudinary.v2.config({
 
 export async function POST(req: Request) {
   try {
-    const { name, description, price, stock, category, status, image } = await req.json();
+    const { name, description, costPrice, markupPercentage, stock, category, status, image } = await req.json();
 
     const uploadResponse = await cloudinary.v2.uploader.upload(image, {
       folder: 'products',
     });
 
+    const sellingPrice = costPrice + (costPrice * (markupPercentage / 100));
+
     const newProduct = await prisma.product.create({
       data: {
         name,
         description,
-        price,
+        costPrice,
+        sellingPrice,
         stock,
         category: {
-          connect: { id: category }, 
+          connect: { id: category },
         },
         status,
         image: uploadResponse.secure_url,
       },
     });
+
     console.log("New Product", newProduct);
 
     return NextResponse.json(newProduct, { status: 201 });
@@ -40,3 +44,5 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: `Product creation failed: ${error.message}` }, { status: 400 });
   }
 }
+
+

@@ -2,7 +2,8 @@ export type ProductType={
   id: string
   image: string
   name: string
-  price: number
+  costPrice: number
+  selingPrice: number
   category: {
     id: string;
     name: string;
@@ -20,7 +21,8 @@ export type ProductsType={
   id: string
   image: string; 
   name: string
-  price: number
+  costPrice: number
+  sellingPrice: number
   stock: number
   category: {
         id: string;
@@ -31,3 +33,4 @@ export type ProductsType={
   createdAt: Date
   updatedAt: Date
 }
+

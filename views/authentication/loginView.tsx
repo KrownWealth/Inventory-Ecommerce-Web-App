@@ -5,7 +5,7 @@ import { useFormState, EmailSchema, PasswordSchema } from "@/lib";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/form/formField";
 import Link from "next/link";
-import { FaRegEnvelope, FaRegEye, FaRegEyeSlash, FaSpinner } from "react-icons/fa";
+import { FaRegEnvelope, FaSpinner } from "react-icons/fa";
 import { emailLogin } from "@/app/actions";
 import PasswordField from "@/components/form/passwordField";
 

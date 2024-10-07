@@ -13,9 +13,9 @@ interface SidebarMenuProps {
 const menuItems = [
   { href: '/dashboard', label: 'Dashboard', icon: <MdDashboard className="h-4 w-4" /> },
   { href: '/dashboard/products', label: 'Products', icon: <PiShoppingCartFill className="h-4 w-4" /> },
+  { href: '/dashboard/categories', label: 'Categories', icon: <ImPriceTags className="h-4 w-4" /> },
   { href: '/dashboard/orders/', label: 'Orders', icon: <IoMdBasket className="h-4 w-4" /> },
   { href: '/dashboard/customers', label: 'Customers', icon: <ImUsers className="h-4 w-4" /> },
-  { href: '/dashboard/sales-pricing', label: 'Sales Pricing', icon: <ImPriceTags className="h-4 w-4" /> },
   { href: '/dashboard/setting', label: 'Settings', icon: <MdSettings className="h-4 w-4" /> },
 ];
 
