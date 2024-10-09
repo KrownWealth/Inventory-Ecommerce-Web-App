@@ -20,6 +20,8 @@ import { AddProductImage } from "@/views";
 import { Checkbox } from "@/components/ui/checkbox"
 
 
+type CheckedState = boolean | 'indeterminate';
+
 const ProductSchema = z.object({
   name: z.string().min(3, { message: "Name is required" }),
   costPrice: z.number().positive({ message: "Price must be a positive number" }),
@@ -59,7 +61,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
-
+  const [isAutomatic, setIsAutomatic] = useState(true);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -87,16 +89,18 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     fetchCategories();
   }, []);
 
- // Calculate sellingPrice whenever costPrice or markupPercentage changes
-  useEffect(() => {
+useEffect(() => {
     const costPrice = parseFloat(productData.costPrice);
     const markupPercentage = parseFloat(productData.markupPercentage);
 
-    if (!isNaN(costPrice) && !isNaN(markupPercentage)) {
+    if (!isNaN(costPrice) && !isNaN(markupPercentage) && isAutomatic) {
       const sellingPrice = costPrice + (costPrice * markupPercentage) / 100;
-      setProductData((prev) => ({ ...prev, sellingPrice: sellingPrice.toFixed(2) }));
+      setProductData((prev) => ({
+        ...prev,
+        sellingPrice: sellingPrice.toFixed(2),
+      }));
     }
-  }, [productData.costPrice, productData.markupPercentage]);
+  }, [productData.costPrice, productData.markupPercentage, isAutomatic]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setProductData({
@@ -116,7 +120,13 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     setErrors({ ...errors, image: "" });
   };
 
-
+  const handleCheckedChange = (checked: CheckedState) => {
+    if (checked === 'indeterminate') {
+      setIsAutomatic(false); 
+    } else {
+      setIsAutomatic(checked); 
+    }
+  };
  
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -190,7 +200,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 overflow-y-scroll py-10">
+      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 overflow-y-scroll py-10" aria-label="Add Product">
         <DialogHeader>
           <DialogTitle>Add New Product</DialogTitle>
         </DialogHeader>
@@ -215,7 +225,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
             <div className="grid">
               <div className="grid gap-3">
                 <Label htmlFor="price">Cost Price</Label>
-                <Input id="price" name="price" type="number" className="w-full" onChange={handleChange} />
+                <Input id="costPrice" name="costPrice" type="number" className="w-full" onChange={handleChange} />
                 {errors.price && <div className="text-red-500">{errors.price}</div>}
               </div>
             </div>
@@ -232,7 +242,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
                    <Label htmlFor="sellingPrice">Selling Price</Label>
           
                   <div className="flex items-center space-x-2">
-                    <Checkbox id="sellingPrice" />
+                    <Checkbox checked={isAutomatic} onCheckedChange={handleCheckedChange} />
                     <label
                       htmlFor="terms"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -241,6 +251,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
                     </label>
                   </div>
                 </div>
+               
                <Input id="sellingPrice" name="sellingPrice" type="number" value={productData.sellingPrice} readOnly />
                 {errors.price && <div className="text-red-500">{errors.price}</div>}
               </div>

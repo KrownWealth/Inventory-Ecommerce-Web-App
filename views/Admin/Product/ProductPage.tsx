@@ -24,6 +24,7 @@ const AdminProductView = ({
   const [productInfo, setProductInfo] = useState<ProductsType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [totalPages, setTotalPages] = useState(1);
+  
 
   
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
@@ -150,6 +151,9 @@ const AdminProductView = ({
        </div>
       </header>
 
+      
+
+     <div className="p-4">
       <ModalManager
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
@@ -160,8 +164,7 @@ const AdminProductView = ({
         selectedCategory={selectedCategory}
         handleCategoryChange={handleCategoryChange}
       />
-
-      <div className="flex flex-col p-4">
+       <div className="flex flex-col">
         {isLoading ? (
           <div className="flex items-center justify-center m-auto">
             <AiOutlineLoading3Quarters className="h-24 w-24 animate-spin text-primary" />
@@ -198,6 +201,7 @@ const AdminProductView = ({
           />
         </div>
       </div>
+     </div>
     </div>
   );
 };

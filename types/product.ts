@@ -22,7 +22,7 @@ export type ProductsType={
   image: string; 
   name: string
   costPrice: number
-  sellingPrice: number
+  sellingPrice: number;
   stock: number
   category: {
         id: string;

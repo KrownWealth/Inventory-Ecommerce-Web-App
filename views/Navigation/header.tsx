@@ -35,10 +35,11 @@ export const Header = () => {
           ))}
            <UserSearch />
         <div className="flex gap-6 items-center">
-          <div className="flex flex-col items-center">
+          <Link href="/cart" 
+          className="flex flex-col items-center">
             <FiShoppingBag className="w-6 h-6" />
             <span className={cn('uppercase text-pricesageBlackTwo font-semibold text-sm underline', Satoshi_Bold)}>Cart</span>
-          </div>
+          </Link>
            <div className="flex flex-col items-center">
              <MdFavoriteBorder className="w-6 h-6" />
             <span className={cn('uppercase text-pricesageBlackTwo font-semibold text-sm underline', Satoshi_Bold)}>Favorite</span>

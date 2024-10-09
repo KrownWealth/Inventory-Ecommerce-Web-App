@@ -10,6 +10,7 @@ import { Footer } from "./Navigation/footer";
 import { ResetPasswordView } from "./authentication/resetPasswordView";
 import AdminProductView from "./Admin/Product/ProductPage";
 import AddProductImage from "./Admin/Product/AddProductImage";
+import BreadcrumbLinks from "./Navigation/breadcrumbs";
 
 export {OrderView, CustomerView,  SignupView, CategoryView, Header, Chip, Footer,
-   ResetPasswordView, AdminProductView, AddProductImage }
+   ResetPasswordView, AdminProductView, AddProductImage, BreadcrumbLinks }

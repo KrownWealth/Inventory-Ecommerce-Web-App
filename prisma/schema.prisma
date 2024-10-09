@@ -5,8 +5,9 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url      = env("DATABASE_URL") // Supabase connection string
 }
+
 
 model Category {
   id       String    @id @default(uuid())
