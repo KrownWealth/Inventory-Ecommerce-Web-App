@@ -1,14 +1,20 @@
+"use"
 import React from 'react'
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator,
   DropdownMenuItem, DropdownMenuContent } from '@/components/ui/dropdown-menu'
 import { Button } from '@/components/ui/button'
 import Image from 'next/image'
+import { useSession } from 'next-auth/react'
 
 const UserProfile = () => {
+
+  const { data: session } = useSession();
+
   return (
    <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full border w-8 h-8">
+
                 <Image
                   src="/placeholder.svg"
                   width="32"
@@ -26,7 +32,9 @@ const UserProfile = () => {
               <DropdownMenuItem>Settings</DropdownMenuItem>
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
-              <DropdownMenuItem>Logout</DropdownMenuItem>
+              <DropdownMenuItem>
+                
+              </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
   )

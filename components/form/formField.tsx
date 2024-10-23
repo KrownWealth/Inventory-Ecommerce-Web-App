@@ -1,44 +1,67 @@
-import React from 'react';
-import { Input } from '../ui/input';
-import { Label } from '../ui/label';
-import { FormFieldType } from '@/types';
-import { cn } from '@/lib';
+import React from "react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
-const FormField: React.FC<FormFieldType> = ({
+type InputType = "text" | "password" | "email" | "number" | "tel" | "url";
+
+export type FormFieldProps = {
+  label: string;
+  htmlFor: string;
+  name: string;
+  type: InputType;
+  value: string | number;
+  isInvalid?: boolean;
+  errorMessage?: string;
+  placeholder?: string;
+  startContent?: React.ReactNode;
+  endContent?: React.ReactNode;
+  height?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  required?: boolean;
+  readOnly?: boolean;
+};
+
+const FormField: React.FC<FormFieldProps> = ({
   label,
   htmlFor,
+  name,
   type,
-  id,
-  isInvalid,
-  errorMessage,
-  placeholder,
-  startcnt,
-  endContent,
-  onChange,
   value,
-  isRequired,
-  required,
+  isInvalid = false,
+  errorMessage,
+  startContent,
+  endContent,
   height,
+  placeholder,
+  onChange,
+  required = false,
+  readOnly = false,
 }) => {
+  // Optional styles for height customization
+  const inputStyles: React.CSSProperties = height ? { height: `${height}px` } : {};
+
   return (
-    <div className="flex flex-col space-y-1.5 mb-4">
-      <Label htmlFor={htmlFor} className={cn("text-sm text-black")}>
-        {label} {isRequired && <sup className="text-danger">*</sup>}
+    <div className="flex flex-col space-y-1">
+      <Label htmlFor={htmlFor} className="mb-2 text-sm text-black">
+        {label} {required && <span className="text-red-500">*</span>}
       </Label>
       <Input
         type={type}
-        id={id}
-        required={required}
+        name={name}
+        id={htmlFor}
         value={value}
-        startContent={startcnt}
-        endContent={endContent}
+        style={inputStyles}
+        onChange={onChange}
         placeholder={placeholder}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value)
-        }
-        className="bg-slate-50"
+        startContent={startContent}
+        endContent={endContent}
+        className={`w-full ${isInvalid ? "border-red-500" : ""}`}
+        readOnly={readOnly}
+        autoComplete="off"
       />
-      {isInvalid && <div className="text-red-500">{errorMessage}</div>}
+      {isInvalid && errorMessage && (
+        <span className="text-red-500 text-xs">{errorMessage}</span>
+      )}
     </div>
   );
 };

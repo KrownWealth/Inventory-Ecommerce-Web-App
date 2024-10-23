@@ -1,198 +1,167 @@
-"use client"
+"use client";
 
-import React, { useEffect, useState, FormEvent } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
 } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { ProductsType } from "@/types";
-import { z } from "zod";
+import { uploadImageToCloudinary } from "@/lib";
 import { toastNotification } from "@/lib";
-import { AddProductImage } from "@/views";
-import { Checkbox } from "@/components/ui/checkbox"
+import { ProductsType } from "@/types";
+import ProductForm from "./productForm";
 
 
-type CheckedState = boolean | 'indeterminate';
-
-const ProductSchema = z.object({
-  name: z.string().min(3, { message: "Name is required" }),
-  costPrice: z.number().positive({ message: "Price must be a positive number" }),
-  markupPercentage: z.number().positive({ message: "Price must be a positive number" }),
-  sellingPrice: z.number().positive({ message: "Price must be greater than the cost price" }),
-  stock: z.number().int().nonnegative({ message: "Stock must be a non-negative integer" }),
-  category: z.string().min(3, { message: "Category is required" }),
-  description: z.string().min(13, { message: "Description is required" }),
-  status: z.string().min(3, { message: "Status is required" }),
-  image: z.string().nonempty({ message: "Product image is required" }),
-});
+const initialState = {
+  id: "",
+  image: null,
+  name: "",
+  costPrice: 0,
+  markupPercentage: 0,
+  sellingPrice: 0,
+  stock: 0,
+  slug: "",
+  category: {
+    id: "",
+    name: "",
+  },
+  description: "",
+  status: "",
+};
 
 interface AddProductModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  setProductInfo: React.Dispatch<React.SetStateAction<ProductsType[]>>;
 }
 
 const AddProductModal: React.FC<AddProductModalProps> = ({
   isModalOpen,
   setIsModalOpen,
-  setProductInfo,
 }) => {
-  const [productData, setProductData] = useState({
-    id: "",
-    name: "",
-    costPrice: "",
-    markupPercentage: "",
-    sellingPrice: "",
-    stock: "",
-    category: "",
-    description: "",
-    status: "",
-    image: null as string | null,
-  });
-
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
+  const [productData, setProductData] = useState<ProductsType>(initialState);
+  const [generalError, setGeneralError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
-  const [isAutomatic, setIsAutomatic] = useState(true);
+  const [status, setStatus] = useState("published");
+  const [imageName, setImageName] = useState(productData.image || "");
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
+    []
+  );
 
   useEffect(() => {
     const fetchCategories = async () => {
-      setIsLoading(true);
       try {
-        const response = await fetch(`/api/fetch-categories`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch categories');
-        }
-
+        const response = await fetch(`/api/fetch-categories`);
+        if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
         setCategories(data.categories);
       } catch (error) {
         console.error("Failed to fetch categories", error);
-      } finally {
-        setIsLoading(false);
       }
     };
     fetchCategories();
   }, []);
 
-useEffect(() => {
-    const costPrice = parseFloat(productData.costPrice);
-    const markupPercentage = parseFloat(productData.markupPercentage);
+  useEffect(() => {
+    const numericCostPrice = typeof productData.costPrice === "string" ? parseFloat(productData.costPrice) : productData.costPrice;
+    const numericMarkupPercentage = typeof productData.markupPercentage === "string" ? parseFloat(productData.markupPercentage) : productData.markupPercentage;
 
-    if (!isNaN(costPrice) && !isNaN(markupPercentage) && isAutomatic) {
-      const sellingPrice = costPrice + (costPrice * markupPercentage) / 100;
-      setProductData((prev) => ({
-        ...prev,
-        sellingPrice: sellingPrice.toFixed(2),
+    if (!isNaN(numericCostPrice) && !isNaN(numericMarkupPercentage)) {
+      const calculatedSellingPrice = numericCostPrice + (numericCostPrice * numericMarkupPercentage) / 100;
+      setProductData((prevData) => ({
+        ...prevData,
+        sellingPrice: parseFloat(calculatedSellingPrice.toFixed(2)),
       }));
     }
-  }, [productData.costPrice, productData.markupPercentage, isAutomatic]);
+  }, [productData.costPrice, productData.markupPercentage]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setProductData({
-      ...productData,
-      [e.target.name]: e.target.value,
-    });
-    setErrors({ ...errors, [e.target.name]: "" });
-  };
 
-  const handleCategoryChange = (categoryId: string) => {
-    setProductData({ ...productData, category: categoryId });
-    setErrors({ ...errors, category: "" });
-  };
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const handleImageChange = (imageUrl: string) => {
-    setProductData({ ...productData, image: imageUrl });
-    setErrors({ ...errors, image: "" });
-  };
-
-  const handleCheckedChange = (checked: CheckedState) => {
-    if (checked === 'indeterminate') {
-      setIsAutomatic(false); 
-    } else {
-      setIsAutomatic(checked); 
-    }
-  };
- 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setErrors({});
+    setIsUploading(true);
+    setImageError(null);
 
     try {
-      const validatedData = ProductSchema.parse({
-        ...productData,
-        costPrice: Number(productData.costPrice),
-        stock: Number(productData.stock),
-      });
+      const imageUrl = await uploadImageToCloudinary(file, "gewfxwe5");
+      setProductData((prevData) => ({ ...prevData, image: imageUrl }));
+    } catch (error: any) {
+      setImageError(error.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
-      const newProductData = {
-        name: validatedData.name,
-        costPrice: validatedData.costPrice,
-        sellingPrice: validatedData.sellingPrice,
-        stock: validatedData.stock,
-        category: validatedData.category,
-        description: validatedData.description,
-        status: validatedData.status,
-        image: validatedData.image,
-      };
+  const validateAllFields = () => {
+    const errors: string[] = [];
+    if (!productData.name) errors.push("Product Name");
+    if (productData.markupPercentage <= 0) errors.push("Markup Percentage");
+    if (productData.costPrice <= 0) errors.push("Cost Price");
+    if ((productData.sellingPrice ?? 0) <= 0) errors.push("Selling Price");
+    if (!productData.description) errors.push("Description");
+    if (!productData.category || !productData.category.id) errors.push("Category");
+    if (!productData.image) errors.push("Image");
+    return errors;
+  };
 
-      const response = await fetch(`/api/add-products`, {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setGeneralError(null);
+
+    const fieldErrors: string[] = validateAllFields();
+    if (fieldErrors.length > 0) {
+      setGeneralError("Missing Fields: " + fieldErrors.join(", "));
+      setIsLoading(false);
+      return;
+    }
+
+    const createSlug = (name: string) =>
+      name
+        .toLowerCase()
+        .trim()
+        .replace(/[^a-z0-9\s-]/g, "")
+        .replace(/\s+/g, "-")
+        .replace(/-+/g, "-");
+
+    const productSlug = createSlug(productData.name);
+
+    try {
+      const response = await fetch("/api/product", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(newProductData),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...productData,
+          slug: productSlug,
+          category: productData.category ? productData.category.id : null,
+          image: productData.image,
+          name: productData.name,
+          costPrice: productData.costPrice,
+          markupPercentage: productData.markupPercentage,
+          stock: productData.stock,
+          description: productData.description,
+          status: status,
+        }),
       });
 
-      if (!response.ok) {
-        throw new Error("Failed to add product");
-      }
+      if (!response.ok) throw new Error(`Failed to add product: ${response.statusText}`);
 
-      const data = await response.json();
-      setProductInfo((prev) => [...prev, data]);
       toastNotification("success", "top-right", undefined, {
-        message: "Product added successfully",
-      });
-
-      setProductData({
-        id: "",
-        name: "",
-        costPrice: "",
-        markupPercentage: "",
-        sellingPrice: "",
-        stock: "",
-        category: "",
-        description: "",
-        status: "",
-        image: null,
+        message: "Product created successfully",
       });
       setIsModalOpen(false);
     } catch (error: any) {
-      if (error.errors) {
-        const errorMessages: { [key: string]: string } = {};
-        error.errors.forEach((err: any) => {
-          errorMessages[err.path[0]] = err.message;
-        });
-        setErrors(errorMessages);
-      } else {
-        toastNotification("error", "top-right", undefined, {
-          message: error.message || "Failed to add product",
-        });
-      }
+      const errorMessage =
+        error.message === "Failed to fetch"
+          ? "Can't reach the server. Please check your connection or try again later."
+          : "An error occurred while creating the product: " + error.message;
+
+      toastNotification("error", "top-right", undefined, {
+        message: errorMessage,
+      });
     } finally {
       setIsLoading(false);
     }
@@ -200,112 +169,25 @@ useEffect(() => {
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 overflow-y-scroll py-10" aria-label="Add Product">
+      <DialogContent className="bg-white h-4/5 overflow-y-scroll py-10">
         <DialogHeader>
-          <DialogTitle>Add New Product</DialogTitle>
+          <DialogTitle>Add Product</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleSubmit}>
-          <div className="grid gap-6">
-            <AddProductImage
-              image={productData.image}
-              setImage={handleImageChange}
-              onChangePicture={handleImageChange}
-              productId={productData.id}
-            />
-            {errors.image && <div className="text-red-500">{errors.image}</div>}
-
-            <div className="grid gap-3 w-full">
-              <div className="grid gap-3">
-                <Label htmlFor="name">Name</Label>
-                <Input id="name" name="name" type="text" className="w-full" onChange={handleChange} />
-                {errors.name && <div className="text-red-500">{errors.name}</div>}
-              </div>
-            </div>
-
-            <div className="grid">
-              <div className="grid gap-3">
-                <Label htmlFor="price">Cost Price</Label>
-                <Input id="costPrice" name="costPrice" type="number" className="w-full" onChange={handleChange} />
-                {errors.price && <div className="text-red-500">{errors.price}</div>}
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="grid gap-3">
-                 <Label htmlFor="markupPercentage">Markup Percentage (%)</Label>
-          <Input id="markupPercentage" name="markupPercentage" type="number" value={productData.markupPercentage} onChange={handleChange} />
-                {errors.category && <div className="text-red-500">{errors.category}</div>} 
-              </div>
-
-              <div className="grid gap-3">
-                <div className="flex justify-between">
-                   <Label htmlFor="sellingPrice">Selling Price</Label>
-          
-                  <div className="flex items-center space-x-2">
-                    <Checkbox checked={isAutomatic} onCheckedChange={handleCheckedChange} />
-                    <label
-                      htmlFor="terms"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Automatic
-                    </label>
-                  </div>
-                </div>
-               
-               <Input id="sellingPrice" name="sellingPrice" type="number" value={productData.sellingPrice} readOnly />
-                {errors.price && <div className="text-red-500">{errors.price}</div>}
-              </div>
-
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="grid gap-3">
-                <Label htmlFor="stock">Stock/Inventory</Label>
-                <Input id="stock" name="stock" type="number" className="w-full" onChange={handleChange} />
-                {errors.stock && <div className="text-red-500">{errors.stock}</div>}
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="category">Category</Label>
-                <Select name="category" onValueChange={handleCategoryChange}>
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {isLoading ? (
-                      <p>Loading categories...</p>
-                    ) : (
-                      categories.map((category) => (
-                        <SelectItem key={category.id} value={category.id}>
-                          {category.name}
-                        </SelectItem>
-                      ))
-                    )}
-                  </SelectContent>
-                </Select>
-                {errors.category && <div className="text-red-500">{errors.category}</div>} {/* Category error */}
-              </div>
-            </div>
-
-
-
-            <div className="grid gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Textarea id="description" name="description" className="w-full" onChange={handleChange} />
-              {errors.description && <div className="text-red-500">{errors.description}</div>} {/* Description error */}
-            </div>
-
-            <div className="grid gap-3">
-              <Label htmlFor="status">Status</Label>
-              <Input id="status" name="status" type="text" className="w-full" onChange={handleChange} />
-              {errors.status && <div className="text-red-500">{errors.status}</div>} {/* Status error */}
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit" disabled={isLoading} className="mt-4">
-              {isLoading ? "Loading..." : "Add Product"}
-            </Button>
-          </DialogFooter>
-        </form>
+        <ProductForm
+          productData={productData}
+          setProductData={setProductData}
+          onSubmit={handleSubmit}
+          isLoading={isLoading}
+          generalError={generalError}
+          categories={categories}
+          handleImage={handleImage}
+          imageName={imageName}
+          status={status}
+          setStatus={setStatus}
+          isUploading={isUploading}
+          imageError={imageError}
+          formMode="Add"
+        />
       </DialogContent>
     </Dialog>
   );

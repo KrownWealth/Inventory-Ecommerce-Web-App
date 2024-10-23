@@ -1,17 +1,16 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/lib';
 
-const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany({
+    const products = await db.product.findMany({
       include: {
         category: true, 
       },
     });
 
-    const totalProducts = await prisma.product.count();
+    const totalProducts = await db.product.count();
     return NextResponse.json({
       products,
       totalProducts,

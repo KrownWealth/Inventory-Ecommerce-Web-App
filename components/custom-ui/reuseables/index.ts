@@ -33,12 +33,12 @@ import UserSearch from "./Search/userSearchBar";
 import AddCategoryModal from "./Modals/addCategoryModal";
 import CategoryTable from "./Admin/categoryTable";
 
-import { DetailedProductCard } from "./Cards/DetailProuctCard";
-
+import { DetailedProductCard } from "./Cards/DetailProductCard";
+import ShopBtn from "./Buttons/shopBtn";
 
 export { InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
   ProductPageHead, ModalManager, PageHead, PriceFormulaModal, CustomerTable,
 OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
 CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect, CategoryTable,
 SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch, AddCategoryModal,
-DetailedProductCard }
+DetailedProductCard, ShopBtn }

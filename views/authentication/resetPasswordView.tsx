@@ -1,23 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useFormState, EmailSchema, PasswordSchema } from "@/lib";
+import { useFormField, FormSchema } from "@/lib";
 import { Button } from "@/components/ui/button";
-import FormField from "@/components/form/formField";
-import Link from "next/link";
-import { FaRegEnvelope, FaRegEye, FaRegEyeSlash, FaSpinner } from "react-icons/fa";
-import { emailLogin } from "@/app/actions";
+import { FaSpinner } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
 
 
 export function ResetPasswordView() {
   const [loading, setLoading] = useState(false); 
-  
-  const {
-    value: password,
-    error: passwordError,
-    handleChange: handlePasswordChange,
-  } = useFormState("", PasswordSchema);
+
+  const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
+
 
  const handleSubmit = async (event: React.FormEvent) => {
   event.preventDefault();
@@ -27,14 +21,15 @@ export function ResetPasswordView() {
     }
   setLoading(true);
 
-  try {
-    const formData = new FormData();
-    formData.append("password", password);
-    await emailLogin(formData);
-  } catch (error) {
-    console.error("Login failed", error);
-    setLoading(false);
-  }
+  // try {
+  //   const formData = new FormData();
+  //   formData.append("password", password);
+  //   await emailLogin(formData);
+  // } catch (error) {
+  //   console.error("Login failed", error);
+  //   setLoading(false);
+  // }
+
 };
  
   return (

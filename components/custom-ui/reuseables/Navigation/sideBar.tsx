@@ -1,35 +1,36 @@
+
 "use client"; 
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import SidebarHeaderLogo from './sideBarLogo';
 import SidebarMenu from './sideBarMenuItems';
 import SidebarFooter from './sideBarFooter';
 
 interface SideBarNavProps {
-  isCollapsed: boolean;
-  setIsCollapsed: (collapsed: boolean) => void;
+  session: any;
 }
 
-function SideBarNav({ isCollapsed, setIsCollapsed }: SideBarNavProps) {
+function SideBarNav({ session }: SideBarNavProps) {
+  const [isCollapsed, setIsCollapsed] = useState(false);
 
   const toggleSidebar = () => {
-    setIsCollapsed(!isCollapsed); 
+    setIsCollapsed(!isCollapsed);
   };
 
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth <= 768) {
-        setIsCollapsed(true); 
+        setIsCollapsed(true);
       } else {
-        setIsCollapsed(false); 
+        setIsCollapsed(false);
       }
     };
 
-    handleResize(); 
+    handleResize();
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, [setIsCollapsed]);
+  }, []);
 
   return (
     <aside
@@ -43,7 +44,7 @@ function SideBarNav({ isCollapsed, setIsCollapsed }: SideBarNavProps) {
           <SidebarHeaderLogo isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
           <SidebarMenu isCollapsed={isCollapsed} />
         </div>
-        <SidebarFooter isCollapsed={isCollapsed} />
+        <SidebarFooter isCollapsed={isCollapsed} session={session} />
       </div>
     </aside>
   );

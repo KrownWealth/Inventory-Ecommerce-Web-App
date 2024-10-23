@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { FaPercentage } from "react-icons/fa"
-import LanguagSelect from "../Localization/languagesSelect"
+
 
 export function LogoOnAuth(){
   return(
@@ -9,7 +9,7 @@ export function LogoOnAuth(){
                 <FaPercentage className='h-8 w-8 text-pricesageOrange' />
                 <span className="text-3xl font-bold text-black">PriceSage</span>
               </Link>
-              <LanguagSelect />
+              {/* <LanguagSelect /> */}
             </div>
   )
 }

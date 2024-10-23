@@ -1,11 +1,8 @@
 import { SignupWithGoogle, Quote, LogoOnAuth, WelcomeText } from "@/components/custom-ui/reuseables";
 import { SignupView } from "@/views";
 
-interface SearchParams {
-  message?: string;
-}
 
-export default function SingUp({ searchParams }: { searchParams: SearchParams }) {
+export default function SingUp() {
 
   return (
     <div className="w-full bg-white">
@@ -19,7 +16,7 @@ export default function SingUp({ searchParams }: { searchParams: SearchParams })
               <SignupWithGoogle />
             </div>
 
-            <SignupView searchParams={searchParams} />
+            <SignupView  />
 
           </div>
         </div>

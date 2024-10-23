@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { AddCategoryModal, PageHead, CategoryTable,DatePickerWithRange, InputSearch } from '@/components/custom-ui/reuseables';
+import { AddCategoryModal, PageHead, CategoryTable, DatePickerWithRange, InputSearch } from '@/components/custom-ui/reuseables';
 import { Button } from '@/components/ui/button';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Link from 'next/link';
@@ -31,7 +31,7 @@ const CategoryView = () => {
     fetchCategories();
   }, []);
 
-   const handleDeleteCategory = async (id: string) => {
+  const handleDeleteCategory = async (id: string) => {
     try {
       const response = await fetch(`/api/delete-category/${id}`, {
         method: 'DELETE',
@@ -62,9 +62,11 @@ const CategoryView = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex items-center justify-center m-auto">
-          <AiOutlineLoading3Quarters className="h-24 w-24 animate-spin text-primary" />
-          <p className="text-muted-foreground">Loading categories...</p>
+        <div className="flex items-center justify-center h-screen">
+          <div className="text-center">
+            <img src="/images/spinner.svg" alt="loading" className="mx-auto" />
+            <p className="text-muted-foreground mt-2">Loading categories...</p>
+          </div>
         </div>
       ) : (
         <CategoryTable categories={categories} onDelete={handleDeleteCategory} />
@@ -73,7 +75,7 @@ const CategoryView = () => {
       <AddCategoryModal
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
-        setCategoryInfo={setCategories} 
+        setCategoryInfo={setCategories}
       />
     </div>
   );

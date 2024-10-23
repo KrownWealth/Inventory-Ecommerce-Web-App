@@ -1,11 +1,19 @@
 import FormattedPrice from "./formattedPrice";
 import { formatNumber } from "./formattedNumber";
-import { fetchProductsPages } from "./functions";
 import { cn } from "./utils";
 import { toastNotification, ToastContainer, toast } from "./toastContainer";
-import { EmailSchema, PasswordSchema } from "./formSchema";
-import { useFormState } from "./useFormState";
+import { FormSchema, formSchema, ProductNameSchema, 
+  CostPriceSchema, MarkupPercentageSchema, CategorySchema, 
+  StockSchema, StatusSchema, DescriptionSchema, } from "./formSchema";
 import { formatDate } from "./formattedDate";
+import { useFormField } from "./useFormState";
+import { uploadImageToCloudinary } from "./functions";
+import { db } from "./db";
+// import { authOptions } from "./authOptions";
 
-export {FormattedPrice, formatNumber, fetchProductsPages, cn, 
-  toastNotification, ToastContainer, toast, EmailSchema, PasswordSchema, useFormState, formatDate }
+
+export {FormattedPrice, formatNumber, cn, 
+  toastNotification, ToastContainer, toast, FormSchema,
+  formatDate, formSchema, ProductNameSchema, CostPriceSchema, 
+  MarkupPercentageSchema, StatusSchema, DescriptionSchema, CategorySchema, StockSchema,
+   useFormField, uploadImageToCloudinary, db}

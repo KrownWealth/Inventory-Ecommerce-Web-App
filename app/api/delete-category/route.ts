@@ -1,16 +1,14 @@
 // /api/products/[id].ts
 
 import { NextApiRequest, NextApiResponse } from 'next';
-import { PrismaClient } from '@prisma/client';
-
-const prisma = new PrismaClient();
+import { db } from '@/lib';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   const { id } = req.query;
 
   if (req.method === 'DELETE') {
     try {
-      await prisma.category.delete({
+      await db.category.delete({
         where: {
           id: String(id),
         },

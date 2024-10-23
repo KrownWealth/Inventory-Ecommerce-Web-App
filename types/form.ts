@@ -1,18 +1,16 @@
-import { ChangeEvent } from "react";
+type InputType = 'text' | 'password' | 'email' | 'number' | 'tel' | 'url';
 
 export type FormFieldType = {
   label: string;
   htmlFor: string;
-  type: string;
-  id: string;
-  isInvalid: boolean;
-  errorMessage?: string;
-  placeholder: string;
-  startcnt?: React.ReactNode;
-  endContent?: React.ReactNode;
-  onChange: (value: string) => void; // Change event handler signature
-  value: string;
-  isRequired?: string;
-  required?: boolean;
+  name: string;
+  type: InputType;
+  isInvalid: boolean; 
+  errorMessage?: string; 
+  startcnt?: string;
   height?: string;
-};
+  reqValue?: string;
+  onChange: (value: string | number) => void;
+  required?: boolean;
+  readOnly?: boolean;
+}

@@ -1,14 +1,13 @@
 
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/lib';
 
-const prisma = new PrismaClient();
 
 export async function POST(req: Request) {
   try {
     const { name } = await req.json();
     
-    const newCategory = await prisma.category.create({
+    const newCategory = await db.category.create({
       data: { name },
     });
 

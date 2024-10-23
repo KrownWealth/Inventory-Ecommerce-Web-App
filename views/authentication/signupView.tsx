@@ -1,73 +1,96 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/form/formField";
-import { toastNotification, EmailSchema, PasswordSchema, useFormState } from "@/lib";
-import { Checkbox } from "@/components/ui/checkbox";
+import { FormSchema, toastNotification, useFormField } from "@/lib"; 
 import Link from "next/link";
-import { FaRegEnvelope, FaRegEye, FaSpinner } from "react-icons/fa";
+import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
-import { signup } from "@/app/actions";
-import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Checkbox } from "@/components/ui/checkbox";
+
+export default function SignupView() {
+  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const { value: username, error: usernameError, handleChange: handleUsernameChange } = useFormField('', FormSchema.shape.username);
+  const { value: email, error: emailError, handleChange: handleEmailChange } = useFormField('', FormSchema.shape.email);
+  const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
+
+  const [isLaoding, setIsLaoding] = useState(false);
+  const [idisabled, setIsDisabled] = useState(true)
 
 
-interface SignupViewProps {
-  searchParams: {
-    message?: string;
+    useEffect(() => {
+    setIsDisabled(!email || !username || !password)
+  }, [email, username, password])
+
+
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
+
+    try {
+      const response = await fetch('/api/user', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,  
+          email,     
+          password   
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json();
+
+      toastNotification("success", "top-right", undefined, {
+        message: "Successfully signup",
+      });
+      router.push('/sign-in')
+      console.log("Signup successful", data);
+    } catch (error) {
+      console.error("User registeration fail", error);
+    } finally {
+      setLoading(false);
+    }
   };
-}
 
-export default function SignupView({ searchParams }: SignupViewProps) {
-  const [loading, setLoading] =useState(false);
-  const { value: email, error: emailError, handleChange: handleEmailChange } = useFormState('', EmailSchema);
-  const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormState('', PasswordSchema);
-
- const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
-
-  if (emailError || passwordError) {
-    console.log("Validation failed.");
-    return;
-  }
-
-  setLoading(true);
-
-  try {
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-
-    // Trigger the emailLogin function, which handles redirection
-    await signup(formData);
-
-    // Show success toast notification
-    toastNotification("success", "top-right", undefined, {
-      message: "Signup successful!",
-    });
-  } catch (error) {
-    console.error("Signup failed", error);
-  } finally {
-    setLoading(false);
-  }
-};
 
   return (
-
-
     <div className="flex flex-col">
       <form onSubmit={handleSubmit}>
         <FormField
+          label="Username"
+          type="text"
+          name="username"
+          htmlFor="username"
+          placeholder="Enter your username"
+          value={username}
+          isInvalid={!!usernameError}
+          errorMessage={usernameError}
+          onChange={handleUsernameChange}
+          required
+        />
+        <FormField
           label="Email"
           type="email"
-          id="email"
+          name="email"
           htmlFor="email"
           placeholder="Enter your email"
-          isRequired="*"
           value={email}
           isInvalid={!!emailError}
           errorMessage={emailError}
           onChange={handleEmailChange}
-          endContent={<FaRegEnvelope className="w-4 h-4" />}
+          endContent={<FaRegEnvelope className="w-4 h-4"
+          // required 
+          />}
         />
         <PasswordField
           label="Password"
@@ -78,14 +101,10 @@ export default function SignupView({ searchParams }: SignupViewProps) {
           value={password}
           isInvalid={!!passwordError}
           errorMessage={passwordError}
-          onChange={(value) => handlePasswordChange(value)}
+          onChange={handlePasswordChange}
         />
-        {searchParams.message && (
-          <div className="text-sm font-medium text-red-500">
-           {searchParams.message}
-          </div>
-        )}
-       
+
+
         <div className="flex justify-between text-pricesageBlack">
           <div className="flex items-center space-x-2">
             <Checkbox id="terms" />
@@ -104,14 +123,19 @@ export default function SignupView({ searchParams }: SignupViewProps) {
           </Link>
         </div>
         <div className="flex items-center justify-center w-full pt-8">
-          <Button type="submit" className="w-[40%]">
-            {loading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
-            Sign Up
+          <Button type="submit" disabled={loading} className="mt-4">
+            {loading ? (
+              <>
+                <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+                <span className="ml-2">Loading...</span>
+              </>
+            ) : (
+              <span>Signup</span>
+            )}
           </Button>
+
         </div>
       </form>
     </div>
-
-  )
-
+  );
 }

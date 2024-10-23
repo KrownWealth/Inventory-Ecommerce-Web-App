@@ -1,49 +1,51 @@
 "use client";
 
-import { useState } from "react";
-import { useFormState, EmailSchema, PasswordSchema } from "@/lib";
+import { useState, useEffect } from "react";
+import { useFormField, FormSchema, toastNotification } from "@/lib";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/form/formField";
 import Link from "next/link";
-import { FaRegEnvelope, FaSpinner } from "react-icons/fa";
-import { emailLogin } from "@/app/actions";
+import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
+import {signIn} from "next-auth/react"
+import { useRouter } from "next/navigation";
 
-
-interface LoginViewProps {
-  searchParams: {
-    message?: string;
-  };
-}
-
-export default function LoginView({ searchParams }: LoginViewProps) {
-  const [loading, setLoading] = useState(false); 
+export default function LoginView() {
   
-  const {
-    value: email,
-    error: emailError,
-    handleChange: handleEmailChange,
-  } = useFormState("", EmailSchema);
+  const { value: email, error: emailError, handleChange: handleEmailChange } = useFormField('', FormSchema.shape.email);
+  const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
 
-  const {
-    value: password,
-    error: passwordError,
-    handleChange: handlePasswordChange,
-  } = useFormState("", PasswordSchema);
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false); 
+
+  const router = useRouter();
+
+
+
+  useEffect(() => {
+    setIsDisabled(!email || !password)
+  }, [email, password])
+
 
  const handleSubmit = async (event: React.FormEvent) => {
   event.preventDefault();
-    if (emailError || passwordError) {
-      console.log("Validation failed.");
-      return;
-    }
   setLoading(true);
 
   try {
-    const formData = new FormData();
-    formData.append("email", email);
-    formData.append("password", password);
-    await emailLogin(formData);
+   const signInData = await signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/frontend` }); 
+   if(signInData?.error){
+    toastNotification("error", "top-right", undefined, {
+        message: signInData.error || "Login Failed",
+      });
+   }
+
+    toastNotification("success", "top-right", undefined, {
+        message: "Login signup",
+      });
+      // router.refresh();
+      router.push('/frontend')
+      //console.log("Signup successful", signInData);
   } catch (error) {
     console.error("Login failed", error);
     setLoading(false);
@@ -57,14 +59,15 @@ export default function LoginView({ searchParams }: LoginViewProps) {
           label="Email"
           type="email"
           htmlFor="email"
-          id="email"
+          name="email"
           placeholder="Enter your email"
-          isRequired="*"
           value={email}
           isInvalid={!!emailError}
           errorMessage={emailError}
           onChange={(value) => handleEmailChange(value)}
-          endContent={<FaRegEnvelope className="w-4 h-4" />}
+          endContent={<FaRegEnvelope className="w-4 h-4"
+          
+             />}
         />
        
          <PasswordField
@@ -78,12 +81,6 @@ export default function LoginView({ searchParams }: LoginViewProps) {
           errorMessage={passwordError}
           onChange={(value) => handlePasswordChange(value)}
         />
-        
-        {searchParams.message && (
-          <div className="text-sm font-medium text-red-500">
-           {searchParams.message}
-          </div>
-        )}
         <div className="flex justify-between text-pricesageBlack">
           <Link href="/auth/login">Forget Password?</Link>
           <Link href="/auth/signup">
@@ -94,11 +91,17 @@ export default function LoginView({ searchParams }: LoginViewProps) {
           </Link>
         </div>
         <div className="flex items-center justify-center w-full pt-8">
-          <Button type="submit" className="w-[40%]" disabled={loading}>
-            {loading && <FaSpinner className="mr-2 h-4 w-4 animate-spin" />}
-            Login
+          <Button type="submit" disabled={loading} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
+            {loading ? (
+              <>
+                <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+                <span className="ml-2">Loading...</span>
+              </>
+            ) : (
+              <span>Login</span>
+            )}
           </Button>
-        </div>
+        </div> 
       </form>
     </div>
   );

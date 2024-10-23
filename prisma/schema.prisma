@@ -4,10 +4,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL") // Supabase connection string
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
-
 
 model Category {
   id       String    @id @default(uuid())
@@ -19,13 +19,29 @@ model Product {
   id           String    @id @default(uuid())
   name         String
   image        String
-  costPrice    Float
   stock        Int
   description  String
   status       String
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @updatedAt
   categoryName String?
+  costPrice    Float
   sellingPrice Float?
+  slug         String    @unique
   category     Category? @relation(fields: [categoryName], references: [name])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  username  String   @unique
+  email     String   @unique
+  password  String
+  role      UserRole @default(NORMAL_USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+enum UserRole {
+  ADMIN
+  NORMAL_USER
 }

@@ -1,12 +1,11 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+import { db } from '@/lib';
 
-const prisma = new PrismaClient();
 
 export async function GET() {
   try {
-    const categories = await prisma.category.findMany();
-    const totalCategories = await prisma.category.count();
+    const categories = await db.category.findMany();
+    const totalCategories = await db.category.count();
     return NextResponse.json({
       categories,
       totalCategories,

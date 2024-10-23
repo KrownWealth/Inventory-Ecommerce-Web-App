@@ -14,7 +14,7 @@ interface ModalManagerProps {
   handleAddProductOpen: () => void;
   setProductInfo: React.Dispatch<React.SetStateAction<ProductsType[]>>;
   handleCategoryChange: (categoryId: string | undefined) => void;
-  selectedCategory: string | null; 
+  selectedCategory: string | null;
 }
 
 const ModalManager: React.FC<ModalManagerProps> = ({
@@ -25,7 +25,7 @@ const ModalManager: React.FC<ModalManagerProps> = ({
   handleAddProductOpen,
   setProductInfo,
   handleCategoryChange,
-  selectedCategory, // Include selectedCategory
+  selectedCategory,
 }) => {
   return (
     <div>
@@ -40,19 +40,20 @@ const ModalManager: React.FC<ModalManagerProps> = ({
         <AddProductModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          setProductInfo={setProductInfo}
         />
       )}
-      {isModalOpen && activeModal === 'edit' && selectedProduct && (
+      {isModalOpen && activeModal === 'edit' && selectedProduct?.id && (
         <EditProductModal
           isModalOpen={isModalOpen}
           setIsModalOpen={setIsModalOpen}
-          productId={selectedProduct.id}
-          productName={selectedProduct.name}
-          productPrice={selectedProduct.costPrice}
+          id={selectedProduct.id}
+          name={selectedProduct.name}
+          costPrice={selectedProduct.costPrice}
+          markupPercentage={selectedProduct.markupPercentage || 0}
+          sellingPrice={selectedProduct.sellingPrice ?? 0}
           stock={selectedProduct.stock}
-          categoryName={selectedProduct.category?.id || ""}
-          image={selectedProduct.image}
+          category={selectedProduct.category?.id || ""}
+          image={selectedProduct.image ?? ""}
           status={selectedProduct.status}
           description={selectedProduct.description}
           setProductInfo={setProductInfo}

@@ -15,7 +15,7 @@ interface PasswordFieldProps {
   isInvalid?: boolean;
   errorMessage?: string;
   value: string;
-  onChange: (value: string) => void;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const PasswordField: React.FC<PasswordFieldProps> = ({
@@ -45,9 +45,7 @@ const PasswordField: React.FC<PasswordFieldProps> = ({
         id={id}
         value={value}
         placeholder={placeholder}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-          onChange(e.target.value)
-        }
+        onChange={onChange}
         endContent={
           <div onClick={togglePasswordVisibility} 
           className="cursor-pointer pointer-events-auto" >

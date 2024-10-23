@@ -10,31 +10,24 @@ import Link from "next/link"
 import { useRouter } from "next/navigation"
 
 
-// convert to lower case, remove whitespace, special character,
-const createSlug = (name: string) => {
-  return name
-    .toLowerCase() 
-    .trim() 
-    .replace(/[^a-z0-9\s-]/g, "") 
-    .replace(/\s+/g, "-") 
-    .replace(/-+/g, "-"); 
-};
+
 
 interface Review {
- id: string;
+  id: string;
   userId: string;
   rating: number;
   review: string;
 }
 interface ProductCardProps {
- id: string;
+  id: string;
   name: string;
   image: string;
   category: string;
   sellingPrice: number;
+  slug: string
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({id, name, image, category, sellingPrice }) => {
+export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, category, sellingPrice, slug }) => {
   const [rating, setRating] = useState('No rating');
   const [totalReviews, setTotalReviews] = useState(0);
 
@@ -56,39 +49,40 @@ export const ProductCard: React.FC<ProductCardProps> = ({id, name, image, catego
 
     fetchReviews();
   }, [id]);
+
   const router = useRouter();
 
-   const handleDetail = () => {
-    router.push(`/product/${createSlug(name)}`);
+  const handleDetail = () => {
+    router.push(`/frontend/products/${slug}`);
   };
 
-  
-  console.log("Product Rating")
-  return(
-   <div>
-    <Link href={`product/${createSlug(name)}`}>
-     <Card className="bg-white border-none shadow-none h-[600px]">
-      <div className="w-full h-64 flex items-center">
-        <Image src={image} alt={name} width={500} height={500} className="w-full bg-cover h-full" />
-      </div>
-      <CardContent className="flex flex-col space-y-2">
-        <h2 className={cn("font-semibold text-2xl", Satoshi_Bold.className)}>{name}</h2>
-        <p className={cn("text-gray-400 text-sm", Satoshi_Medium.className)}>{category}</p>
 
-         <span>{rating}★</span>
-        <span>({totalReviews} reviews)</span>
-        <h2 className={cn("text-xl font-semibold", Satoshi_Bold.className)}>{FormattedPrice(sellingPrice)}</h2>
-      </CardContent>
-      <CardFooter>
-        <Button className={cn("text-white font-bold w-full mb-4 hover:bg-gray-700", Satoshi_Medium.className)}
-        onClick={handleDetail}>
-          View Details</Button>
-       
-      </CardFooter>
-    </Card>
-    </Link>
-    
-     <hr className="w-full bg-gray-400 h-[1px]"/>
-   </div>
+  console.log("Product Rating")
+  return (
+    <div>
+      <Link href={`/frontend/products/${slug}`}>
+        <Card className="bg-white border-none shadow-none h-[600px]">
+          <div className="w-full h-64 flex items-center">
+            <Image src={image} alt={name} width={500} height={500} className="w-full bg-cover h-full" />
+          </div>
+          <CardContent className="flex flex-col space-y-2">
+            <h2 className={cn("font-semibold text-2xl", Satoshi_Bold.className)}>{name}</h2>
+            <p className={cn("text-gray-400 text-sm", Satoshi_Medium.className)}>{category}</p>
+
+            <span>{rating}★</span>
+            <span>({totalReviews} reviews)</span>
+            <h2 className={cn("text-xl font-semibold", Satoshi_Bold.className)}>{FormattedPrice(sellingPrice)}</h2>
+          </CardContent>
+          <CardFooter>
+            <Button className={cn("text-white font-bold w-full mb-4 hover:bg-gray-700", Satoshi_Medium.className)}
+              onClick={handleDetail}>
+              View Details</Button>
+
+          </CardFooter>
+        </Card>
+      </Link>
+
+      <hr className="w-full bg-gray-400 h-[1px]" />
+    </div>
   )
 }

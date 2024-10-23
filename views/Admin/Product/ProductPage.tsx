@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import React, { useState, useEffect } from 'react';
 import { ModalManager, ProductsPagination, ProductTableTwo, PageHead, InputSearch, DatePickerWithRange } from '@/components/custom-ui/reuseables';
@@ -7,82 +7,68 @@ import { ProductsType } from '@/types';
 import { toastNotification } from '@/lib';
 import { DateRange } from 'react-day-picker';
 import { useRouter } from 'next/navigation';
-import { AiOutlineLoading3Quarters } from "react-icons/ai";
 
-
-const AdminProductView = ({
-  searchParams,
-}: {
-  searchParams?: {
-    query?: string;
-    page?: string;
-  };
-}) => {
+const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<'add' | 'edit' | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductsType | null>(null);
   const [productInfo, setProductInfo] = useState<ProductsType[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
-  
-
-  
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(2024, 8, 1),
-    to:  new Date(Date.now()), 
+    to: new Date(Date.now()),
   });
 
   const router = useRouter();
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
-  const itemsPerPage = 10;
 
-  const fetchProducts = async (query = '', page = 1, category = '', date?: DateRange) => {
-  setIsLoading(true);
-  try {
-    const response = await fetch(`/api/fetch-products?query=${query}&page=${page}&limit=${itemsPerPage}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  const fetchProducts = async () => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(`/api/fetch-products`, {
+        method: 'GET',
+      });
 
-    if (!response.ok) {
-      throw new Error('Failed to fetch products');
-    }
-
-    const data = await response.json();
-    let filteredProducts = data.products;
-
-    if (category) {
-        filteredProducts = filteredProducts.filter((product: ProductsType) => {
-          return product.category?.id === category;
-        });
+      if (!response.ok) {
+        throw new Error('Failed to fetch products');
       }
 
-     if (!query && date?.from && date?.to) {
-      filteredProducts = filteredProducts.filter((product: ProductsType) => {
-        const productDate = new Date(product.updatedAt);
-        return productDate >= date.from! && productDate <= date.to!;
-      });
+      const data = await response.json();
+      setProductInfo(data.products);
+      setTotalPages(data.totalPages);
+    } catch (error: any) {
+      setError('Failed to load products. Please check your network and try again.'); 
+    } finally {
+      setIsLoading(false);
     }
+  };
 
-    setProductInfo(filteredProducts);
-    setTotalPages(data.totalPages);
+  const searchProducts = async (query = '', page = 1, category = '') => {
+    setIsLoading(true);
+    setError(null); 
+    try {
+      const response = await fetch(`/api/search-products?query=${query}&page=${page}&category=${category}`, {
+        method: 'GET',
+      });
 
-    toastNotification('success', 'top-right', undefined, {
-      message: 'Products fetched successfully',
-    });
-  } catch (error: any) {
-    toastNotification('error', 'top-right', undefined, {
-      message: error.message || 'Failed to fetch products',
-    });
-  } finally {
-    setIsLoading(false);
-  }
-};
+      if (!response.ok) {
+        throw new Error('Failed to search products');
+      }
 
+      const data = await response.json();
+      setProductInfo(data.products);
+      setTotalPages(data.totalPages);
+    } catch (error: any) {
+      setError('Failed to search products. Please check your network and try again.'); 
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const handleCategoryChange = (categoryId: string | undefined) => {
     if (categoryId) {
@@ -131,77 +117,86 @@ const AdminProductView = ({
       category: category || '',
       page: String(page),
     });
-    router.push(`/admin/products?${params.toString()}`);
+    router.push(`/dashboard/products?${params.toString()}`);
   };
 
   useEffect(() => {
-    fetchProducts(query, currentPage, selectedCategory || '', date);
-  }, [query, currentPage, selectedCategory, date]);
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (query) {
+      searchProducts(query, currentPage, selectedCategory || '');
+    } else {
+      fetchProducts();
+    }
+  }, [selectedCategory, query, currentPage]);
 
   return (
     <div className="py-4">
       <header className="border-b ">
-       <div className="p-4 flex h-[75px] items-center justify-between bg-muted/40 px-6">
-         <Link href="#" className="lg:hidden" prefetch={false}>
-          <span className="sr-only">Home</span>
-        </Link>
-        <PageHead pageTitle="Products" />
-        <InputSearch placeholder="Search for products here..." />
-        <DatePickerWithRange date={date} setDate={setDate} />
-       </div>
+        <div className="p-4 flex h-[75px] items-center justify-between bg-muted/40 px-6">
+          <Link href="#" className="lg:hidden" prefetch={false}>
+            <span className="sr-only">Home</span>
+          </Link>
+          <PageHead pageTitle="Products" />
+          <InputSearch placeholder="Search for products here..." onSearch={(searchQuery) => searchProducts(searchQuery, currentPage, selectedCategory || '')} />
+          <DatePickerWithRange date={date} setDate={setDate} />
+        </div>
       </header>
 
-      
-
-     <div className="p-4">
-      <ModalManager
-        isModalOpen={isModalOpen}
-        setIsModalOpen={setIsModalOpen}
-        selectedProduct={selectedProduct}
-        activeModal={activeModal}
-        handleAddProductOpen={handleAddProductOpen}
-        setProductInfo={setProductInfo}
-        selectedCategory={selectedCategory}
-        handleCategoryChange={handleCategoryChange}
-      />
-       <div className="flex flex-col">
-        {isLoading ? (
-          <div className="flex items-center justify-center m-auto">
-            <AiOutlineLoading3Quarters className="h-24 w-24 animate-spin text-primary" />
-            <p className="text-muted-foreground">Loading product...</p>
-          </div>
-        ) : productInfo.length > 0 ? (
-          productInfo.map((product) => (
-            <div key={product.id} className="mb-4">
-              <ProductTableTwo
-                productId={product.id}
-                productName={product.name}
-                costPrice={product.costPrice}
-                sellingPrice={product.sellingPrice}
-                productImg={product.image}
-                // markupPercentage={product.markupPercentage}
-                productDescription={product.description}
-                categoryName={product.category ? product.category.name : 'No Category'}
-                createdDate={product.createdAt}
-                updatedDate={product.updatedAt}
-                onEdit={() => handleEditProductOpen(product)}
-                onDelete={() => handleDeleteProduct(product.id)}
-              />
+      <div className="p-4">
+        <ModalManager
+          isModalOpen={isModalOpen}
+          setIsModalOpen={setIsModalOpen}
+          selectedProduct={selectedProduct}
+          activeModal={activeModal}
+          handleAddProductOpen={handleAddProductOpen}
+          setProductInfo={setProductInfo}
+          selectedCategory={selectedCategory}
+          handleCategoryChange={handleCategoryChange}
+        />
+        <div className="flex flex-col">
+          {isLoading ? (
+            <div className="flex items-center justify-center h-screen">
+              <div className="text-center">
+                <img src="/images/spinner.svg" alt="loading" className="mx-auto" />
+                <p className="text-muted-foreground mt-2">Loading products...</p>
+              </div>
             </div>
-          ))
-        ) : (
-          <div className="text-center">No products available.</div>
-        )}
+          ) : error ? ( 
+            <div className="text-center text-red-500 pt-10">{error}</div>
+          ) : productInfo.length > 0 ? (
+            productInfo.map((product) => (
+              <div key={product.id} className="mb-4">
+                <ProductTableTwo
+                  productId={product.id || 'Unknown ID'}
+                  productName={product.name || 'Unknown Product'} 
+                  costPrice={product.costPrice || 0}
+                  sellingPrice={product.sellingPrice || 0} 
+                  productImg={product.image || '/images/default-product.png'} 
+                  productDescription={product.description || 'No description available.'}
+                  categoryName={product.category?.name || 'No Category'} 
+                  createdDate={product.createdAt || new Date()} 
+                  updatedDate={product.updatedAt || new Date()} 
+                  onEdit={() => handleEditProductOpen(product)}
+                  onDelete={() => handleDeleteProduct(product.id as string)}
+                />
+              </div>
+            ))
+          ) : (
+            <div className="text-center pt-10">No products available.</div>
+          )}
 
-        <div className="mt-5 flex w-full justify-center">
-          <ProductsPagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            onPageChange={(page: number) => handleSearchCategoryAndPagination(query, page, selectedCategory)}
-          />
+          <div className="mt-5 flex w-full justify-center">
+            <ProductsPagination
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={(page: number) => handleSearchCategoryAndPagination(query, page, selectedCategory)}
+            />
+          </div>
         </div>
       </div>
-     </div>
     </div>
   );
 };

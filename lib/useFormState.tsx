@@ -1,14 +1,21 @@
 "use client"
 
-import { useState } from 'react';
-import { ZodError, ZodSchema } from 'zod';
+import { useState, ChangeEvent } from "react";
+import { ZodError, ZodSchema } from "zod";
 
-export const useFormState = (initialValue: string, validationSchema: ZodSchema<string>) => {
-  const [value, setValue] = useState(initialValue);
+export function useFormField<T>(
+  initialValue: T,
+  validationSchema: ZodSchema<T>,
+  parser?: (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => T 
+) {
+  const [value, setValue] = useState<T>(initialValue);
   const [error, setError] = useState<string>("");
 
-  const handleChange = (newValue: string) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const newValue = parser ? parser(e) : (e.target.value as unknown as T);
+
     setValue(newValue);
+    
     try {
       validationSchema.parse(newValue);
       setError("");
@@ -19,9 +26,5 @@ export const useFormState = (initialValue: string, validationSchema: ZodSchema<s
     }
   };
 
-  return {
-    value,
-    error,
-    handleChange,
-  };
-};
+  return { value, error, handleChange };
+}

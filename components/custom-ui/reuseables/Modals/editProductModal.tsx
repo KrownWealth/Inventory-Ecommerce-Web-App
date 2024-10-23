@@ -1,245 +1,208 @@
-'use client';
+"use client";
 
-import React, { useEffect, useState } from 'react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from '@/components/ui/button';
-import { Select, SelectTrigger, SelectValue, SelectContent, SelectItem } from "@/components/ui/select";
-import { ProductsType } from '@/types';
-import { AddProductImage } from '@/views';
-import { Textarea } from "@/components/ui/textarea";
+import React, { useState, useEffect } from "react";
+import { Dialog, DialogHeader, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import ProductForm from "./productForm";
+import { ProductsType } from "@/types";
+import { toastNotification, uploadImageToCloudinary } from "@/lib";
 
 interface EditProductModalProps {
   isModalOpen: boolean;
   setIsModalOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setProductInfo: React.Dispatch<React.SetStateAction<ProductsType[]>>;
-  productId: string; 
-  productName: string;
+  id: string;
+  name: string;
   image: string;
-  productPrice: number;
+  costPrice: number;
+  sellingPrice: number;
+  markupPercentage: number;
   stock: number;
   status: string;
-  categoryName?: string;
+  category: string;
   description: string;
+  slug?: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 const EditProductModal: React.FC<EditProductModalProps> = ({
   isModalOpen,
   setIsModalOpen,
-  productId,
-  productName,
-  productPrice,
+  id,
+  name,
+  costPrice,
+  markupPercentage,
+  sellingPrice,
   stock,
-  categoryName,
+  category,
   image,
   status,
-  description
+  description,
+  slug,
+  createdAt,
+  updatedAt,
 }) => {
-  const [productData, setProductData] = useState({
-    name: productName,
-    price: productPrice,
-    inventory: stock,
-    categoryId: categoryName, 
+  const [productData, setProductData] = useState<ProductsType>({
+    id,
+    name,
+    costPrice,
+    markupPercentage,
+    sellingPrice,
+    stock,
+    category: {
+      id: "",
+      name: "",
+    },
     image,
     status,
-    description
+    description,
+    slug,
   });
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isUploading, setIsUploading] = useState(false);
+  const [imageError, setImageError] = useState<string | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+  const [productStatus, setProductStatus] = useState("published");
+   const [imageName, setImageName] = useState(image || "");
+  const [editedProductData, setEditedProductData] = useState<ProductsType>(productData);
+  const [generalError, setGeneralError] = useState<string | null>(null);
+ 
 
   useEffect(() => {
     const fetchCategories = async () => {
-       try {
+      try {
         const response = await fetch(`/api/fetch-categories`, {
-          method: 'GET',
+          method: "GET",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
         });
 
         if (!response.ok) {
-          throw new Error('Failed to fetch categories');
+          throw new Error("Failed to fetch categories");
         }
 
         const data = await response.json();
         setCategories(data.categories);
       } catch (error) {
         console.error("Failed to fetch categories", error);
-      } 
+      }
     };
 
     fetchCategories();
   }, []);
 
   useEffect(() => {
+    const numericCostPrice = typeof costPrice === "string" ? parseFloat(costPrice) : costPrice;
+    const numericMarkupPercentage = typeof markupPercentage === "string" ? parseFloat(markupPercentage) : markupPercentage;
+
+    if (!isNaN(numericCostPrice) && !isNaN(numericMarkupPercentage)) {
+      const calculatedSellingPrice = numericCostPrice + (numericCostPrice * numericMarkupPercentage) / 100;
+      setProductData((prevData: ProductsType) => ({
+        ...prevData,
+        sellingPrice: parseFloat(calculatedSellingPrice.toFixed(2)),
+      }));
+    } else {
+      setProductData((prevData: ProductsType) => ({
+        ...prevData,
+        sellingPrice: undefined,
+      }));
+    }
+  }, [costPrice, markupPercentage]);
+
+
+  useEffect(() => {
     if (isModalOpen) {
       setProductData({
-        name: productName,
-        price: productPrice,
-        inventory: stock,
-        categoryId: categoryName,
+        id,
+        name,
+        costPrice,
+        markupPercentage,
+        sellingPrice,
+        stock,
+        category: {
+          id: "",
+          name: "",
+        },
         image,
         status,
-        description
+        description,
+        slug,
+        createdAt,
+        updatedAt
       });
     }
-  }, [isModalOpen, productName, productPrice, stock, categoryName, image, status, description]);
+  }, [isModalOpen, id, name, costPrice, sellingPrice, stock, category, image, status, description, slug]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const { name, value } = e.target;
-    setProductData((prevData) => ({ ...prevData, [name]: value }));
-  };
+ const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const file = e.target.files?.[0];
+  if (!file) return;
 
-  const handleImageChange = (imageUrl: string) => {
+  setIsUploading(true);
+  setImageError(null);
+
+  try {
+    const imageUrl = await uploadImageToCloudinary(file, "gewfxwe5");
     setProductData((prevData) => ({ ...prevData, image: imageUrl }));
-  };
+  } catch (error: any) {
+    setImageError(error.message);
+  } finally {
+    setIsUploading(false);
+  }
+};
 
-  const handleCategoryChange = (categoryId: string) => {
-    setProductData((prevData) => ({ ...prevData, categoryId })); 
-  };
-
-  const handleEdit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEditProduct = async (e: React.FormEvent) => {
     e.preventDefault();
-  
-    console.log('Editing product with data:', {
-      id: productId,
-      name: productData.name,
-      price: productData.price,
-      stock: productData.inventory,
-      categoryId: productData.categoryId,
-      image: productData.image,
-      status: productData.status,
-      description: productData.description,
-    });
-
+    setIsLoading(true);
     try {
       const response = await fetch(`/api/edit-products`, {
-        method: 'PATCH',
+        method: "PATCH",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-          id: productId,
-          name: productData.name,
-          price: productData.price,
-          stock: productData.inventory,
-          categoryId: productData.categoryId, 
-          image: productData.image, 
-          status: productData.status,
-          description: productData.description,
-        }),
+        body: JSON.stringify(productData),
       });
 
       if (!response.ok) {
-        throw new Error('Failed to update product');
+        throw new Error("Failed to update product");
       }
 
-      const updatedProduct = await response.json(); 
-      
-      console.log('Product updated:', updatedProduct); 
-    } catch (error) {
-      console.error('Failed to update product:', error);
-      setIsModalOpen(false); 
+      const updatedProduct = await response.json();
+      setIsModalOpen(false);
+      toastNotification("success", "top-right", undefined, {
+        message: "Product updated successfully",
+      });
+    } catch (error: any) {
+      toastNotification("error", "top-right", undefined, {
+        message: error.message || "Failed to update product",
+      });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white">
+      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 py-10 overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Edit Product</DialogTitle>
         </DialogHeader>
-        <form onSubmit={handleEdit} className="grid gap-6 py-6">
-          <div className="grid gap-3">
-            <AddProductImage
-              image={productData.image}
-              setImage={handleImageChange}
-              productId={productId}
-              onChangePicture={handleImageChange} 
-            />
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="grid gap-3">
-                <Label htmlFor="name">Name</Label>
-                <Input
-                  id="name"
-                  name="name"
-                  type="text"
-                  className="w-full"
-                  value={productData.name}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="price">Price</Label>
-                <Input
-                  id="price"
-                  name="price"
-                  type="number"
-                  className="w-full"
-                  value={productData.price}
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-            <div className="grid sm:grid-cols-2 gap-3">
-              <div className="grid gap-3">
-                <Label htmlFor="inventory">Inventory</Label>
-                <Input
-                  id="inventory"
-                  name="inventory"
-                  type="number"
-                  className="w-full"
-                  value={productData.inventory}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="grid gap-3">
-                <Label htmlFor="category">Category</Label>
-                <Select
-                  name="categoryId"
-                  value={productData.categoryId} 
-                  onValueChange={handleCategoryChange} 
-                >
-                  <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select category" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.id} value={cat.id}>
-                        {cat.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="description">Description</Label>
-              <Textarea 
-                id="description" 
-                name="description" 
-                className="w-full" 
-                value={productData.description}
-                onChange={handleChange} // Bind value to state
-              />
-            </div>
-            <div className="grid gap-3">
-              <Label htmlFor="status">Status</Label>
-              <Input 
-                id="status" 
-                name="status" 
-                type="text" 
-                className="w-full" 
-                value={productData.status}
-                onChange={handleChange} 
-              />
-            </div>
-          </div>
-          <DialogFooter>
-            <Button type="submit">Update Product</Button>
-          </DialogFooter>
-        </form>
+        <ProductForm
+          productData={productData}
+          setProductData={setProductData}
+          onSubmit={handleEditProduct}
+          isLoading={isLoading}
+          generalError={generalError}
+          categories={categories}
+          handleImage={handleImage}
+          imageName={imageName}
+          status={status}
+          setStatus={setProductStatus}
+          isUploading={isUploading}
+          imageError={imageError}
+          formMode="Edit"
+        />
       </DialogContent>
     </Dialog>
   );
