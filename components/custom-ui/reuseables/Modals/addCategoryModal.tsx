@@ -40,7 +40,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
   const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [isLoading, setIsLoading] = useState(false);
- 
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setCategoryData({
@@ -49,7 +49,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
     });
     setErrors({ ...errors, [e.target.name]: "" });
   };
- 
+
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setErrors({});
@@ -66,9 +66,9 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
       if (!response.ok) throw new Error('Failed to add category');
 
       const newCategory = await response.json();
-      setCategoryInfo(prev => [...prev, newCategory]);  
+      setCategoryInfo(prev => [...prev, newCategory]);
       setCategoryData({ id: '', name: '' });
-       toastNotification("success", "top-right", undefined, {
+      toastNotification("success", "top-right", undefined, {
         message: "Category added successfully",
       });
       setIsModalOpen(false);
@@ -88,7 +88,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6">
-            
+
             <div className="grid gap-3 w-full">
               <div className="grid gap-3">
                 <Label htmlFor="name">Category Name</Label>

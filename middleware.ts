@@ -19,15 +19,16 @@ export default withAuth(
     // User route protection
     if (pathname.startsWith('/frontend')) {
       if (!!request.nextauth.token && request.nextauth.token.role !== 'NORMAL_USER') {
-        return NextResponse.redirect(new URL('/dashbaord', request.url)); 
+        return NextResponse.redirect(new URL('/dashboard', request.url)); 
       }
     }
 
     return NextResponse.next(); 
   },
+  
   {
     callbacks: {
-      authorized: ({ token }) => !!token, 
+      authorized: ({ token }) => !!token, // allow user if token exist
     },
   }
 );

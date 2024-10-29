@@ -5,7 +5,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@
 import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 // import { CustomerType } from '@/types';
- import { CustomerData } from '@/json';
+import { CustomerData } from '@/json';
 import { FormattedPrice } from '@/lib';
 import { FaArrowsAltV } from 'react-icons/fa';
 
@@ -37,7 +37,7 @@ const CustomerTable = () => {
               <TableCell className="font-medium">{customer.name}</TableCell>
               <TableCell>{customer.email}</TableCell>
               <TableCell>{customer.totalOrder}</TableCell>
-              <TableCell>{FormattedPrice(customer.totalSpent)}</TableCell>
+              {/* <TableCell>{FormattedPrice(customer.totalSpent)}</TableCell> */}
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -47,10 +47,10 @@ const CustomerTable = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className='flex flex-col items-center justify-center'>
-                   
-                    
+
+
                     <DropdownMenuItem>
-                     Delete
+                      Delete
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

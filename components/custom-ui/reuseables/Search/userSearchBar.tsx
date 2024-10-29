@@ -31,7 +31,7 @@ function UserSearch() {
   };
 
   return (
-    <div className="flex items-center w-full lg:w-[580px]">
+    <div className="items-center w-full lg:w-[580px]">
       <div className="relative w-full">
         <label htmlFor="search" className="sr-only">
           Search

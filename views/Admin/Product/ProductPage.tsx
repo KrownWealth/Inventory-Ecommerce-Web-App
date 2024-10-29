@@ -7,6 +7,7 @@ import { ProductsType } from '@/types';
 import { toastNotification } from '@/lib';
 import { DateRange } from 'react-day-picker';
 import { useRouter } from 'next/navigation';
+import { revalidatePath } from 'next/cache';
 
 const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,7 +43,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
       setProductInfo(data.products);
       setTotalPages(data.totalPages);
     } catch (error: any) {
-      setError('Failed to load products. Please check your network and try again.'); 
+      setError('Failed to load products. Please check your network and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -50,7 +51,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
 
   const searchProducts = async (query = '', page = 1, category = '') => {
     setIsLoading(true);
-    setError(null); 
+    setError(null);
     try {
       const response = await fetch(`/api/search-products?query=${query}&page=${page}&category=${category}`, {
         method: 'GET',
@@ -64,7 +65,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
       setProductInfo(data.products);
       setTotalPages(data.totalPages);
     } catch (error: any) {
-      setError('Failed to search products. Please check your network and try again.'); 
+      setError('Failed to search products. Please check your network and try again.');
     } finally {
       setIsLoading(false);
     }
@@ -91,25 +92,32 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
   };
 
   const handleDeleteProduct = async (id: string) => {
+    setIsLoading(true);
     try {
-      const response = await fetch(`/api/delete-products/${id}`, {
-        method: 'DELETE',
+      const response = await fetch(`/api/products/$`, {
+        method: "DELETE",
       });
 
       if (!response.ok) {
-        throw new Error('Failed to delete product');
+        throw new Error("Failed to update product");
       }
-
       setProductInfo((prevProducts) => prevProducts.filter((product) => product.id !== id));
-      toastNotification('success', 'top-right', undefined, {
-        message: 'Product deleted successfully',
+
+      toastNotification("success", "top-right", undefined, {
+        message: "Product deleted successfully",
       });
+      revalidatePath("/frontend/products");
+      revalidatePath("/dashboard/products");
+      setIsModalOpen(false);
     } catch (error: any) {
-      toastNotification('error', 'top-right', undefined, {
-        message: error.message || 'Failed to delete product',
+      toastNotification("error", "top-right", undefined, {
+        message: error.message || "Failed to delete product",
       });
+    } finally {
+      setIsLoading(false);
     }
   };
+
 
   const handleSearchCategoryAndPagination = (query: string, page: number, category: string | null) => {
     const params = new URLSearchParams({
@@ -164,21 +172,21 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
                 <p className="text-muted-foreground mt-2">Loading products...</p>
               </div>
             </div>
-          ) : error ? ( 
+          ) : error ? (
             <div className="text-center text-red-500 pt-10">{error}</div>
           ) : productInfo.length > 0 ? (
             productInfo.map((product) => (
               <div key={product.id} className="mb-4">
                 <ProductTableTwo
                   productId={product.id || 'Unknown ID'}
-                  productName={product.name || 'Unknown Product'} 
+                  productName={product.name || 'Unknown Product'}
                   costPrice={product.costPrice || 0}
-                  sellingPrice={product.sellingPrice || 0} 
-                  productImg={product.image || '/images/default-product.png'} 
+                  sellingPrice={product.sellingPrice || 0}
+                  productImg={product.image || '/images/default-product.png'}
                   productDescription={product.description || 'No description available.'}
-                  categoryName={product.category?.name || 'No Category'} 
-                  createdDate={product.createdAt || new Date()} 
-                  updatedDate={product.updatedAt || new Date()} 
+                  categoryName={product.category?.name || 'No Category'}
+                  createdDate={product.createdAt || new Date()}
+                  updatedDate={product.updatedAt || new Date()}
                   onEdit={() => handleEditProductOpen(product)}
                   onDelete={() => handleDeleteProduct(product.id as string)}
                 />

@@ -7,17 +7,17 @@ import FormField from "@/components/form/formField";
 import Link from "next/link";
 import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
-import {signIn} from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 
 export default function LoginView() {
-  
+
   const { value: email, error: emailError, handleChange: handleEmailChange } = useFormField('', FormSchema.shape.email);
   const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
 
   const [isDisabled, setIsDisabled] = useState(true)
   const [success, setSuccess] = useState(false)
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const router = useRouter();
 
@@ -28,30 +28,39 @@ export default function LoginView() {
   }, [email, password])
 
 
- const handleSubmit = async (event: React.FormEvent) => {
-  event.preventDefault();
-  setLoading(true);
+  const handleSubmit = async (event: React.FormEvent) => {
+    event.preventDefault();
+    setLoading(true);
 
-  try {
-   const signInData = await signIn('credentials', { email, password, callbackUrl: `${window.location.origin}/frontend` }); 
-   if(signInData?.error){
-    toastNotification("error", "top-right", undefined, {
-        message: signInData.error || "Login Failed",
+    try {
+      const signInData = await signIn('credentials', {
+        email,
+        password,
+        redirect: false,
       });
-   }
 
-    toastNotification("success", "top-right", undefined, {
-        message: "Login signup",
+      if (signInData?.error) {
+        toastNotification("error", "top-right", undefined, {
+          message: signInData.error || "Login Failed",
+        });
+        setLoading(false);
+        return;
+      }
+
+      toastNotification("success", "top-right", undefined, {
+        message: "Login Successful",
       });
-      // router.refresh();
-      router.push('/frontend')
-      //console.log("Signup successful", signInData);
-  } catch (error) {
-    console.error("Login failed", error);
-    setLoading(false);
-  }
-};
- 
+      router.push('/');
+    } catch (error: any) {
+      toastNotification("error", "top-right", undefined, {
+        message: error.message || "Failed to Login",
+      });
+      console.error("Login failed", error);
+      setLoading(false);
+    }
+  };
+
+
   return (
     <div className="flex flex-col">
       <form onSubmit={handleSubmit} className="space-y-4">
@@ -66,11 +75,11 @@ export default function LoginView() {
           errorMessage={emailError}
           onChange={(value) => handleEmailChange(value)}
           endContent={<FaRegEnvelope className="w-4 h-4"
-          
-             />}
+
+          />}
         />
-       
-         <PasswordField
+
+        <PasswordField
           label="Password"
           htmlFor="password"
           id="password"
@@ -101,7 +110,7 @@ export default function LoginView() {
               <span>Login</span>
             )}
           </Button>
-        </div> 
+        </div>
       </form>
     </div>
   );

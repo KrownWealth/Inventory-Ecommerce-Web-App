@@ -1,7 +1,6 @@
 import InputSearch from "./Search/searchBar";
 import SideBarNav from "./Navigation/sideBar";
 import UserProfile from "./Profile/userProfileDropdown";
-import { BreadcrumbWithCustomSeparator } from "./Navigation/breadCrumb";
 import ProductPageHead from "./Headings/productPageHead";
 import ModalManager from "./Modals/handleModalOpenClose";
 import PageHead from "./Headings/PageHeading";
@@ -36,9 +35,14 @@ import CategoryTable from "./Admin/categoryTable";
 import { DetailedProductCard } from "./Cards/DetailProductCard";
 import ShopBtn from "./Buttons/shopBtn";
 
-export { InputSearch, SideBarNav, UserProfile, BreadcrumbWithCustomSeparator, 
+import CartItems  from "./Cards/CartItemCard";
+import { StarRating } from "./Rating/starRating";
+
+
+
+export { InputSearch, SideBarNav, UserProfile,  
   ProductPageHead, ModalManager, PageHead, PriceFormulaModal, CustomerTable,
 OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
 CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect, CategoryTable,
 SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch, AddCategoryModal,
-DetailedProductCard, ShopBtn }
+DetailedProductCard, ShopBtn, CartItems, StarRating }

@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import FormField from "@/components/form/formField";
-import { FormSchema, toastNotification, useFormField } from "@/lib"; 
+import { FormSchema, toastNotification, useFormField } from "@/lib";
 import Link from "next/link";
 import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
@@ -22,7 +22,7 @@ export default function SignupView() {
   const [idisabled, setIsDisabled] = useState(true)
 
 
-    useEffect(() => {
+  useEffect(() => {
     setIsDisabled(!email || !username || !password)
   }, [email, username, password])
 
@@ -38,9 +38,9 @@ export default function SignupView() {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-          username,  
-          email,     
-          password   
+          username,
+          email,
+          password
         })
       });
 
@@ -53,7 +53,7 @@ export default function SignupView() {
       toastNotification("success", "top-right", undefined, {
         message: "Successfully signup",
       });
-      router.push('/sign-in')
+      router.push('/auth/sign-in')
       console.log("Signup successful", data);
     } catch (error) {
       console.error("User registeration fail", error);

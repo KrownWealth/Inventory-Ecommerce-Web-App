@@ -10,9 +10,11 @@ import { Footer } from "./Navigation/footer";
 import { ResetPasswordView } from "./authentication/resetPasswordView";
 import AdminProductView from "./Admin/Product/ProductPage";
 import AddProductImage from "./Admin/Product/AddProductImage";
-import BreadcrumbLinks from "./Navigation/breadcrumbs";
 import SignOut from "./authentication/singOut";
+import ProductReview from "./User/reviewRating";
 
+
+import CheckoutForm from "./User/checkoutForm";
 
 export {OrderView, CustomerView,  SignupView, CategoryView, Header, Chip, Footer,
-   ResetPasswordView, AdminProductView, AddProductImage, BreadcrumbLinks, SignOut }
+   ResetPasswordView, AdminProductView, AddProductImage, SignOut, ProductReview, CheckoutForm }

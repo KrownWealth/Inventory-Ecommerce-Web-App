@@ -11,8 +11,8 @@ export type ProductType = {
   } | null;
   description: string;
   status: string;
-  rating: string;
-  review: string
+  rating: number;  
+  reviews: Array<{ rating: number; comment: string; user: string }>
 };
 
 

@@ -3,6 +3,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
+import { toastNotification } from "./toastContainer";
 
 
 interface ExtendedUser extends User {
@@ -42,7 +43,7 @@ export const authOptions: NextAuthOptions = {
         });
 
         if (!existingUser) {
-          return null;
+          throw new Error("Email doesn't exist! Please Signup"); 
         }
 
         const passwordMatch = await compare(credentials.password, existingUser.password);

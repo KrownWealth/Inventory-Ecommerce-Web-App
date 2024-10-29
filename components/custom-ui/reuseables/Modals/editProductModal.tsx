@@ -5,6 +5,7 @@ import { Dialog, DialogHeader, DialogContent, DialogTitle } from "@/components/u
 import ProductForm from "./productForm";
 import { ProductsType } from "@/types";
 import { toastNotification, uploadImageToCloudinary } from "@/lib";
+import { revalidatePath } from "next/cache";
 
 interface EditProductModalProps {
   isModalOpen: boolean;
@@ -64,10 +65,10 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   const [imageError, setImageError] = useState<string | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [productStatus, setProductStatus] = useState("published");
-   const [imageName, setImageName] = useState(image || "");
+  const [imageName, setImageName] = useState(image || "");
   const [editedProductData, setEditedProductData] = useState<ProductsType>(productData);
   const [generalError, setGeneralError] = useState<string | null>(null);
- 
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -135,28 +136,28 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
     }
   }, [isModalOpen, id, name, costPrice, sellingPrice, stock, category, image, status, description, slug]);
 
- const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+  const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  setIsUploading(true);
-  setImageError(null);
+    setIsUploading(true);
+    setImageError(null);
 
-  try {
-    const imageUrl = await uploadImageToCloudinary(file, "gewfxwe5");
-    setProductData((prevData) => ({ ...prevData, image: imageUrl }));
-  } catch (error: any) {
-    setImageError(error.message);
-  } finally {
-    setIsUploading(false);
-  }
-};
+    try {
+      const imageUrl = await uploadImageToCloudinary(file, "gewfxwe5");
+      setProductData((prevData) => ({ ...prevData, image: imageUrl }));
+    } catch (error: any) {
+      setImageError(error.message);
+    } finally {
+      setIsUploading(false);
+    }
+  };
 
   const handleEditProduct = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/edit-products`, {
+      const response = await fetch(`/api/products`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -169,10 +170,13 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
       }
 
       const updatedProduct = await response.json();
-      setIsModalOpen(false);
+
       toastNotification("success", "top-right", undefined, {
         message: "Product updated successfully",
       });
+      revalidatePath("/frontend/products");
+      revalidatePath("/dashboard/products");
+      setIsModalOpen(false);
     } catch (error: any) {
       toastNotification("error", "top-right", undefined, {
         message: error.message || "Failed to update product",
@@ -183,7 +187,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   };
 
   return (
-      <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
       <DialogContent className="sm:max-w-[600px] bg-white h-4/5 py-10 overflow-y-scroll">
         <DialogHeader>
           <DialogTitle>Edit Product</DialogTitle>

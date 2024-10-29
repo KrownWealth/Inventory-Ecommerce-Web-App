@@ -36,10 +36,10 @@ const OrdersTable = () => {
             <TableRow key={order.order_id}>
               <TableCell>{order.order_id}</TableCell>
               <TableCell className="font-medium">{order.productName}</TableCell>
-               <TableCell>{order.departureDate}</TableCell>
+              <TableCell>{order.departureDate}</TableCell>
               <TableCell>{order.deliveryDate}</TableCell>
               <TableCell>{order.status}</TableCell>
-               <TableCell>{FormattedPrice(order.totalAmount)}</TableCell>
+              {/* <TableCell>{FormattedPrice(order.totalAmount)}</TableCell> */}
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
@@ -49,11 +49,11 @@ const OrdersTable = () => {
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className='flex flex-col items-center justify-center'>
-                   <DropdownMenuItem>
-                     Accept
+                    <DropdownMenuItem>
+                      Accept
                     </DropdownMenuItem>
                     <DropdownMenuItem>
-                     Decline
+                      Decline
                     </DropdownMenuItem>
                   </DropdownMenuContent>
                 </DropdownMenu>

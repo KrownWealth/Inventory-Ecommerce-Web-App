@@ -8,6 +8,7 @@ import { Satoshi_Bold, Satoshi_Medium } from "@/lib/fonts"
 import { cn, FormattedPrice } from "@/lib"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import { StarRating } from "../Rating/starRating"
 
 
 
@@ -24,31 +25,13 @@ interface ProductCardProps {
   image: string;
   category: string;
   sellingPrice: number;
-  slug: string
+  slug: string;
+  rating: number;
+  reviewCount: number;
 }
 
-export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, category, sellingPrice, slug }) => {
-  const [rating, setRating] = useState('No rating');
-  const [totalReviews, setTotalReviews] = useState(0);
+export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, category, sellingPrice, slug, rating, reviewCount }) => {
 
-  useEffect(() => {
-    const fetchReviews = async () => {
-      try {
-        const res = await fetch(`/api/reviews?productId=${id}`);
-        const reviews: Review[] = await res.json();
-
-        if (reviews.length > 0) {
-          const totalRating = reviews.reduce((acc: number, curr: Review) => acc + curr.rating, 0);
-          setRating((totalRating / reviews.length).toFixed(1));
-          setTotalReviews(reviews.length);
-        }
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    };
-
-    fetchReviews();
-  }, [id]);
 
   const router = useRouter();
 
@@ -61,7 +44,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, categ
   return (
     <div>
       <Link href={`/frontend/products/${slug}`}>
-        <Card className="bg-white border-none shadow-none h-[600px]">
+        <Card className="bg-white border-none shadow-none max-h-[600px]">
           <div className="w-full h-64 flex items-center">
             <Image src={image} alt={name} width={500} height={500} className="w-full bg-cover h-full" />
           </div>
@@ -69,8 +52,12 @@ export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, categ
             <h2 className={cn("font-semibold text-2xl", Satoshi_Bold.className)}>{name}</h2>
             <p className={cn("text-gray-400 text-sm", Satoshi_Medium.className)}>{category}</p>
 
-            <span>{rating}★</span>
-            <span>({totalReviews} reviews)</span>
+            <div className="flex space-x-2">
+              <StarRating rating={reviewCount} />
+              <span>({rating})</span>
+              <span>ratings</span>
+            </div>
+
             <h2 className={cn("text-xl font-semibold", Satoshi_Bold.className)}>{FormattedPrice(sellingPrice)}</h2>
           </CardContent>
           <CardFooter>
