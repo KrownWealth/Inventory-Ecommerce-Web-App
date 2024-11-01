@@ -36,6 +36,34 @@ const ProductSchema = z.object({
   }),
 });
 
+
+export async function GET(req: Request) {
+  try {
+    const { searchParams } = new URL(req.url);
+    const id = searchParams.get('id'); 
+
+    if (!id) {
+      return NextResponse.json({ error: "Product ID is required." }, { status: 400 });
+    }
+    const product = await db.product.findUnique({
+      where: { id },
+      include: {
+        category: true,
+      },
+    });
+
+    if (!product) {
+      return NextResponse.json({ error: "Product not found." }, { status: 404 });
+    }
+
+    return NextResponse.json(product);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+    return NextResponse.json({ error: "Failed to fetch product." }, { status: 500 });
+  }
+}
+
+
 export async function POST(req: Request) {
   try {
     const body = await req.json();

@@ -78,7 +78,7 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
   return (
     <div className="w-full mt-10">
       <div className="max-w-7xl bg-white px-8 md:px-12 mx-auto">
-        <h2 className={cn('font-bold text-2xl md:text-3xl lg:text-4xl', Satoshi_Bold.className)}>Poduct Detail</h2>
+        <h2 className={cn('font-bold text-2xl md:text-3xl lg:text-4xl', Satoshi_Bold.className)}>Product Detail</h2>
         <DetailedProductCard slug={slug} />
 
         <section className="mt-10">

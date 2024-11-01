@@ -37,7 +37,7 @@ import ShopBtn from "./Buttons/shopBtn";
 
 import CartItems  from "./Cards/CartItemCard";
 import { StarRating } from "./Rating/starRating";
-
+import CheckoutButton from "./Buttons/checkoutBtn";
 
 
 export { InputSearch, SideBarNav, UserProfile,  
@@ -45,4 +45,4 @@ export { InputSearch, SideBarNav, UserProfile,
 OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
 CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect, CategoryTable,
 SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch, AddCategoryModal,
-DetailedProductCard, ShopBtn, CartItems, StarRating }
+DetailedProductCard, ShopBtn, CartItems, StarRating, CheckoutButton }

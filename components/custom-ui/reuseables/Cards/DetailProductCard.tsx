@@ -4,11 +4,13 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { Satoshi_Bold, Satoshi_Medium } from "@/lib/fonts";
-import { cn, FormattedPrice } from "@/lib";
+import { cn, FormattedPrice, toastNotification } from "@/lib";
 import { ProductType } from "@/types";
 import { StarRating } from "../Rating/starRating";
 import { useRouter } from "next/navigation";
 import { useCart } from '@/context/CartContext';
+import { useSession } from "next-auth/react";
+import { FaMinus, FaPlus } from "react-icons/fa";
 
 
 interface DetailedProductCardProps {
@@ -22,6 +24,10 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   const [totalRating, setTotalRating] = useState(0);
   const [averageRating, setAverageRating] = useState(0);
   const [reviewCount, setReviewCount] = useState(0);
+  const [quantity, setQuantity] = useState(1);
+
+  const { data: session } = useSession();
+  const userId = session?.user?.id ? parseInt(session.user.id, 10) : null;
 
   const router = useRouter();
   const { addToCart } = useCart();
@@ -69,22 +75,44 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
 
   const productId = product?.id;
+  const handleIncrement = () => {
+    setQuantity((prevQuantity) => prevQuantity + 1);
+  };
 
-  const handleBuyNow = () => {
-    if (product) {
+  const handleDecrement = () => {
+    setQuantity((prevQuantity) => (prevQuantity > 1 ? prevQuantity - 1 : 1));
+  };
 
+  const handleBuyNow = async () => {
+    if (product && userId !== null) {
       const cartItem = {
-        id: product.id,
+        productId: product.id,
         name: product.name,
         image: product.image || '/default-image.jpg',
         price: product.sellingPrice ?? 0,
-        quantity: 1
+        quantity,
+        totalPrice: (product.sellingPrice ?? 0) * quantity,
+        userId,
       };
-      addToCart(cartItem);
-      router.push(`/frontend/checkout/${productId}`);
-      console.log("Product id", productId)
+
+      try {
+        await addToCart(userId, cartItem);
+        console.log('Adding to cart:', { userId, cartItem });
+        router.push(`/frontend/checkout/`);
+        toastNotification("success", "top-right", undefined, {
+          message: "Item added to cart, going to checkout",
+        });
+      } catch (error: any) {
+        console.error("Error adding to cart:", error);
+        toastNotification("error", "top-right", undefined, {
+          message: error.message || "An error occurred",
+        });
+      }
+    } else {
+      console.error("Product or userId not found.");
     }
   };
+
 
   if (loading) return (
     <div className="flex items-center justify-center h-screen">
@@ -138,6 +166,26 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
           <div className="grid grid-cols-2">
             <Label label="Short Description" /> <DetailText text={product.description} />
           </div>
+
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleDecrement}
+            >
+              <FaMinus className="h-2 w-2" />
+            </Button>
+            <span>{quantity}</span>
+            <Button
+              variant="outline"
+              size="icon"
+              onClick={handleIncrement}
+            >
+              <FaPlus className="h-2 w-2" />
+            </Button>
+          </div>
+
+
           <div className="flex gap-4">
             <Button onClick={handleBuyNow}
               className={cn("text-white font-bold w-full mb-4 hover:bg-gray-700", Satoshi_Medium.className)}>

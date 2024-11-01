@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
 
         // if user is found and password match 
         return {
-          id: `existingUser.id`,
+         id: existingUser.id.toString(),
           username: existingUser.username,
           email: existingUser.email,
           role: existingUser.role,
@@ -62,26 +62,28 @@ export const authOptions: NextAuthOptions = {
       }
     })
   ],
-  callbacks: {
-    async jwt({ token, user }: { token: TokenSet; user?: User }) {
-      if (user) {
-        return { ...token, ...user };
-      }
-      return token;
-    },
+ callbacks: {
+  async jwt({ token, user }: { token: TokenSet; user?: User }) {
+    if (user) {
+      token.id = user.id;
+      token.email = user.email;
+      token.username = user.username;
+      token.role = user.role;
+    }
+    return token;
+  },
 
-    async session({ session, token, trigger }: { session: Session; token: TokenSet; trigger: string}) {
-    if (trigger === "update" && session.user) {
-    token.email = session.user.email;
-    token.username = session.user.username; 
-    token.role = session.user.role;
-  }
-      if(!session.user) return session;
-      else{
-        session.user = token as any
+  async session({ session, token }: { session: Session; token: TokenSet }) {
+    // Merge token data into session user
+    session.user = {
+      ...session.user,
+      id: token.id, 
+      email: token.email,
+      username: token.username,
+      role: token.role,
+    } as any;
+    return session;
+  },
+},
 
-        return session
-      }
-    },
-  }
 };

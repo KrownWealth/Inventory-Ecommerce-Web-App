@@ -10,8 +10,8 @@ const Page = async () => {
     <>
       <Header />
       <main>
-        <section className='max-w-7xl relative flex w-full h-[450px] '>
-          <div className='md:w-1/2 bg-[#004631] z-10 flex flex-col justify-center md:pl-20 pl-8'>
+        <section className='relative flex w-full h-[450px] '>
+          <div className='bg-[#004631] z-10 flex flex-col justify-center md:pl-20 pl-8'>
 
             <h2 className={cn("font-semibold flex items-center justify-center text-2xl md:text-4xl capitalize leading-snug text-white ", Satoshi_Black.className)}>
               Deluxe & Luxury Interiors at Your Fingertip
@@ -20,9 +20,10 @@ const Page = async () => {
 
           </div>
 
-          <div className='hero-bg md:w-1/2 relative'>
+          <div className='hero-bg relative'>
             <Image src="/images/home-images.webp" alt="Home Image" fill className='object-cover' />
           </div>
+
         </section>
         <section className='max-w-7xl py-12 px-8 md:px-12 mx-auto'>
           <h2 className='text-2xl md:text-4xl text-black font-medium'> Shop beautiful Interiors from the comfort of your home.</h2>

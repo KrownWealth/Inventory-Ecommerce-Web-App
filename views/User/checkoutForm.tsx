@@ -6,13 +6,13 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 
 interface CheckoutProps {
-  product: {},
+  //product: {},
   clientSecret: string
 }
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string)
 
-const CheckoutForm: React.FC<CheckoutProps> = ({ product, clientSecret }) => {
+const CheckoutForm: React.FC<CheckoutProps> = ({ clientSecret }) => {
   return (
     <>
       <Elements options={{ clientSecret }} stripe={stripePromise} >

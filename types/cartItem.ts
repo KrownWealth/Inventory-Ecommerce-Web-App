@@ -1,7 +1,9 @@
 export interface CartItemType {
-  id: string;     
-  name: string;    
-  price: number;   
+  productId: string; 
+  userId: number;
   quantity: number;
-  image: string;   
+  price: number;
+  totalPrice?: number;
+  image: string;
+  name: string;
 }

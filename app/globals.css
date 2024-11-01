@@ -93,6 +93,7 @@
   height: 100%;
   object-fit: cover;
 }
+
 @media only screen and (min-width: 320px) and (max-width: 480px) {
   /* Mobile styles */
   .hero-bg {
@@ -101,6 +102,9 @@
 
   .hero-bg::before{
      width: 100%;
+  }
+  .hidden-header{
+    display: none;
   }
 }
 

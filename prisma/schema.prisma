@@ -16,32 +16,72 @@ model Category {
 }
 
 model Product {
-  id           String    @id @default(uuid())
+  id           String      @id @default(uuid())
   name         String
   image        String
   stock        Int
   description  String
   status       String
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
   categoryName String?
   costPrice    Float
   sellingPrice Float?
-  slug         String    @unique
-  category     Category? @relation(fields: [categoryName], references: [name])
+  slug         String      @unique
+  category     Category?   @relation(fields: [categoryName], references: [name])
+  cartItems    CartItem[]
+  orderItems   OrderItem[]
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
-  username  String   @unique
-  email     String   @unique
+  id        Int        @id @default(autoincrement())
+  username  String     @unique
+  email     String     @unique
   password  String
-  role      UserRole @default(NORMAL_USER)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  role      UserRole   @default(NORMAL_USER)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  cartItems CartItem[]
+  orders    Order[]
 }
 
 enum UserRole {
   ADMIN
   NORMAL_USER
+}
+
+model CartItem {
+  id         Int      @id @default(autoincrement())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId     Int
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId  String
+  quantity   Int      @default(1)
+  totalPrice Float?
+  addedAt    DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Order {
+  id         Int         @id @default(autoincrement())
+  user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userId     Int?
+  orderDate  DateTime    @default(now())
+  status     OrderStatus @default(PROCESSING)
+  orderItems OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId   Int
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  productId String
+  quantity  Int     @default(1)
+}
+
+enum OrderStatus {
+  PROCESSING
+  COMPLETED
+  CANCELED
 }
