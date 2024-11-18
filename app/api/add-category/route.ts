@@ -9,10 +9,7 @@ export async function POST(req: Request) {
     
     const newCategory = await db.category.create({
       data: { name },
-    });
-
-    console.log("New Category Created:", newCategory);
-    
+    }); 
     return NextResponse.json(newCategory, { status: 201 });
   } catch (error: any) {
     console.log("Error creating category:", error.message);

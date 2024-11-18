@@ -1,7 +1,7 @@
 "use client";
 
 import Link from 'next/link';
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { FiShoppingBag } from 'react-icons/fi';
 import { usePathname, useRouter } from 'next/navigation';
 import { UserSearch } from '@/components/custom-ui/reuseables';
@@ -11,13 +11,9 @@ import { useSession } from 'next-auth/react';
 import { Button } from '@/components/ui/button';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
 import SignOut from '../authentication/singOut';
-import { FaTimes } from 'react-icons/fa';
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { useCart } from '@/context/CartContext';
@@ -35,15 +31,9 @@ export const Header = () => {
   const { data: session, status } = useSession();
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-
   const handleLogin = () => {
-    router.push('/auth/sign-in');
+    router.replace('/auth/sign-in');
   };
-
-
-
-
-
 
   return (
     <header className="w-full antialiased">
@@ -66,15 +56,18 @@ export const Header = () => {
         </div>
 
         <div className="flex gap-6 items-center hidden-header">
-          <Link href="/cart" className="flex flex-col items-center relative">
-            <FiShoppingBag className="w-4 h-4 lg:w-6 lg:h-6" />
-            <span className={cn('uppercase font-semibold text-sm underline', Satoshi_Bold)}>Cart</span>
-            {cartItemCount > 0 && (
-              <span className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-5 h-5 flex items-center justify-center text-xs">
-                {cartItemCount}
-              </span>
-            )}
-          </Link>
+          <div className="flex flex-col items-center relative z-50">
+            <Link href="/frontend/cart" >
+              <FiShoppingBag className="w-4 h-4 lg:w-6 lg:h-6" />
+              <span className={cn('uppercase font-semibold text-sm underline', Satoshi_Bold)}>Cart</span>
+              {cartItemCount > 0 && (
+                <span className="z-10 absolute top-0 right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs">
+                  {cartItemCount}
+                </span>
+              )}
+            </Link>
+          </div>
+
           <div className="grid grid-rows-2 font-semibold ">
             <span>Welcome</span>
             <span>{session?.user.username}</span>

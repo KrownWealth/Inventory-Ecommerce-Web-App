@@ -4,8 +4,9 @@ import React from 'react';
 import { Button } from '@/components/ui/button';
 import { MdOutlineLogout } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Link from 'next/link';
-import { signOut, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
+import { SignOut } from '@/views';
+import { useRouter } from 'next/navigation';
 
 interface SidebarFooterProps {
   isCollapsed: boolean;
@@ -13,10 +14,15 @@ interface SidebarFooterProps {
 
 const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
 
-  const {data: session, status, update } = useSession();
+  const { data: session, status, update } = useSession();
+  const router = useRouter();
+
+  const handleLogin = () => {
+    router.push("/auth/sign-in")
+  }
 
   return (
-    <div className="flex flex-col items-start justify-end py-4">
+    <div className="flex flex-col items-start justify-end pb-4">
       <div className="flex space-x-4">
         <Avatar className="h-12 w-12 rounded-full">
           <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
@@ -27,24 +33,16 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
           <div className="text-muted-foreground text-xs">{session?.user.email}</div>
         </div>
       </div>
-      <Button className="flex space-x-2 bg-white text-black py-2 mt-4">
-        {session?.user ? (
-          <>
-            <Button
-              onClick={() => signOut({
-                redirect: true,
-                callbackUrl: `${window.location.origin}/auth/sign-in`
-              })}
-              variant="destructive"
-              className={`${isCollapsed ? 'hidden' : 'inline'}`}
-            >
-              <MdOutlineLogout className="w-4 h-4" /> Logout
-            </Button>
-          </>
-        ) : (
-          <Link href='/auth/sign-in'>Login</Link>
-        )}
-      </Button>
+      {session?.user ? (
+        <Button
+          variant="destructive"
+          className={`${isCollapsed ? 'hidden' : 'flex items-center justify-center'}`}>
+          <MdOutlineLogout />
+          <SignOut />
+        </Button>
+      ) : (
+        <Button onClick={handleLogin}>Login</Button>
+      )}
     </div>
   );
 };

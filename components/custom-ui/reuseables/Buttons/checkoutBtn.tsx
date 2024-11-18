@@ -7,10 +7,12 @@ import { Button } from '@/components/ui/button';
 const CheckoutButton = () => {
   const router = useRouter();
   return (
-    <Button className='w-full md:w-1/2 items-start justify-center mt-8 bg-black
-     text-[#004631] font-semibold cursor-pointer'
-      onClick={() => router.push('/frontend/checkout')}>
-      Checkout</Button>
+    <div className="flex items-center justify-center">
+      <Button className='w-full md:w-2/5 p-4 flex items-center justify-center mt-8 bg-black text-white font-semibold cursor-pointer'
+        onClick={() => router.push('/frontend/checkout')}>
+        Checkout
+      </Button>
+    </div>
   )
 }
 export default CheckoutButton

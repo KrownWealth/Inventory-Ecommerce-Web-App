@@ -60,13 +60,30 @@ const ProductForm: React.FC<ProductFormProps> = ({
   setStatus,
   formMode
 }) => {
-  const { value: costPrice, error: costPriceError, handleChange: handlePriceChange } = useFormField<number>(
+
+  const {
+    value: name,
+    error: nameError,
+    handleChange: handleNameChange } = useFormField(
+      productData.name,
+      ProductNameSchema
+    );
+
+  const {
+    value: costPrice,
+    error: costPriceError,
+    handleChange: handlePriceChange
+  } = useFormField<number>(
     productData.costPrice || 0,
     CostPriceSchema,
     (e) => parseFloat(e.target.value)
   );
 
-  const { value: markupPercentage, error: markupError, handleChange: handleMarkupChange } = useFormField<number>(
+  const {
+    value: markupPercentage,
+    error: markupError,
+    handleChange: handleMarkupChange
+  } = useFormField<number>(
     productData.markupPercentage || 0,
     MarkupPercentageSchema,
     (e) => parseFloat(e.target.value)
@@ -78,16 +95,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
     (e) => parseFloat(e.target.value)
   );
 
-  const { value: name, error: nameError, handleChange: handleNameChange } = useFormField(
-    productData.name,
-    ProductNameSchema
-  );
 
   const { value: description, error: descriptionError, handleChange: handleDescriptionChange } = useFormField(
     productData.description,
     DescriptionSchema
   );
-  const [category, setCategory] = useState<{ id: string; name: string } | null>(null);
+  //const [category, setCategory] = useState<{ id: string; name: string } | null>(null);
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
 
 
@@ -105,6 +118,12 @@ const ProductForm: React.FC<ProductFormProps> = ({
     fetchCategories();
   }, []);
 
+
+  const handleInputChange = (field: keyof ProductsType, value: any) => {
+    setProductData((prevData) => ({ ...prevData, [field]: value }));
+  };
+
+
   const handleCategoryChange = (categoryId: string) => {
     const selectedCategory = categories.find((category) => category.id === categoryId);
     setProductData((prevData) => ({
@@ -114,166 +133,176 @@ const ProductForm: React.FC<ProductFormProps> = ({
   };
 
   return (
-   <>
-    <form onSubmit={onSubmit}>
-      <div className="mb-3">
-        <FormField
-          label="Product Name"
-          name="name"
-          htmlFor="name"
-          type="text"
-          onChange={handleNameChange}
-          value={name}
-          isInvalid={!!nameError}
-          errorMessage={nameError}
-          required
-        />
-      </div>
-
-      <div className="mb-3">
-        <FormField
-          label="Cost Price"
-          name="costPrice"
-          htmlFor="costPrice"
-          type="number"
-          onChange={handlePriceChange}
-          value={costPrice}
-          isInvalid={!!costPriceError}
-          errorMessage={costPriceError}
-          required
-        />
-      </div>
-
-      <div className="grid sm:grid-cols-2 gap-3 mb-3">
-        <div>
+    <>
+      <form onSubmit={onSubmit}>
+        <div className="mb-3">
           <FormField
-            label="Markup Percentage"
-            name="markupPercentage"
-            htmlFor="markupPercentage"
-            type="number"
-            onChange={handleMarkupChange}
-            value={markupPercentage}
-            isInvalid={!!markupError}
-            errorMessage={markupError}
+            label="Product Name"
+            name="name"
+            htmlFor="name"
+            type="text"
+            value={productData.name}
+            onChange={(e) => {
+              handleNameChange(e);
+              handleInputChange("name", e.target.value);
+            }}
+            isInvalid={!!nameError}
+            errorMessage={nameError}
             required
           />
         </div>
-        <div className="flex flex-col space-y-1">
-          <Label htmlFor="sellingPrice" className="mb-2 text-sm">
-            Selling Price
-          </Label>
-          <Input
-            id="sellingPrice"
-            name="sellingPrice"
+
+        <div className="mb-3">
+          <FormField
+            label="Cost Price"
+            name="costPrice"
+            htmlFor="costPrice"
             type="number"
-            value={productData.sellingPrice ?? 0}
-            readOnly
+            onChange={(e) => {
+              handlePriceChange(e);
+              handleInputChange("costPrice", parseFloat(e.target.value) || 0);
+            }}
+            value={costPrice}
+            isInvalid={!!costPriceError}
+            errorMessage={costPriceError}
+            required
           />
         </div>
-      </div>
 
-      <div className="mb-3">
-        <FormField
-          label="Stock"
-          name="stock"
-          htmlFor="stock"
-          type="number"
-          onChange={handleStockChange}
-          value={stock ?? 0}
-          isInvalid={!!stockError}
-          errorMessage={stockError || ""}
-          required
-        />
-      </div>
+        <div className="grid sm:grid-cols-2 gap-3 mb-3">
+          <div>
+            <FormField
+              label="Markup Percentage"
+              name="markupPercentage"
+              htmlFor="markupPercentage"
+              type="number"
+              onChange={(e) => {
+                handleMarkupChange(e);
+                handleInputChange("markupPercentage", parseFloat(e.target.value) || 0);
+              }}
+              value={markupPercentage}
+              isInvalid={!!markupError}
+              errorMessage={markupError}
+              required
+            />
+          </div>
+          <div className="flex flex-col space-y-1">
+            <Label htmlFor="sellingPrice" className="mb-2 text-sm">
+              Selling Price
+            </Label>
+            <Input
+              id="sellingPrice"
+              name="sellingPrice"
+              type="number"
+              value={productData.sellingPrice ?? 0}
+              readOnly
+            />
+          </div>
+        </div>
 
-      <div className="mb-3">
-        <Label htmlFor="category" className="mb-2 text-sm">
-          Category <span className="text-red-400">*</span>
-        </Label>
-        <Select name="category" onValueChange={handleCategoryChange}>
-          <SelectTrigger className="w-full">
-            <SelectValue placeholder="Select category" />
-          </SelectTrigger>
-          <SelectContent>
-            {isLoading ? (
-              <p>Loading categories...</p>
-            ) : (
-              categories.map((category) => (
-                <SelectItem key={category.id} value={category.id}>
-                  {category.name}
+        <div className="mb-3">
+          <FormField
+            label="Stock"
+            name="stock"
+            htmlFor="stock"
+            type="number"
+            onChange={(e) => {
+              handleStockChange(e);
+              handleInputChange("stock", parseFloat(e.target.value) || 0);
+            }}
+            value={stock ?? 0}
+            isInvalid={!!stockError}
+            errorMessage={stockError || ""}
+            required
+          />
+        </div>
+
+        <div className="mb-3">
+          <Label htmlFor="category" className="mb-2 text-sm">
+            Category <span className="text-red-400">*</span>
+          </Label>
+          <Select name="category" onValueChange={handleCategoryChange}>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select category" />
+              {isLoading && <img src="/images/spinner-small.svg" alt="loading" className="ml-2" />}
+            </SelectTrigger>
+            <SelectContent>
+              {isLoading ? (
+                <p>Loading categories...</p>
+              ) : (
+                categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))
+              )}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="mb-3">
+          <Label htmlFor="status" className="mb-2 text-sm">
+            Status <span className="text-red-400">*</span>
+          </Label>
+          <Select value={status} onValueChange={setStatus}>
+            <SelectTrigger>
+              <SelectValue placeholder="Select Status" />
+            </SelectTrigger>
+            <SelectContent>
+              {STATUS_OPTIONS.map(option => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
                 </SelectItem>
-              ))
-            )}
-          </SelectContent>
-        </Select>
-      </div>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
 
-      <div className="mb-3">
-        <Label htmlFor="status" className="mb-2 text-sm">
-          Status <span className="text-red-400">*</span>
-        </Label>
-        <Select value={status} onValueChange={setStatus}>
-          <SelectTrigger>
-            <SelectValue placeholder="Select Status" />
-          </SelectTrigger>
-          <SelectContent>
-            {STATUS_OPTIONS.map(option => (
-              <SelectItem key={option.value} value={option.value}>
-                {option.label}
-              </SelectItem>
-            ))}
-          </SelectContent>
-        </Select>
-      </div>
+        <div className="mb-3">
+          <TextAreaField
+            label="Product Description"
+            name="description"
+            htmlFor="description"
+            onChange={(e) => {
+              handleNameChange(e);
+              handleInputChange("description", e.target.value);
+            }}
+            value={productData.description}
+            isInvalid={!!descriptionError}
+            errorMessage={descriptionError || ""}
+            required
+          />
+        </div>
 
-      <div className="mb-3">
-        <TextAreaField
-          label="Product Description"
-          name="description"
-          htmlFor="description"
-          onChange={handleDescriptionChange}
-          value={description}
-          isInvalid={!!descriptionError}
-          errorMessage={descriptionError || ""}
-          required
-        />
-      </div>
-
-      <div className="mb-3">
-        <Label htmlFor="image" className="mb-2 text-sm">
-          Product Image <span className="text-red-400">*</span>
-        </Label>
         <AddProductImage
           imageError={imageError}
           imageName={imageName}
           isUploading={isUploading}
           handleImage={handleImage}
         />
-      </div>
+        {generalError && (
+          <div className="text-red-400 mb-4">
+            {generalError}
+          </div>
+        )}
 
-      {generalError && (
-        <div className="text-red-400 mb-4">
-          {generalError}
+        <div className="flex justify-end space-x-2">
+          <Button type="submit" disabled={isLoading} className="mt-4">
+            {isLoading ? (
+              <>
+                <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+                <span className="ml-2">
+                  {formMode === "Add" ? "Adding Product..." : "Editing Product..."}
+                </span>
+              </>
+            ) : (
+              formMode === "Add" ? "Add Product" : "Edit Product"
+            )}
+          </Button>
+
         </div>
-      )}
-
-      <div className="flex justify-end space-x-2">
-        <Button type="submit" disabled={isLoading} className="mt-4">
-          {isLoading ? (
-            <>
-              <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
-              <span className="ml-2">
-                {formMode === "Add" ? "Adding Product..." : "Editing Product..."}
-              </span>
-            </>
-          ) : (
-            formMode === "Add" ? "Add Product" : "Edit Product"
-          )}
-        </Button>
-
-      </div>
-    </form>
-   </>
+      </form>
+    </>
   );
 };
 

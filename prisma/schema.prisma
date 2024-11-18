@@ -25,59 +25,62 @@ model Product {
   createdAt    DateTime    @default(now())
   updatedAt    DateTime    @updatedAt
   categoryName String?
-  costPrice    Float
-  sellingPrice Float?
+  costPrice    Int
+  sellingPrice Int?
   slug         String      @unique
-  category     Category?   @relation(fields: [categoryName], references: [name])
   cartItems    CartItem[]
   orderItems   OrderItem[]
+  category     Category?   @relation(fields: [categoryName], references: [name])
 }
 
 model User {
-  id        Int        @id @default(autoincrement())
-  username  String     @unique
   email     String     @unique
   password  String
   role      UserRole   @default(NORMAL_USER)
   createdAt DateTime   @default(now())
   updatedAt DateTime   @updatedAt
+  username  String     @unique
+  id        String     @id @default(uuid())
   cartItems CartItem[]
   orders    Order[]
+}
+
+model CartItem {
+  id         Int      @id @default(autoincrement())
+  userId     String
+  productId  String
+  quantity   Int      @default(1)
+  addedAt    DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  totalPrice Float?
+  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user       User     @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  userId          String?
+  orderDate       DateTime    @default(now())
+  status          OrderStatus @default(PROCESSING)
+  paymentIntentId String      @unique
+  paymentStatus   String?
+  totalPrice      Float?
+  user            User?       @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  orderItems      OrderItem[]
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId String
+  quantity  Int
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
 }
 
 enum UserRole {
   ADMIN
   NORMAL_USER
-}
-
-model CartItem {
-  id         Int      @id @default(autoincrement())
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId     Int
-  product    Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId  String
-  quantity   Int      @default(1)
-  totalPrice Float?
-  addedAt    DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-}
-
-model Order {
-  id         Int         @id @default(autoincrement())
-  user       User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
-  userId     Int?
-  orderDate  DateTime    @default(now())
-  status     OrderStatus @default(PROCESSING)
-  orderItems OrderItem[]
-}
-
-model OrderItem {
-  id        Int     @id @default(autoincrement())
-  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
-  orderId   Int
-  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
-  productId String
-  quantity  Int     @default(1)
 }
 
 enum OrderStatus {

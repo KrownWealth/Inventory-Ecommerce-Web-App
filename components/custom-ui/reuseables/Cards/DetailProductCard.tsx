@@ -27,7 +27,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   const [quantity, setQuantity] = useState(1);
 
   const { data: session } = useSession();
-  const userId = session?.user?.id ? parseInt(session.user.id, 10) : null;
+  const userId = session?.user?.id || null;
 
   const router = useRouter();
   const { addToCart } = useCart();
@@ -89,15 +89,14 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
         productId: product.id,
         name: product.name,
         image: product.image || '/default-image.jpg',
-        price: product.sellingPrice ?? 0,
+        sellingPrice: product.sellingPrice ?? 0,
         quantity,
-        totalPrice: (product.sellingPrice ?? 0) * quantity,
-        userId,
+        userId: userId,
       };
 
       try {
-        await addToCart(userId, cartItem);
-        console.log('Adding to cart:', { userId, cartItem });
+        await addToCart(cartItem);
+
         router.push(`/frontend/checkout/`);
         toastNotification("success", "top-right", undefined, {
           message: "Item added to cart, going to checkout",

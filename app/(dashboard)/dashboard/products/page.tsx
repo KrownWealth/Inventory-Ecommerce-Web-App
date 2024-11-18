@@ -1,4 +1,4 @@
-import { AdminProductView } from '@/views'; 
+import { AdminProductView } from '@/views';
 interface ProductPageProps {
   searchParams?: {
     query?: string;
@@ -10,9 +10,7 @@ const ProductPage = async ({ searchParams }: ProductPageProps) => {
 
 
   return (
-    
-      <AdminProductView searchParams={searchParams} />
-   
+    <AdminProductView searchParams={searchParams} />
   );
 };
 

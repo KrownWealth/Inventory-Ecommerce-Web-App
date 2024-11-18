@@ -22,7 +22,7 @@ import ProductsPagination from "./Pagination/productPagination";
 import SignupWithGoogle from "./Authentication/google0Auth";
 
 import LanguagSelect from "./Localization/languagesSelect";
-import {Quote} from "./Authentication/quote";
+import { Quote } from "./Authentication/quote";
 import { LogoOnAuth } from "./Navigation/logoOnAuth";
 import { WelcomeText } from "./Headings/welcomeText";
 
@@ -34,15 +34,53 @@ import CategoryTable from "./Admin/categoryTable";
 
 import { DetailedProductCard } from "./Cards/DetailProductCard";
 import ShopBtn from "./Buttons/shopBtn";
+import ViewOrderBtn from "./Buttons/viewOrderBtn";
+import GoBackBtn from "./Buttons/goBack";
 
-import CartItems  from "./Cards/CartItemCard";
+import CartItemCard from "./Cards/CartItemCard";
 import { StarRating } from "./Rating/starRating";
 import CheckoutButton from "./Buttons/checkoutBtn";
 
 
-export { InputSearch, SideBarNav, UserProfile,  
-  ProductPageHead, ModalManager, PageHead, PriceFormulaModal, CustomerTable,
-OrderStatusBtn, DatePickerWithRange, UserAvatar, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut,
-CustomerMap, ProductTableTwo, ProductCardSkeleton, ProductsPagination, OrdersTable,  LanguagSelect, CategoryTable,
-SignupWithGoogle, Quote, LogoOnAuth, WelcomeText, UserAvatarDropdown, ProductCard, UserSearch, AddCategoryModal,
-DetailedProductCard, ShopBtn, CartItems, StarRating, CheckoutButton }
+// skeleton
+
+import CartItemSkeleton from "./Skeleton/cartItemSkeleton";
+export {
+  InputSearch,
+  SideBarNav,
+  UserProfile,
+  ProductPageHead,
+  ModalManager,
+  PageHead,
+  PriceFormulaModal,
+  CustomerTable,
+  OrderStatusBtn,
+  DatePickerWithRange,
+  UserAvatar,
+  DashBoardCard,
+  SalesBarCharts,
+  SalesCategoryDoughnut,
+  CustomerMap,
+  ProductTableTwo,
+  ProductCardSkeleton,
+  ProductsPagination,
+  OrdersTable,
+  LanguagSelect,
+  CategoryTable,
+  SignupWithGoogle,
+  Quote,
+  LogoOnAuth,
+  WelcomeText,
+  UserAvatarDropdown,
+  ProductCard,
+  UserSearch,
+  AddCategoryModal,
+  DetailedProductCard,
+  ShopBtn,
+  CartItemCard,
+  StarRating,
+  CheckoutButton,
+  CartItemSkeleton,
+  ViewOrderBtn,
+  GoBackBtn
+}

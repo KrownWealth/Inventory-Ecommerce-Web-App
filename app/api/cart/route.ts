@@ -2,21 +2,20 @@ import { NextResponse } from "next/server";
 import { db } from "@/lib";
 
 interface CartItemRequest {
-  userId: number;
+  userId: string;
   productId: string;
   quantity: number;
 }
 
 interface DeleteRequest {
-  itemId?: number;
-  userId?: number;
+  itemId: number;
+  userId: string;
 }
 
 
 export async function POST(req: Request) {
   try {
     const { userId, productId, quantity }: CartItemRequest = await req.json();
-    
     if (!userId || !productId || quantity <= 0) {
       return NextResponse.json({ error: "All fields are required." }, { status: 400 });
     }
@@ -25,12 +24,28 @@ export async function POST(req: Request) {
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
     }
+    
+    const itemPrice = product.sellingPrice ?? 0;
+    const totalPrice = quantity * itemPrice;
 
-    const totalPrice = quantity * (product.sellingPrice ?? 0);
-
-    await db.cartItem.create({
-      data: { userId, productId, quantity, totalPrice },
+    const existingCartItem = await db.cartItem.findFirst({
+      where: { productId, userId },
     });
+
+    if (existingCartItem) {
+      await db.cartItem.update({
+        where: { id: existingCartItem.id },
+        data: {
+          quantity: existingCartItem.quantity + quantity,
+          totalPrice: (existingCartItem.quantity + quantity) * itemPrice,
+        },
+      });
+    } else {
+      await db.cartItem.create({
+        data: { userId, productId, quantity, totalPrice },
+      });
+    }
+
     return NextResponse.json({ message: "Item added to cart" }, { status: 201 });
   } catch (error) {
     console.error("Error adding cart item:", error);
@@ -38,17 +53,19 @@ export async function POST(req: Request) {
   }
 }
 
+
 // Function to handle GET requests (Fetching cart items)
 export async function GET(req: Request) {
   const userId = req.headers.get("user-id");
-  if (!userId || isNaN(Number(userId))) {
+
+  if (!userId) {
     console.error("Invalid or missing user ID:", userId);
     return NextResponse.json({ error: "Valid User ID is required" }, { status: 400 });
   }
 
   try {
     const cartItems = await db.cartItem.findMany({
-      where: { userId: Number(userId) },
+      where: { userId: userId },
       include: { product: true },
     });
 
@@ -60,6 +77,7 @@ export async function GET(req: Request) {
     return NextResponse.json({ error: "Failed to fetch cart items." }, { status: 500 });
   }
 }
+
 
 // Function to handle DELETE requests (Removing items from cart)
 export async function DELETE(req: Request) {
@@ -122,5 +140,41 @@ export async function PATCH(req: Request) {
     );
   }
 }
+
+export async function PUT(req: Request) {
+  const cartItems: CartItemRequest[] = await req.json();
+  if (!Array.isArray(cartItems) || cartItems.length === 0) {
+    return NextResponse.json({ error: "Cart items array is required" }, { status: 400 });
+  }
+
+  try {
+    const updatePromises = cartItems.map(async (item) => {
+
+      const existingItem = await db.cartItem.findFirst({
+        where: { userId: item.userId, productId: item.productId },
+      });
+
+      if (existingItem) {
+        const unitPrice = existingItem.totalPrice ?? 0 / existingItem.quantity;
+        return db.cartItem.update({
+          where: { id: existingItem.id },
+          data: {
+            quantity: item.quantity,
+            totalPrice: item.quantity * unitPrice,
+          },
+        });
+      } else {
+        throw new Error("Item not found");
+      }
+    });
+
+    await Promise.all(updatePromises);
+    return NextResponse.json({ message: "All items updated successfully" }, { status: 200 });
+  } catch (error) {
+    console.error("Error updating all cart items:", error);
+    return NextResponse.json({ error: "Failed to update all cart items." }, { status: 500 });
+  }
+}
+
 
 

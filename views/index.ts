@@ -14,7 +14,22 @@ import SignOut from "./authentication/singOut";
 import ProductReview from "./User/reviewRating";
 
 
+import { CartItems } from "./User/CartItems";
 import CheckoutForm from "./User/checkoutForm";
 
-export {OrderView, CustomerView,  SignupView, CategoryView, Header, Chip, Footer,
-   ResetPasswordView, AdminProductView, AddProductImage, SignOut, ProductReview, CheckoutForm }
+export {
+   OrderView,
+   CustomerView,
+   SignupView,
+   CategoryView,
+   Header,
+   Chip,
+   Footer,
+   ResetPasswordView,
+   AdminProductView,
+   AddProductImage,
+   SignOut,
+   ProductReview,
+   CartItems,
+   CheckoutForm
+}

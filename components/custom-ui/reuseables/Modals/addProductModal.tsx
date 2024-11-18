@@ -11,7 +11,6 @@ import { uploadImageToCloudinary } from "@/lib";
 import { toastNotification } from "@/lib";
 import { ProductsType } from "@/types";
 import ProductForm from "./productForm";
-import { revalidatePath } from "next/cache";
 
 
 const initialState = {
@@ -65,11 +64,14 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     fetchCategories();
   }, []);
 
-  useEffect(() => {
-    const numericCostPrice = typeof productData.costPrice === "string" ? parseFloat(productData.costPrice) : productData.costPrice;
-    const numericMarkupPercentage = typeof productData.markupPercentage === "string" ? parseFloat(productData.markupPercentage) : productData.markupPercentage;
 
-    if (!isNaN(numericCostPrice) && !isNaN(numericMarkupPercentage)) {
+  useEffect(() => {
+    const numericCostPrice =
+      typeof productData.costPrice === "string" ? parseFloat(productData.costPrice) : productData.costPrice;
+    const numericMarkupPercentage =
+      typeof productData.markupPercentage === "string" ? parseFloat(productData.markupPercentage) : productData.markupPercentage;
+
+    if (!isNaN(numericCostPrice) && numericCostPrice > 0 && !isNaN(numericMarkupPercentage) && numericMarkupPercentage >= 0) {
       const calculatedSellingPrice = numericCostPrice + (numericCostPrice * numericMarkupPercentage) / 100;
       setProductData((prevData) => ({
         ...prevData,
@@ -77,6 +79,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       }));
     }
   }, [productData.costPrice, productData.markupPercentage]);
+
 
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,6 +91,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
     try {
       const imageUrl = await uploadImageToCloudinary(file, "gewfxwe5");
+      setImageName(file.name);
       setProductData((prevData) => ({ ...prevData, image: imageUrl }));
     } catch (error: any) {
       setImageError(error.message);
@@ -153,8 +157,6 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
       toastNotification("success", "top-right", undefined, {
         message: "Product created successfully",
       });
-      revalidatePath("/frontend/products")
-      revalidatePath("/dashboard/products")
       setIsModalOpen(false);
     } catch (error: any) {
       const errorMessage =

@@ -37,13 +37,13 @@ const FormField: React.FC<FormFieldProps> = ({
   required = false,
   readOnly = false,
 }) => {
-  // Optional styles for height customization
   const inputStyles: React.CSSProperties = height ? { height: `${height}px` } : {};
 
   return (
     <div className="flex flex-col space-y-1">
       <Label htmlFor={htmlFor} className="mb-2 text-sm text-black">
         {label} {required && <span className="text-red-500">*</span>}
+
       </Label>
       <Input
         type={type}

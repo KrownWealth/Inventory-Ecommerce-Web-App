@@ -9,6 +9,7 @@ import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 export default function LoginView() {
 
@@ -18,6 +19,7 @@ export default function LoginView() {
   const [isDisabled, setIsDisabled] = useState(true)
   const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
+  const { data: session } = useSession();
 
   const router = useRouter();
 
@@ -47,22 +49,30 @@ export default function LoginView() {
         return;
       }
 
-      toastNotification("success", "top-right", undefined, {
-        message: "Login Successful",
-      });
-      router.push('/');
+      if (session?.user?.role) {
+        if (session.user.role === 'ADMIN') {
+          router.push('/dashboard');
+        } else if (session.user.role === 'NORMAL_USER') {
+          router.push('/frontend');
+        }
+        toastNotification("success", "top-right", undefined, {
+          message: "Login Successful",
+        });
+      }
     } catch (error: any) {
       toastNotification("error", "top-right", undefined, {
         message: error.message || "Failed to Login",
       });
       console.error("Login failed", error);
       setLoading(false);
+    } finally {
+      setLoading(false);
     }
   };
 
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormField
           label="Email"
@@ -91,7 +101,7 @@ export default function LoginView() {
           onChange={(value) => handlePasswordChange(value)}
         />
         <div className="flex justify-between text-pricesageBlack">
-          <Link href="/auth/login">Forget Password?</Link>
+          {/* <Link href="/auth/login">Forget Password?</Link> */}
           <Link href="/auth/signup">
             Don't have an account?
             <span className="text-pricesageOrange font-semibold pl-2">
@@ -100,7 +110,7 @@ export default function LoginView() {
           </Link>
         </div>
         <div className="flex items-center justify-center w-full pt-8">
-          <Button type="submit" disabled={loading} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
+          <Button type="submit" disabled={isDisabled || success} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
             {loading ? (
               <>
                 <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />

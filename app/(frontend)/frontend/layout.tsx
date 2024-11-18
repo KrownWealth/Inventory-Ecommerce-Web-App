@@ -8,9 +8,9 @@ const Layout = ({
 }>) => {
   return (
     <>
-    <Header />
-    <main className='py-10'>{children}</main>
-    <Footer />
+      <Header />
+      <main className='py-10 max-h-screen h-screen'>{children}</main>
+      <Footer />
     </>
   )
 }

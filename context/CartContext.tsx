@@ -3,43 +3,63 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { CartItemType } from "@/types";
 import { useSession } from "next-auth/react";
+import { toastNotification } from "@/lib";
+
 interface CartContextType {
   cartItems: CartItemType[];
-  fetchCartItems: (userId: number) => Promise<void>;
-  addToCart: (userId: number, item: CartItemType) => Promise<void>;
-  removeFromCart: (itemId: string) => Promise<void>;
-  clearCart: (userId: number) => Promise<void>;
+  fetchCartItems: () => Promise<void>;
+  addToCart: (item: CartItemType) => Promise<void>;
+  removeFromCart: (itemId: number) => Promise<void>;
+  clearCart: () => Promise<void>;
+  totalPrice: number;
+  loading: boolean;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [cartItems, setCartItems] = useState<CartItemType[]>([]);
+  const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [loading, setLoading] = useState(true);
+
 
   const { data: session } = useSession();
+  const userId = session?.user?.id;
 
-  const userId = session?.user?.id ? parseInt(session.user.id, 10) : null;
+  useEffect(() => {
+    const newTotalPrice = cartItems.reduce((total, item) => total + item.sellingPrice * item.quantity, 0);
+    setTotalPrice(newTotalPrice);
+  }, [cartItems]);
+
 
   const fetchCartItems = async () => {
     if (!userId) return;
+    setLoading(true);
     try {
+
       const response = await fetch(`/api/cart`, {
         method: "GET",
         headers: { "user-id": String(userId) },
       });
-      const cartData = await response.json();
-      // For each cart item, fetch its product details
-      const products = await Promise.all(
-        cartData.map(async (item: CartItemType) => {
-          const productResponse = await fetch(`/api/products?id=${item.productId}`);
-          const product = await productResponse.json();
-          return { ...item, product }; // Include product details in the cart item
-        })
-      );
+      if (!response.ok) {
+        const errorMsg = response.status === 500
+          ? "Server error. Failed to fetch cart items."
+          : "Failed to fetch cart items.";
+        throw new Error(errorMsg);
+      }
+      const cartData: CartItemType[] = await response.json();
+      setCartItems(Array.isArray(cartData) ? cartData : []);
 
-      setCartItems(products);
+      const calculatedTotalPrice = cartData.reduce((total, item) => {
+        return total + (item.totalPrice ?? 0);
+      }, 0);
+
+      setTotalPrice(calculatedTotalPrice);
     } catch (error) {
       console.error("Error fetching cart items:", error);
+      //setError(error.message);
+    } finally {
+      setLoading(false)
     }
   };
 
@@ -47,35 +67,87 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchCartItems();
   }, [userId]);
 
-
-  const addToCart = async (userId: number, item: CartItemType) => {
+  const addToCart = async (item: CartItemType) => {
+    if (!userId) return;
     try {
-      const response = await fetch(`/api/cart`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, productId: item.productId, quantity: item.quantity }),
+      const existingItem = cartItems.find(
+        (cartItem) => cartItem.productId === item.productId && cartItem.userId === userId
+      );
+      const updatedCartItems = existingItem
+        ? cartItems.map(cartItem =>
+          cartItem.productId === item.productId
+            ? { ...cartItem, quantity: item.quantity }
+            : cartItem
+        )
+        : [...cartItems, item];
+
+      setCartItems(updatedCartItems);
+
+      // Persist the item to the backend
+      const response = await fetch('/api/cart', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'user-id': String(userId),
+        },
+        body: JSON.stringify(item),
       });
-      if (!response.ok) throw new Error("Failed to add item to cart");
-      setCartItems((prevItems) => [...prevItems, item]);
+
+      if (!response.ok) {
+        throw new Error('Failed to add item to cart on the server.');
+      }
+
+      const newTotalPrice = updatedCartItems.reduce(
+        (total, cartItem) => total + cartItem.sellingPrice * cartItem.quantity,
+        0
+      );
+      setTotalPrice(newTotalPrice);
+
     } catch (error) {
-      console.error("Error adding item to cart:", error);
+      console.error('Error adding item to cart:', error);
+      toastNotification("error", "top-right", undefined, {
+        message: "Failed to add item to cart",
+      });
     }
   };
 
-  const removeFromCart = async (itemId: string) => {
+
+  const removeFromCart = async (itemId: number) => {
     try {
-      await fetch(`/api/cart`, {
+      const response = await fetch(`/api/cart`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemId }),
       });
-      setCartItems((prevItems) => prevItems.filter((item) => item.productId !== itemId));
+
+      if (response.ok) {
+        const updatedItems = cartItems.filter(item => item.id !== itemId);
+        setCartItems(updatedItems);
+
+        const newTotalPrice = updatedItems.reduce(
+          (total, item) => total + item.sellingPrice * item.quantity,
+          0
+        );
+        setTotalPrice(newTotalPrice);
+
+        toastNotification("success", "top-right", undefined, {
+          message: "Item successfully removed from cart",
+        });
+      } else {
+        toastNotification("error", "top-right", undefined, {
+          message: "Failed to remove item from cart",
+        });
+      }
     } catch (error) {
       console.error("Error removing item:", error);
+      toastNotification("error", "top-right", undefined, {
+        message: "An error occurred while removing the item",
+      });
     }
   };
 
-  const clearCart = async (userId: number) => {
+  const clearCart = async () => {
+    if (!userId) return;
     try {
       await fetch(`/api/cart`, {
         method: "DELETE",
@@ -83,13 +155,21 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         body: JSON.stringify({ userId }),
       });
       setCartItems([]);
+      setTotalPrice(0);
     } catch (error) {
       console.error("Error clearing cart:", error);
+      toastNotification("error", "top-right", undefined, {
+        message: "An error occurred while clearing the cart",
+      });
     }
   };
 
+
   return (
-    <CartContext.Provider value={{ cartItems, fetchCartItems, addToCart, removeFromCart, clearCart }}>
+    <CartContext.Provider value={{
+      cartItems, fetchCartItems, addToCart, removeFromCart,
+      clearCart, totalPrice, loading
+    }}>
       {children}
     </CartContext.Provider>
   );

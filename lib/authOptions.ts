@@ -1,15 +1,14 @@
-import { NextAuthOptions, User, Session, TokenSet, } from "next-auth";
+import { NextAuthOptions, User, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { db } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
-import { toastNotification } from "./toastContainer";
-
+import { JWT } from "next-auth/jwt";
 
 interface ExtendedUser extends User {
+  id: string;
   email: string;
   username: string;
-  password: string;
   role: string;
 }
 
@@ -22,68 +21,65 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/sign-in',
-    //signUp: '/auth/signup',
   },
   providers: [
     CredentialsProvider({
       id: "credentials",
       name: 'Credentials',
       credentials: {
-        email: {},
-        password: {},
+        email: { label: "Email", type: "text" },
+        password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-
         if (!credentials?.email || !credentials.password) {
-          return null;
+          throw new Error("Please provide both email and password.");
         }
-
+        
         const existingUser = await db.user.findUnique({
-          where: { email: credentials?.email }
+          where: { email: credentials.email }
         });
-
+      
         if (!existingUser) {
-          throw new Error("Email doesn't exist! Please Signup"); 
+          throw new Error("Invalid credentials: Email does not exist.");
         }
-
+        
         const passwordMatch = await compare(credentials.password, existingUser.password);
 
         if (!passwordMatch) {
-          return null;
+          throw new Error("Invalid credentials: Incorrect password.");
         }
 
-        // if user is found and password match 
+        // Successful authentication
         return {
-         id: existingUser.id.toString(),
+          id: existingUser.id.toString(),
           username: existingUser.username,
           email: existingUser.email,
           role: existingUser.role,
         } as ExtendedUser;
+        
       }
     })
   ],
- callbacks: {
-  async jwt({ token, user }: { token: TokenSet; user?: User }) {
-    if (user) {
-      token.id = user.id;
-      token.email = user.email;
-      token.username = user.username;
-      token.role = user.role;
-    }
-    return token;
-  },
+  callbacks: {
+    async jwt({ token, user }: { token: JWT; user?: ExtendedUser }) {
+      if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.username = user.username;
+        token.role = user.role;
+      }
+      return token;
+    },
+   async session({ session, token }) {
+  session.user = {
+    ...session.user,
+    id: token.id,
+    email: token.email,
+    username: token.username,
+    role: token.role,
+  } as ExtendedUser;
+  return session;
+}
 
-  async session({ session, token }: { session: Session; token: TokenSet }) {
-    // Merge token data into session user
-    session.user = {
-      ...session.user,
-      id: token.id, 
-      email: token.email,
-      username: token.username,
-      role: token.role,
-    } as any;
-    return session;
   },
-},
-
 };

@@ -11,15 +11,15 @@ import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 
 export default function SignupView() {
-  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   const { value: username, error: usernameError, handleChange: handleUsernameChange } = useFormField('', FormSchema.shape.username);
   const { value: email, error: emailError, handleChange: handleEmailChange } = useFormField('', FormSchema.shape.email);
   const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
 
-  const [isLaoding, setIsLaoding] = useState(false);
-  const [idisabled, setIsDisabled] = useState(true)
+  const [isDisabled, setIsDisabled] = useState(true)
+  const [success, setSuccess] = useState(false)
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
@@ -123,7 +123,7 @@ export default function SignupView() {
           </Link>
         </div>
         <div className="flex items-center justify-center w-full pt-8">
-          <Button type="submit" disabled={loading} className="mt-4">
+          <Button type="submit" disabled={isDisabled || success} className="mt-4">
             {loading ? (
               <>
                 <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />

@@ -1,16 +1,10 @@
 
-import { CustomerMap, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut, InputSearch, DatePickerWithRange, PageHead, UserAvatarDropdown } from "@/components/custom-ui/reuseables";
-import {
-  DropdownMenu, DropdownMenuTrigger, DropdownMenuLabel, DropdownMenuSeparator,
-  DropdownMenuItem, DropdownMenuContent
-} from '@/components/ui/dropdown-menu'
-import { Button, buttonVariants } from '@/components/ui/button'
+import { CustomerMap, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut, PageHead } from "@/components/custom-ui/reuseables";
 import { IoMdBasket } from "react-icons/io";
 import { ImUsers, ImPriceTags } from "react-icons/im";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { IoMdTrendingUp } from "react-icons/io";
 import Link from "next/link";
-import { SignOut } from "@/views";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 
@@ -31,7 +25,7 @@ const AdminHome = async () => {
         </Link>
         <PageHead pageTitle="Dashboard" />
         <p>Welcome {session?.user.username}</p>
-       
+
       </header>
       <div className="flex flex-col space-y-4 px-4 lg:px-8 py-4">
         <div className="flex flex-col md:flex-row gap-4 ">

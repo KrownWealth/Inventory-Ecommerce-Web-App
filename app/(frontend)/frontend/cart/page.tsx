@@ -1,18 +1,15 @@
-import { CartItems, CheckoutButton } from '@/components/custom-ui/reuseables'
-import { Button } from '@/components/ui/button'
-import React from 'react'
+import { getServerSession } from 'next-auth'
+import { CartItems } from '@/views'
 
 const CartPage = () => {
 
-  const handleCheckout = () => {
-
+  const session = getServerSession();
+  if (!session) {
+    return "/auth/sign-in"
   }
   return (
-    <section className="w-full">
-      <div className="max-w-7xl flex flex-col mx-auto items-center justify-center">
-        <CartItems />
-        <CheckoutButton />
-      </div>
+    <section className="max-w-7xl mx-auto items-center justify-center ">
+      <CartItems />
     </section>
   )
 }

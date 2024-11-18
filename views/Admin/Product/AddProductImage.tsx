@@ -7,7 +7,7 @@ interface AddProductImageProps {
   imageName: string | null;
   imageError: string | null;
   isUploading: boolean;
-  handleImage:  (e: React.ChangeEvent<HTMLInputElement>)=> void;
+  handleImage: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 const AddProductImage: React.FC<AddProductImageProps> = ({
@@ -24,25 +24,25 @@ const AddProductImage: React.FC<AddProductImageProps> = ({
 
   return (
     <div className="w-full">
-      <label htmlFor="product-image" className="block mb-2 text-sm font-medium text-gray-700">
+      <label htmlFor="image" className="block mb-2 text-sm font-medium text-gray-700">
         Product Image
       </label>
       <div className="flex items-center space-x-4">
         <input
           type="file"
           ref={fileInputRef}
-         onChange={(e) => handleImage(e)}
+          onChange={(e) => handleImage(e)}
           className="hidden"
           accept="image/*"
         />
-         <button
-         type="button" onClick={handleClick}
+        <button
+          type="button" onClick={handleClick}
           className="inline-flex items-center space-x-2 border px-4 "
         >
           <IoCloudUploadOutline className="w-12 h-12 text-gray-500" />
         </button>
         <span className="text-sm text-gray-700">
-            {imageError ? imageError : isUploading ? 'Uploading...' : imageName || 'No image selected'}
+          {imageError ? imageError : isUploading ? 'Uploading...' : imageName || 'No image selected'}
         </span>
       </div>
     </div>
