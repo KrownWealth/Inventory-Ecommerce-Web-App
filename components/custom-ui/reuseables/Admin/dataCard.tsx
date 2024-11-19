@@ -8,7 +8,7 @@ interface DataCardProps {
   description: string
   icon: React.ReactNode
 }
-const DataCard: React.FC<DataCardProps> = ({ dataHeading, dataContent, description, icon }) => {
+export const DataCard: React.FC<DataCardProps> = ({ dataHeading, dataContent, description, icon }) => {
   return (
     <Card className="w-full">
       <div className='p-3 flex items-center space-x-2'>
@@ -29,4 +29,3 @@ const DataCard: React.FC<DataCardProps> = ({ dataHeading, dataContent, descripti
   )
 }
 
-export default DataCard

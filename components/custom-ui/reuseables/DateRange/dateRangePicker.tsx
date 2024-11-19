@@ -1,5 +1,5 @@
 
-"use client"; 
+"use client";
 
 import * as React from "react";
 import { format } from "date-fns";
@@ -14,7 +14,9 @@ interface DatePickerWithRangeProps {
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 }
 
+
 export function DatePickerWithRange({ date, setDate }: DatePickerWithRangeProps) {
+
   return (
     <div className="grid gap-2">
       <Popover>
@@ -30,7 +32,7 @@ export function DatePickerWithRange({ date, setDate }: DatePickerWithRangeProps)
             {date?.from ? (
               date.to ? (
                 <div className="flex flex-col text-xs">
-                  Filter 
+                  Filter
                   <span>
                     {format(date.from, "LLL dd, yy")} - {format(date.to, "LLL dd, yy")}
                   </span>

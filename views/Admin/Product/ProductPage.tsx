@@ -31,7 +31,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/fetch-products`, {
+      const response = await fetch(`/api/product`, {
         method: 'GET',
       });
 

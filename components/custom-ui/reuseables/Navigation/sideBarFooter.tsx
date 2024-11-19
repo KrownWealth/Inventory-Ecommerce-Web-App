@@ -22,7 +22,7 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
   }
 
   return (
-    <div className="flex flex-col items-start justify-end pb-4">
+    <div className="flex flex-col items-start justify-end pb-8 px-3 ">
       <div className="flex space-x-4">
         <Avatar className="h-12 w-12 rounded-full">
           <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
@@ -36,7 +36,7 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
       {session?.user ? (
         <Button
           variant="destructive"
-          className={`${isCollapsed ? 'hidden' : 'flex items-center justify-center'}`}>
+          className={`${isCollapsed ? 'hidden' : 'flex items-center justify-center mx-auto'}`}>
           <MdOutlineLogout />
           <SignOut />
         </Button>

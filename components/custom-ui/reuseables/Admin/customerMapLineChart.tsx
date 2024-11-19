@@ -1,6 +1,11 @@
 "use client";
+
+import React, { useState } from "react"
 import { MdOutlineTrendingUp } from "react-icons/md";
 import { CartesianGrid, Line, LineChart, XAxis } from "recharts";
+import { DateRange } from "react-day-picker";
+
+
 
 import {
   Card,
@@ -15,7 +20,6 @@ import {
 } from "@/components/ui/chart";
 import { DatePickerWithRange } from "../DateRange/dateRangePicker";
 
-// Custom color definitions
 const desktopColor = "#007BFF"; // Custom blue color for desktop line
 const mobileColor = "#28A745"; // Custom green color for mobile line
 const gridColor = "#CCCCCC"; // Custom light grey color for grid lines
@@ -47,12 +51,18 @@ const chartConfig = {
 } satisfies ChartConfig;
 
 const CustomerMap = () => {
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(new Date().setMonth(new Date().getMonth() - 3)),
+    to: new Date(),
+  });
+
   return (
     <Card>
       <CardHeader>
         <div className="flex justify-between">
           <h4 className="font-semibold text-lg">Product Sales</h4>
-          <DatePickerWithRange />
+          <DatePickerWithRange date={date} setDate={setDate} />
         </div>
         <div className="flex items-center justify-center gap-2 font-medium leading-none">
           Customer increase by 5.2% this month{" "}

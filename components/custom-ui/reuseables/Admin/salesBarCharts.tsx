@@ -1,7 +1,7 @@
 "use client"
 
-import React from 'react'
-import { Card, CardHeader,CardTitle, CardContent } from '@/components/ui/card'
+import React, { useState } from 'react'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { CartesianGrid, XAxis, Bar, BarChart } from "recharts"
 import {
   ChartConfig,
@@ -10,6 +10,9 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { DatePickerWithRange } from '../DateRange/dateRangePicker'
+import { DateRange } from 'react-day-picker'
+
+
 
 const chartData = [
   { amount: "70", month: "January", desktop: 186, mobile: 80 },
@@ -37,13 +40,18 @@ const chartConfig = {
   },
 } satisfies ChartConfig
 const SalesBarCharts = () => {
-  
+
+  const [date, setDate] = useState<DateRange | undefined>({
+    from: new Date(new Date().setMonth(new Date().getMonth() - 3)),
+    to: new Date(),
+  });
+
   return (
-     <Card className="h-auto w-full ">
+    <Card className="h-auto w-full ">
       <CardHeader className="flex flex-col justify-between p-4">
         <div className="flex justify-between">
-         <h4 className="font-semibold text-lg">Product Sales</h4>
-         <DatePickerWithRange />
+          <h4 className="font-semibold text-lg">Product Sales</h4>
+          <DatePickerWithRange date={date} setDate={setDate} />
         </div>
         <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-1">

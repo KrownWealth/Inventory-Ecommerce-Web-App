@@ -6,3 +6,12 @@ export type OrderType={
   totalAmount: string
   status: string
 }
+
+export type Order = {
+  id: string;
+  customerName: string;
+  productName: string;
+  orderDate: string;
+  paymentStatus: string;
+  totalPrice: number;
+}

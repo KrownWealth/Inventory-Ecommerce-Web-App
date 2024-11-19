@@ -18,7 +18,7 @@ import ProductTableTwo from "./Admin/productTableTwo";
 import { ProductCardSkeleton } from "./Skeleton/productTableSkeleton";
 import ProductsPagination from "./Pagination/productPagination";
 
-
+import { DataCard } from "./Admin/dataCard";
 import SignupWithGoogle from "./Authentication/google0Auth";
 
 import LanguagSelect from "./Localization/languagesSelect";
@@ -82,5 +82,6 @@ export {
   CheckoutButton,
   CartItemSkeleton,
   ViewOrderBtn,
-  GoBackBtn
+  GoBackBtn,
+  DataCard
 }
