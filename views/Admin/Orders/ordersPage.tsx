@@ -38,10 +38,7 @@ const OrderView = () => {
 
   return (
     <div className="flex flex-col space-y-8 py-4">
-      <header className="py-4 flex h-[75px] items-center justify-between border-b bg-muted/40 px-4 lg:px-8">
-        <Link href="#" className="lg:hidden" prefetch={false}>
-          <span className="sr-only">Home</span>
-        </Link>
+      <header className="p-4 flex h-[75px] items-center justify-between border-b bg-muted/40 px-4 lg:px-8">
         <div><PageHead pageTitle="All Orders" /></div>
         <DatePickerWithRange date={date} setDate={setDate} />
       </header>

@@ -55,8 +55,8 @@ const CategoryView = () => {
   return (
     <div className="px-8 py-5">
       <div className="flex justify-between">
-        <PageHead pageTitle="Category Management" />
-        <Button onClick={() => setIsModalOpen(true)} className="btn-primary mt-4">
+        <PageHead pageTitle="Category" />
+        <Button onClick={() => setIsModalOpen(true)} className="btn-primary mt-4 text-sm md:text-lg">
           Add Category
         </Button>
       </div>

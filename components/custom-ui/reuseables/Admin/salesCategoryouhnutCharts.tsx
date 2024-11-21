@@ -7,7 +7,7 @@ import { FaUser } from 'react-icons/fa';
 import { DatePickerWithRange } from '../DateRange/dateRangePicker';
 import { DateRange } from 'react-day-picker';
 
-const SalesCategoryDoughnut = () => {
+const CustomerMapDoughnut = () => {
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(new Date().setMonth(new Date().getMonth() - 3)),
@@ -27,12 +27,12 @@ const SalesCategoryDoughnut = () => {
     <Card className="h-auto w-full">
       <CardHeader>
         <div className="flex justify-between">
-          <h4 className="font-semibold text-lg">Product Sales</h4>
+          <h4 className="font-semibold text-sm md:text-lg">Customer Map</h4>
           <DatePickerWithRange date={date} setDate={setDate} />
         </div>
       </CardHeader>
       <CardContent className="flex flex-col md:flex-row items-center justify-center gap-8">
-        <div className="grid gap-4 flex-1 max-w-[400px]">
+        <div className="grid gap-4 flex-1 max-w-[400px] md:order-1 order-2">
           {productSales.map((sale) => (
             <div key={sale.category} className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full" style={{ backgroundColor: sale.color }} />
@@ -43,28 +43,51 @@ const SalesCategoryDoughnut = () => {
             </div>
           ))}
         </div>
-        <div className="flex-1 max-w-[400px]">
-          <PieChart width={400} height={400}>
-            <Pie
-              data={productSales}
-              dataKey="value"
-              nameKey="category"
-              cx="50%"
-              cy="50%"
-              innerRadius={100}
-              outerRadius={150}
-              paddingAngle={5}
-            >
-              {productSales.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={entry.color} />
-              ))}
-            </Pie>
-            <Tooltip formatter={(value: number) => value.toLocaleString()} />
-          </PieChart>
-        </div>
+        <div className="flex-1 max-w-[400px] md:order-2 order-1">
+          {/* Smaller chart for mobile */}
+          <div className="sm:hidden">
+            <PieChart width={250} height={250}>
+              <Pie
+                data={productSales}
+                dataKey="value"
+                nameKey="category"
+                cx="50%"
+                cy="50%"
+                innerRadius={50}
+                outerRadius={100}
+                paddingAngle={5}
+              >
+                {productSales.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value: number) => value.toLocaleString()} />
+            </PieChart>
+          </div>
 
+          {/* Larger chart for desktop */}
+          <div className="hidden sm:block">
+            <PieChart width={400} height={400}>
+              <Pie
+                data={productSales}
+                dataKey="value"
+                nameKey="category"
+                cx="50%"
+                cy="50%"
+                innerRadius={100}
+                outerRadius={150}
+                paddingAngle={5}
+              >
+                {productSales.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={entry.color} />
+                ))}
+              </Pie>
+              <Tooltip formatter={(value: number) => value.toLocaleString()} />
+            </PieChart>
+          </div>
+        </div>
       </CardContent>
     </Card>
   );
 }
-export default SalesCategoryDoughnut
+export default CustomerMapDoughnut

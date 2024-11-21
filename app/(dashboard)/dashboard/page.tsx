@@ -1,7 +1,7 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/authOptions";
 import { db } from "@/lib";
-import { CustomerMap, DashBoardCard, SalesBarCharts, SalesCategoryDoughnut, PageHead } from "@/components/custom-ui/reuseables";
+import { CustomerMapDoughnut, DashBoardCard, SalesBarCharts, SalesHistoryLineChart, PageHead } from "@/components/custom-ui/reuseables";
 import { IoMdBasket } from "react-icons/io";
 import { ImUsers, ImPriceTags } from "react-icons/im";
 import { PiShoppingCartFill } from "react-icons/pi";
@@ -69,9 +69,6 @@ const AdminHome = async () => {
   return (
     <>
       <header className="flex h-[75px] pt-4 items-center justify-between border-b bg-muted/40 px-4 lg:px-8">
-        <Link href="#" className="lg:hidden" prefetch={false}>
-          <span className="sr-only">Home</span>
-        </Link>
         <PageHead pageTitle="Dashboard" />
         <p>Welcome {session?.user.username}</p>
       </header>
@@ -90,10 +87,15 @@ const AdminHome = async () => {
             />
           ))}
         </div>
-        <div className="mb-4"><SalesBarCharts /></div>
-        <div className="grid grid-cols-2 gap-4 mb-4">
-          <SalesCategoryDoughnut />
-          <CustomerMap />
+        <div className="mb-4">
+          <SalesBarCharts />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <SalesHistoryLineChart />
+
+          <CustomerMapDoughnut />
+
         </div>
       </div>
     </>

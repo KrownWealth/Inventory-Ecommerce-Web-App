@@ -12,8 +12,8 @@ import { DatePickerWithRange } from "./DateRange/dateRangePicker";
 import UserAvatar from "./Profile/userAvatar";
 import DashBoardCard from "./Cards/dashBoardCard";
 import SalesBarCharts from "./Admin/salesBarCharts";
-import SalesCategoryDoughnut from "./Admin/salesCategoryouhnutCharts";
-import CustomerMap from "./Admin/customerMapLineChart";
+import CustomerMapDoughnut from "./Admin/salesCategoryouhnutCharts";
+import SalesHistoryLineChart from "./Admin/customerMapLineChart";
 import ProductTableTwo from "./Admin/productTableTwo";
 import { ProductCardSkeleton } from "./Skeleton/productTableSkeleton";
 import ProductsPagination from "./Pagination/productPagination";
@@ -59,8 +59,8 @@ export {
   UserAvatar,
   DashBoardCard,
   SalesBarCharts,
-  SalesCategoryDoughnut,
-  CustomerMap,
+ CustomerMapDoughnut,
+ SalesHistoryLineChart,
   ProductTableTwo,
   ProductCardSkeleton,
   ProductsPagination,

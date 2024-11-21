@@ -50,7 +50,7 @@ const SalesBarCharts = () => {
     <Card className="h-auto w-full ">
       <CardHeader className="flex flex-col justify-between p-4">
         <div className="flex justify-between">
-          <h4 className="font-semibold text-lg">Product Sales</h4>
+          <h4 className="font-semibold text-sm md:text-lg">Revenue</h4>
           <DatePickerWithRange date={date} setDate={setDate} />
         </div>
         <div className="flex items-center justify-center gap-2">

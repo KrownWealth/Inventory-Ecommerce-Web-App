@@ -22,11 +22,13 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
   }
 
   return (
-    <div className="flex flex-col items-start justify-end pb-8 px-3 ">
+    <div className="flex flex-col items-center justify-end pb-8 px-3 ">
       <div className="flex space-x-4">
-        <Avatar className="h-12 w-12 rounded-full">
+        <Avatar className="h-8 w-8 md:h-12 md:w-12 rounded-full">
           <AvatarImage src="/placeholder-user.jpg" alt="@shadcn" />
-          <AvatarFallback>CN</AvatarFallback>
+          <AvatarFallback>
+            {session?.user.username.slice(0, 2).toUpperCase()}
+          </AvatarFallback>
         </Avatar>
         <div className={`${isCollapsed ? 'hidden' : 'inline'} grid gap-0.5`}>
           <div className="font-medium text-sm">{session?.user.username}</div>

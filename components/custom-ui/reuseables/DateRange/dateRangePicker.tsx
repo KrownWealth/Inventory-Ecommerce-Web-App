@@ -1,4 +1,3 @@
-
 "use client";
 
 import * as React from "react";
@@ -14,9 +13,7 @@ interface DatePickerWithRangeProps {
   setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
 }
 
-
 export function DatePickerWithRange({ date, setDate }: DatePickerWithRangeProps) {
-
   return (
     <div className="grid gap-2">
       <Popover>
@@ -25,15 +22,17 @@ export function DatePickerWithRange({ date, setDate }: DatePickerWithRangeProps)
             id="date"
             variant={"outline"}
             className={
-              !date ? "text-muted-foreground text-sm" : "justify-start text-left font-normal"
+              !date ? "text-muted-foreground text-sm w-[100px]" : "justify-start text-left font-normal"
             }
           >
             <FaCalendar className="mr-2 h-4 w-4" />
             {date?.from ? (
               date.to ? (
                 <div className="flex flex-col text-xs">
-                  Filter
-                  <span>
+                  <span className="block sm:hidden">
+                    {format(date.to, "LLL dd, yy")}
+                  </span>
+                  <span className="hidden sm:block">
                     {format(date.from, "LLL dd, yy")} - {format(date.to, "LLL dd, yy")}
                   </span>
                 </div>

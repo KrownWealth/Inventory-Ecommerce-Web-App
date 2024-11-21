@@ -50,7 +50,7 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
-const CustomerMap = () => {
+const SalesHistoryLineChart = () => {
 
   const [date, setDate] = useState<DateRange | undefined>({
     from: new Date(new Date().setMonth(new Date().getMonth() - 3)),
@@ -61,10 +61,10 @@ const CustomerMap = () => {
     <Card>
       <CardHeader>
         <div className="flex justify-between">
-          <h4 className="font-semibold text-lg">Product Sales</h4>
+          <h4 className="font-semibold text-sm md:text-lg">Sales History</h4>
           <DatePickerWithRange date={date} setDate={setDate} />
         </div>
-        <div className="flex items-center justify-center gap-2 font-medium leading-none">
+        <div className="flex items-center justify-center gap-2 font-medium leading-none text-sm md:text-[16px]">
           Customer increase by 5.2% this month{" "}
           <MdOutlineTrendingUp className="h-4 w-4" />
         </div>
@@ -126,4 +126,4 @@ const CustomerMap = () => {
   );
 };
 
-export default CustomerMap;
+export default SalesHistoryLineChart;

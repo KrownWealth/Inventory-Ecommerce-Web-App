@@ -144,9 +144,6 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
     <div className="py-4">
       <header className="border-b ">
         <div className="p-4 flex h-[75px] items-center justify-between bg-muted/40 px-6">
-          <Link href="#" className="lg:hidden" prefetch={false}>
-            <span className="sr-only">Home</span>
-          </Link>
           <PageHead pageTitle="Products" />
           <InputSearch placeholder="Search for products here..." onSearch={(searchQuery) => searchProducts(searchQuery, currentPage, selectedCategory || '')} />
           <DatePickerWithRange date={date} setDate={setDate} />
