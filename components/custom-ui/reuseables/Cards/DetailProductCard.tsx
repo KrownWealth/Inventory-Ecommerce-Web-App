@@ -26,11 +26,12 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   const [reviewCount, setReviewCount] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
-  const { data: session } = useSession();
-  const userId = session?.user?.id || null;
+  const { data: session, status } = useSession() || {};
+  const userId = status === "authenticated" ? session?.user?.id : null;
 
   const router = useRouter();
-  const { addToCart } = useCart();
+  const { addToCart } = useCart() || {};;
+
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -122,11 +123,16 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
     </div>
   );
 
+  if (status === "unauthenticated") {
+    return <div>You must be logged in to view this page.</div>;
+  }
+
   if (!product) return <div>Product not found.</div>;
 
   return (
     <section className="mt-10">
-      <div className="flex flex-col md:flex-row md:justify-between md:gap-x-20">
+      <div
+        className="flex flex-col md:flex-row md:justify-between md:gap-x-20">
         <div className="flex items-center w-full md:w-1/2">
           <Image src={product.image || "/images/image-placeholder.png"}
             alt={product.name}
@@ -168,6 +174,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
           <div className="flex items-center gap-4">
             <Button
+              aria-label="decrement"
               variant="outline"
               size="icon"
               onClick={handleDecrement}
@@ -176,6 +183,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
             </Button>
             <span>{quantity}</span>
             <Button
+              aria-label="increment"
               variant="outline"
               size="icon"
               onClick={handleIncrement}
@@ -186,7 +194,9 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
 
           <div className="flex gap-4">
-            <Button onClick={handleBuyNow}
+            <Button
+              aria-label="buy-now"
+              onClick={handleBuyNow}
               className={cn("text-white font-bold w-full mb-4 hover:bg-gray-700", Satoshi_Medium.className)}>
               Buy Now
             </Button>

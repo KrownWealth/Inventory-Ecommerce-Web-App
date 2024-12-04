@@ -13,7 +13,6 @@ interface ProductTableProps {
   costPrice: number
   sellingPrice: number
   productDescription: string
-  // markupPercentage: number
   categoryName: string
   createdDate: Date
   updatedDate: Date

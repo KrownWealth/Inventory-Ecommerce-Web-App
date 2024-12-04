@@ -20,9 +20,10 @@ import {
 } from "@/components/ui/chart";
 import { DatePickerWithRange } from "../DateRange/dateRangePicker";
 
-const desktopColor = "#007BFF"; // Custom blue color for desktop line
-const mobileColor = "#28A745"; // Custom green color for mobile line
-const gridColor = "#CCCCCC"; // Custom light grey color for grid lines
+const desktopColor = "#007BFF";
+const mobileColor = "#28A745";
+const gridColor = "#CCCCCC";
+
 
 const chartData = [
   { month: "January", desktop: 186, mobile: 80 },

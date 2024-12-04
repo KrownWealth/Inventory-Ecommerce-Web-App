@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { Dialog, DialogHeader, DialogContent, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogHeader, DialogContent, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import ProductForm from "./productForm";
 import { ProductsType } from "@/types";
 import { toastNotification, uploadImageToCloudinary } from "@/lib";
@@ -19,7 +19,7 @@ interface EditProductModalProps {
   markupPercentage: number;
   stock: number;
   status: string;
-  category: string;
+  category: string,
   description: string;
   slug?: string;
   createdAt?: Date;
@@ -66,7 +66,6 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
   const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
   const [productStatus, setProductStatus] = useState("published");
   const [imageName, setImageName] = useState(image || "");
-  const [editedProductData, setEditedProductData] = useState<ProductsType>(productData);
   const [generalError, setGeneralError] = useState<string | null>(null);
 
 
@@ -115,6 +114,9 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 
   useEffect(() => {
     if (isModalOpen) {
+      const selectedCategory = categories.find((cat) => cat.id === category) || { id: "", name: "" };
+
+
       setProductData({
         id,
         name,
@@ -122,19 +124,16 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         markupPercentage,
         sellingPrice,
         stock,
-        category: {
-          id: "",
-          name: "",
-        },
+        category: selectedCategory,
         image,
         status,
         description,
         slug,
         createdAt,
-        updatedAt
+        updatedAt,
       });
     }
-  }, [isModalOpen, id, name, costPrice, sellingPrice, stock, category, image, status, description, slug]);
+  }, [isModalOpen, id, name, costPrice, sellingPrice, stock, category, categories, image, status, description, slug, createdAt, updatedAt]);
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -188,9 +187,11 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 py-10 overflow-y-scroll">
-        <DialogHeader>
+      <DialogContent aria-describedby="edit-product-title"
+        className="sm:max-w-[600px] bg-white h-4/5 py-10 overflow-y-scroll">
+        <DialogHeader id="edit-product-title">
           <DialogTitle>Edit Product</DialogTitle>
+          <DialogDescription>Edit Product</DialogDescription>
         </DialogHeader>
         <ProductForm
           productData={productData}

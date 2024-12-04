@@ -9,6 +9,9 @@ import { DateRange } from 'react-day-picker';
 import { useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeModal, setActiveModal] = useState<'add' | 'edit' | null>(null);
@@ -27,11 +30,14 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
   const query = searchParams?.query || '';
   const currentPage = Number(searchParams?.page) || 1;
 
+
+
+
   const fetchProducts = async () => {
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/product`, {
+      const response = await fetch(`${baseUrl}/api/product`, {
         method: 'GET',
       });
 
@@ -53,7 +59,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
     setIsLoading(true);
     setError(null);
     try {
-      const response = await fetch(`/api/search-products?query=${query}&page=${page}&category=${category}`, {
+      const response = await fetch(`${baseUrl}/api/search-products?query=${query}&page=${page}&category=${category}`, {
         method: 'GET',
       });
 
@@ -94,7 +100,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
   const handleDeleteProduct = async (id: string) => {
     setIsLoading(true);
     try {
-      const response = await fetch(`/api/products/$`, {
+      const response = await fetch(`${baseUrl}/api/products/$`, {
         method: "DELETE",
       });
 

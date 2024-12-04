@@ -33,14 +33,16 @@ const CartItemCard = ({ item, productDetail, onIncrement, onDecrement, onRemove 
       </div>
 
       <div className="flex items-center space-x-1 md:space-x-2 ">
-        <Button variant="outline" size="sm" onClick={() => onDecrement(item)}>
+        <Button aria-label='decrement'
+          variant="outline" size="sm" onClick={() => onDecrement(item)}>
           <FaMinus className="h-2 w-2" />
         </Button>
         <span>{item.quantity}</span>
-        <Button variant="outline" size="sm" onClick={() => onIncrement(item)}>
+        <Button aria-label="increment" variant="outline" size="sm" onClick={() => onIncrement(item)}>
           <FaPlus className="h-2 w-2" />
         </Button>
-        <Button variant="destructive" size="sm" onClick={() => onRemove(item.productId)}>
+        <Button aria-label='remove'
+          variant="destructive" size="sm" onClick={() => onRemove(item.productId)}>
           <FaTrash className="h-4 w-4" />
         </Button>
       </div>

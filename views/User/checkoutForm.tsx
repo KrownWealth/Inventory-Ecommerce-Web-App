@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { FormEvent, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardTitle, CardHeader, CardContent, CardDescription, CardFooter } from "@/components/ui/card";
+import { Card, CardTitle, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
 import { FormattedPrice } from '@/lib'
 import { useCart } from '@/context/CartContext'
 

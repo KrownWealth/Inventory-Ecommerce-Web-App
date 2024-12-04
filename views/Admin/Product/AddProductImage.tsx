@@ -29,6 +29,7 @@ const AddProductImage: React.FC<AddProductImageProps> = ({
       </label>
       <div className="flex items-center space-x-4">
         <input
+          id='image'
           type="file"
           ref={fileInputRef}
           onChange={(e) => handleImage(e)}

@@ -6,7 +6,7 @@ import { IoMdBasket } from "react-icons/io";
 import { ImUsers, ImPriceTags } from "react-icons/im";
 import { PiShoppingCartFill } from "react-icons/pi";
 import { IoMdTrendingUp } from "react-icons/io";
-import Link from "next/link";
+
 
 
 const calculatePercentageChange = (current: number, previous: number) => {
@@ -43,26 +43,26 @@ const AdminHome = async () => {
     {
       title: "Total Customers",
       totalCustomers: totalCustomers.toString(),
-      icon: <ImUsers className="h-4 w-4" />,
+      icon: <ImUsers data-testid="mock-icon" className="h-4 w-4" />,
     },
     {
       title: "Total Products",
       totalProducts: totalProduct.toString(),
-      icon: <IoMdBasket className="h-4 w-4" />,
+      icon: <IoMdBasket data-testid="mock-icon" className="h-4 w-4" />,
     },
     {
       title: "Total Orders",
       total: totalOrders.toString(),
       percentage: ordersPercentage.toFixed(2),
-      icon: <PiShoppingCartFill className="h-4 w-4" />,
-      trend: <IoMdTrendingUp />,
+      icon: <PiShoppingCartFill data-testid="mock-icon" className="h-4 w-4" />,
+      trend: <IoMdTrendingUp data-testid="mock-trend-icon" />,
     },
     {
       title: "Total Revenue",
       total: ((totalRevenue._sum.totalPrice || 0) / 100).toFixed(2),
       percentage: revenuePercentage.toFixed(2),
-      icon: <ImPriceTags className="h-4 w-4" />,
-      trend: <IoMdTrendingUp />,
+      icon: <ImPriceTags data-testid="mock-icon" className="h-4 w-4" />,
+      trend: <IoMdTrendingUp data-testid="mock-trend-icon" />,
     }
   ];
 

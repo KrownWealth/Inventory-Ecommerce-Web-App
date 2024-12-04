@@ -8,6 +8,9 @@ import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useDebouncedCallback } from 'use-debounce';
 import { CartItemSkeleton } from '@/components/custom-ui/reuseables';
 import { usePathname } from 'next/navigation';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 export const CartItems = () => {
   const { fetchCartItems, addToCart, removeFromCart, cartItems, loading, totalPrice } = useCart();
   const [error, setError] = useState<string | null>(null);
@@ -19,7 +22,7 @@ export const CartItems = () => {
     const fetchProducts = async () => {
       setError(null);
       try {
-        const response = await fetch(`/api/product`, {
+        const response = await fetch(`${baseUrl}/api/product`, {
           method: "GET",
           headers: {
             'Content-Type': 'application/json',
@@ -92,13 +95,11 @@ export const CartItems = () => {
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+      <div data-testid="loading-cart"
+        style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Array.from({ length: cartItems.length }).map((_, index) => (
           <Suspense fallback={
-
             <CartItemSkeleton key={index} />
-
-
           }>
             <CartItemSkeleton key={index} />
           </Suspense>
@@ -131,7 +132,7 @@ export const CartItems = () => {
       <CardContent>
         {cartItems.length === 0 ? (
           <Card>
-            <CardContent>No items in your cart.</CardContent>
+            <CardContent data-testid="no-cart-items">No items in your cart.</CardContent>
           </Card>
         ) : (
           <>

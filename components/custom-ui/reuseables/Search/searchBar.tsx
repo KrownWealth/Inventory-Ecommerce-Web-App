@@ -13,6 +13,7 @@ function InputSearch({ placeholder, onSearch }: { placeholder: string; onSearch:
   const router = useRouter();
 
   const handleSearch = useDebouncedCallback((term: string) => {
+    console.log('Debounced term:', term);
     const params = new URLSearchParams(searchParams);
     if (term) {
       params.set('query', term);
@@ -21,6 +22,7 @@ function InputSearch({ placeholder, onSearch }: { placeholder: string; onSearch:
       params.delete('query');
       onSearch('');
     }
+
     router.replace(`${pathname}?${params.toString()}`);
   }, 500);
 

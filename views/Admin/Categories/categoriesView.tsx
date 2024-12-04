@@ -1,13 +1,13 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { AddCategoryModal, PageHead, CategoryTable, DatePickerWithRange, InputSearch } from '@/components/custom-ui/reuseables';
+import { AddCategoryModal, PageHead, CategoryTable } from '@/components/custom-ui/reuseables';
 import { Button } from '@/components/ui/button';
-import { AiOutlineLoading3Quarters } from 'react-icons/ai';
-import Link from 'next/link';
 import { toastNotification } from '@/lib';
 
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 const CategoryView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +18,7 @@ const CategoryView = () => {
     const fetchCategories = async () => {
       setIsLoading(true);
       try {
-        const response = await fetch(`/api/fetch-categories`);
+        const response = await fetch(`${baseUrl}/api/fetch-categories`);
         if (!response.ok) throw new Error('Failed to fetch categories');
         const data = await response.json();
         setCategories(data.categories);
@@ -33,7 +33,7 @@ const CategoryView = () => {
 
   const handleDeleteCategory = async (id: string) => {
     try {
-      const response = await fetch(`/api/delete-category/${id}`, {
+      const response = await fetch(`${baseUrl}/api/delete-category/${id}`, {
         method: 'DELETE',
       });
 

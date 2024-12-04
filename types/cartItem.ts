@@ -9,5 +9,5 @@ export interface CartItemType {
   totalPrice?: number;
   image: string;
   name: string;
-  product: ProductType
+  product?: ProductType
 }

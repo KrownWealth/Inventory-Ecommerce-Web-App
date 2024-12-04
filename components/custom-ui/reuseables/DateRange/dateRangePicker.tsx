@@ -2,15 +2,16 @@
 
 import * as React from "react";
 import { format } from "date-fns";
-import { DateRange } from "react-day-picker";
 import { FaCalendar } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
+import { DateRange } from "react-day-picker";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 
+
 interface DatePickerWithRangeProps {
-  date: DateRange | undefined;
-  setDate: React.Dispatch<React.SetStateAction<DateRange | undefined>>;
+  date?: DateRange;
+  setDate?: (date: DateRange | undefined) => void;
 }
 
 export function DatePickerWithRange({ date, setDate }: DatePickerWithRangeProps) {

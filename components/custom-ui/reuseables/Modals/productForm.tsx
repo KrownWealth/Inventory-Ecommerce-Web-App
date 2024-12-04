@@ -42,7 +42,7 @@ interface ProductFormProps {
   handleImage: (e: React.ChangeEvent<HTMLInputElement>) => Promise<void>;
   status: string;
   setStatus: React.Dispatch<React.SetStateAction<string>>;
-  formMode: "Add" | "Edit";
+  formMode: string;
   generalError: string | null
 }
 
@@ -137,6 +137,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
       <form onSubmit={onSubmit}>
         <div className="mb-3">
           <FormField
+            id="name"
             label="Product Name"
             name="name"
             htmlFor="name"
@@ -154,6 +155,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         <div className="mb-3">
           <FormField
+            id="costPrice"
             label="Cost Price"
             name="costPrice"
             htmlFor="costPrice"
@@ -172,6 +174,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
         <div className="grid sm:grid-cols-2 gap-3 mb-3">
           <div>
             <FormField
+              id="markupPercentage"
               label="Markup Percentage"
               name="markupPercentage"
               htmlFor="markupPercentage"
@@ -202,6 +205,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         <div className="mb-3">
           <FormField
+            id="stock"
             label="Stock"
             name="stock"
             htmlFor="stock"
@@ -222,7 +226,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             Category <span className="text-red-400">*</span>
           </Label>
           <Select name="category" onValueChange={handleCategoryChange}>
-            <SelectTrigger className="w-full">
+            <SelectTrigger aria-label="Select category" className="w-full">
               <SelectValue placeholder="Select category" />
               {isLoading && <img src="/images/spinner-small.svg" alt="loading" className="ml-2" />}
             </SelectTrigger>
@@ -245,7 +249,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
             Status <span className="text-red-400">*</span>
           </Label>
           <Select value={status} onValueChange={setStatus}>
-            <SelectTrigger>
+            <SelectTrigger aria-label="Select status">
               <SelectValue placeholder="Select Status" />
             </SelectTrigger>
             <SelectContent>
@@ -260,6 +264,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
 
         <div className="mb-3">
           <TextAreaField
+            id="description"
             label="Product Description"
             name="description"
             htmlFor="description"
@@ -296,7 +301,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
                 </span>
               </>
             ) : (
-              formMode === "Add" ? "Add Product" : "Edit Product"
+              formMode === "Add" ? "Add Product" : "Update Product"
             )}
           </Button>
 

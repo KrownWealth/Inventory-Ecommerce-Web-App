@@ -4,7 +4,8 @@ import { Textarea } from '../ui/textarea';
 
 
 
-interface TextAreaProps{
+interface TextAreaProps {
+  id: string
   label: string
   htmlFor: string
   name: string
@@ -15,6 +16,7 @@ interface TextAreaProps{
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
 }
 const TextAreaField: React.FC<TextAreaProps> = ({
+  id,
   label,
   htmlFor,
   name,
@@ -24,19 +26,21 @@ const TextAreaField: React.FC<TextAreaProps> = ({
   value,
   onChange
 }) => {
-  
+
   return (
     <div className='flex flex-col space-y-1'>
       <Label htmlFor={htmlFor} className='mb-2 text-sm text-black'>
         {label}
-        {required && <span className='text-red-500'>*</span>} 
+        {required && <span className='text-red-500'>*</span>}
       </Label>
       <Textarea
+        id={id}
         name={name}
         value={value}
         onChange={onChange}
+        aria-label="description"
       />
-      {isInvalid && errorMessage && <span className='text-red-500 text-xs'>{errorMessage}</span>} 
+      {isInvalid && errorMessage && <span className='text-red-500 text-xs'>{errorMessage}</span>}
     </div>
   );
 };

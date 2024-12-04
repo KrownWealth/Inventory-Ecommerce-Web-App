@@ -10,6 +10,9 @@ import PasswordField from "@/components/form/passwordField";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 export default function SignupView() {
   const router = useRouter();
 
@@ -32,7 +35,7 @@ export default function SignupView() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/user', {
+      const response = await fetch(`${baseUrl}/api/user`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -67,6 +70,7 @@ export default function SignupView() {
     <div className="flex flex-col">
       <form onSubmit={handleSubmit}>
         <FormField
+          id="username"
           label="Username"
           type="text"
           name="username"
@@ -79,6 +83,7 @@ export default function SignupView() {
           required
         />
         <FormField
+          id="email"
           label="Email"
           type="email"
           name="email"

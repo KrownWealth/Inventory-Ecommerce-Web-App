@@ -10,10 +10,7 @@ export default function Login() {
             {/* <LogoOnAuth /> */}
             <h2 className="text-2xl md:text-6xl font-semibold text-black pb-6">Login</h2>
             <SignupWithGoogle />
-
-
             <LoginView />
-
           </div>
         </div>
         <Quote />

@@ -46,7 +46,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
     const reviewData = { productId, userId, rating, comment };
 
     try {
-      const response = await fetch(`/api/reviews/${productId}`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews/${productId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reviewData),

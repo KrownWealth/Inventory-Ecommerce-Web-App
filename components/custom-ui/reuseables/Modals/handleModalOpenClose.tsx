@@ -33,7 +33,6 @@ const ModalManager: React.FC<ModalManagerProps> = ({
         setIsModalOpen={() => setIsModalOpen(true)}
         handleAddProductOpen={handleAddProductOpen}
         handleCategoryChange={handleCategoryChange}
-        filterText='Filter by Category'
         btnText='Add Product'
       />
       {isModalOpen && activeModal === 'add' && (

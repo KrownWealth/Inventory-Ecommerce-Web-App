@@ -15,6 +15,8 @@ interface CartContextType {
   loading: boolean;
 }
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -37,7 +39,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setLoading(true);
     try {
 
-      const response = await fetch(`/api/cart`, {
+      const response = await fetch(`${baseUrl}/api/cart`, {
         method: "GET",
         headers: { "user-id": String(userId) },
       });
@@ -84,7 +86,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCartItems(updatedCartItems);
 
       // Persist the item to the backend
-      const response = await fetch('/api/cart', {
+      const response = await fetch(`${baseUrl}/api/cart`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -114,7 +116,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const removeFromCart = async (itemId: number) => {
     try {
-      const response = await fetch(`/api/cart`, {
+      const response = await fetch(`${baseUrl}/api/cart`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ itemId }),
@@ -149,7 +151,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const clearCart = async () => {
     if (!userId) return;
     try {
-      await fetch(`/api/cart`, {
+      await fetch(`${baseUrl}/api/cart`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId }),

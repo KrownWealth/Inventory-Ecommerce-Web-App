@@ -6,8 +6,7 @@ import FilterByCategory from '../Filter/filterByCategory';
 
 interface ProductPageHeadProps {
   setIsModalOpen: (open: boolean) => void;
-  handleAddProductOpen: () => void; 
-  filterText: string;
+  handleAddProductOpen: () => void;
   btnText?: string;
   handleCategoryChange: (categoryId: string | undefined) => void;
 }
@@ -15,8 +14,8 @@ interface ProductPageHeadProps {
 const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOpen, btnText, handleCategoryChange }) => {
   return (
     <div className="flex items-center py-4">
-      <FilterByCategory onCategoryChange={handleCategoryChange} /> 
-      
+      <FilterByCategory onCategoryChange={handleCategoryChange} />
+
       <Button onClick={handleAddProductOpen} className="ml-auto text-sm lg:text-lg" size="sm">
         {btnText}
       </Button>

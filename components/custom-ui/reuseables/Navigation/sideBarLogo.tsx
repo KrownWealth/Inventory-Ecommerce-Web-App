@@ -10,9 +10,9 @@ interface SidebarHeaderProps {
 
 const SidebarHeaderLogo: React.FC<SidebarHeaderProps> = ({ isCollapsed, toggleSidebar }) => {
   return (
-    <div className="flex h-[75px] items-start justify-between pt-8 relative">
+    <div data-testid="logo-available" className="flex h-[75px] items-start justify-between pt-8 relative">
       <Link href="/admin" className="flex items-center gap-2 font-semibold" prefetch={false}>
-        <FaPercentage className='h-8 w-8' />
+        <FaPercentage data-testid="logo-icon" className='h-8 w-8' />
         <span className={`${isCollapsed ? 'hidden' : 'block'}`}>PriceMarkup</span>
       </Link>
       <button
@@ -21,7 +21,10 @@ const SidebarHeaderLogo: React.FC<SidebarHeaderProps> = ({ isCollapsed, toggleSi
         onClick={toggleSidebar}
         aria-label="Toggle sidebar"
       >
-        {isCollapsed ? <FaArrowLeft className="h-4 w-4" /> : <FaArrowRight className="h-4 w-4" />}
+        {isCollapsed ?
+          <FaArrowLeft data-testid="arrow-left-icon" className="h-4 w-4" />
+          :
+          <FaArrowRight data-testid="arrow-right-icon" className="h-4 w-4" />}
       </button>
 
     </div>

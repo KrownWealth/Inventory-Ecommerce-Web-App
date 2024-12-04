@@ -6,6 +6,9 @@ import { useRouter } from 'next/navigation';
 import { FaUser } from 'react-icons/fa';
 import { DateRange } from 'react-day-picker';
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 const CustomerView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [customerInfo, setCustomerInfo] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -27,7 +30,7 @@ const CustomerView = ({ searchParams }: { searchParams?: { query?: string; page?
     setError(null);
 
     try {
-      const response = await fetch(`/api/user?page=${currentPage}&limit=20`);
+      const response = await fetch(`${baseUrl}/api/user?page=${currentPage}&limit=20`);
       if (!response.ok) throw new Error('Failed to fetch customers.');
 
       const data = await response.json();

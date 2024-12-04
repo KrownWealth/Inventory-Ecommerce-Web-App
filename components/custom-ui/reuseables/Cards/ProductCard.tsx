@@ -40,7 +40,6 @@ export const ProductCard: React.FC<ProductCardProps> = ({ id, name, image, categ
   };
 
 
-  console.log("Product Rating")
   return (
     <div>
       <Link href={`/frontend/products/${slug}`}>

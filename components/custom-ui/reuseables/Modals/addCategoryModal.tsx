@@ -7,12 +7,13 @@ import {
   DialogHeader,
   DialogTitle,
   DialogFooter,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ProductsType } from "@/types";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import { toastNotification } from "@/lib";
 
 
@@ -57,6 +58,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
 
     try {
       const validatedData = CategorySchema.parse(categoryData);
+
       const response = await fetch(`/api/add-category`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -74,17 +76,28 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
       setIsModalOpen(false);
     } catch (error: any) {
       console.error("Failed to add category:", error);
-      setErrors({ ...errors, general: error.message });
+
+      if (error instanceof ZodError) {
+        const validationErrors = error.errors.reduce((acc, curr) => {
+          acc[curr.path[0]] = curr.message;
+          return acc;
+        }, {} as Record<string, string>);
+        setErrors(validationErrors);
+      } else {
+        setErrors({ general: error.message });
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 overflow-y-scroll py-10">
-        <DialogHeader>
+    <Dialog open={isModalOpen} onOpenChange={setIsModalOpen} >
+      <DialogContent className="sm:max-w-[600px] bg-white h-4/5 overflow-y-scroll py-10"
+        aria-describedby="modal-description">
+        <DialogHeader id="dialog-description">
           <DialogTitle>Add New Category</DialogTitle>
+          <DialogDescription>Add Category</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit}>
           <div className="grid gap-6">
@@ -93,7 +106,7 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
               <div className="grid gap-3">
                 <Label htmlFor="name">Category Name</Label>
                 <Input id="name" name="name" type="text" className="w-full" onChange={handleChange} />
-                {errors.name && <div className="text-red-500">{errors.name}</div>}
+                {errors.name && <div className="text-red-500" role="alert">{errors.name}</div>}
               </div>
             </div>
           </div>

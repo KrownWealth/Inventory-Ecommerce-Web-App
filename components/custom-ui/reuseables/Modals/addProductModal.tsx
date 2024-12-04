@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -46,9 +47,8 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
   const [imageName, setImageName] = useState(productData.image || "");
   const [isUploading, setIsUploading] = useState(false);
   const [imageError, setImageError] = useState<string | null>(null);
-  const [categories, setCategories] = useState<{ id: string; name: string }[]>(
-    []
-  );
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
+
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -56,7 +56,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
         const response = await fetch(`/api/fetch-categories`);
         if (!response.ok) throw new Error("Failed to fetch categories");
         const data = await response.json();
-        setCategories(data.categories);
+        setCategories(data.categories || []);
       } catch (error) {
         console.error("Failed to fetch categories", error);
       }
@@ -174,9 +174,11 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
 
   return (
     <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
-      <DialogContent className="bg-white h-4/5 overflow-y-scroll py-10">
-        <DialogHeader>
+      <DialogContent aria-describedby="modal-description"
+        className="bg-white h-4/5 overflow-y-scroll py-10">
+        <DialogHeader id="dialog-description">
           <DialogTitle>Add Product</DialogTitle>
+          <DialogDescription>Add Product</DialogDescription>
         </DialogHeader>
         <ProductForm
           productData={productData}

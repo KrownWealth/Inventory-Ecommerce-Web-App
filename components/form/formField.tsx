@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 type InputType = "text" | "password" | "email" | "number" | "tel" | "url";
 
 export type FormFieldProps = {
+  id: string,
   label: string;
   htmlFor: string;
   name: string;
@@ -22,6 +23,7 @@ export type FormFieldProps = {
 };
 
 const FormField: React.FC<FormFieldProps> = ({
+  id,
   label,
   htmlFor,
   name,
@@ -48,7 +50,7 @@ const FormField: React.FC<FormFieldProps> = ({
       <Input
         type={type}
         name={name}
-        id={htmlFor}
+        id={id}
         value={value}
         style={inputStyles}
         onChange={onChange}

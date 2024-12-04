@@ -39,7 +39,12 @@ const OrdersTable: React.FC<OrderTableProps> = ({ orders }) => {
               <TableCell>{order.productName}</TableCell>
               <TableCell>{order.orderDate}</TableCell>
               <TableCell>{order.paymentStatus}</TableCell>
-              <TableCell>{order.totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</TableCell>
+              <TableCell>
+                {order.totalPrice
+                  ? order.totalPrice.toLocaleString('en-US', { style: 'currency', currency: 'USD' })
+                  : 'N/A'}
+              </TableCell>
+
               <TableCell>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>

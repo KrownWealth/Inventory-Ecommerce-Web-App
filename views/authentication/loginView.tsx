@@ -11,13 +11,15 @@ import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+
 export default function LoginView() {
 
   const { value: email, error: emailError, handleChange: handleEmailChange } = useFormField('', FormSchema.shape.email);
   const { value: password, error: passwordError, handleChange: handlePasswordChange } = useFormField('', FormSchema.shape.password);
 
   const [isDisabled, setIsDisabled] = useState(true)
-  const [success, setSuccess] = useState(false)
   const [loading, setLoading] = useState(false);
   const { data: session } = useSession();
 
@@ -75,6 +77,7 @@ export default function LoginView() {
     <div className="flex flex-col w-full">
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormField
+          id="email"
           label="Email"
           type="email"
           htmlFor="email"
@@ -110,7 +113,8 @@ export default function LoginView() {
           </Link>
         </div>
         <div className="flex items-center justify-center w-full pt-8">
-          <Button type="submit" disabled={isDisabled || success} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
+          <Button type="submit"
+            disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
             {loading ? (
               <>
                 <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
