@@ -79,7 +79,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Review submitted successfully!</p>}
       {/* submit new  review */}
-      <div className="flex flex-col items-start justify-start my-4">
+      <div className="flex flex-col items-start justify-start my-12">
         <div className="flex flex-row items-center space-x-4 pb-2">
           <Label className="text-sm md:text-lg">Rate this product</Label>
 

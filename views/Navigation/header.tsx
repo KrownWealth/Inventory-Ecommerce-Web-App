@@ -1,111 +1,90 @@
 "use client";
 
-import Link from 'next/link';
-import React from 'react';
-import { FiShoppingBag } from 'react-icons/fi';
-import { usePathname, useRouter } from 'next/navigation';
-import { UserSearch } from '@/components/custom-ui/reuseables';
-import { Satoshi_Black, Satoshi_Bold, Satoshi_Medium } from '@/lib/fonts';
-import { cn } from '@/lib';
-import { useSession } from 'next-auth/react';
-import { Button } from '@/components/ui/button';
-import { HiOutlineMenuAlt3 } from 'react-icons/hi';
-import SignOut from '../authentication/singOut';
-import {
-  Sheet,
-  SheetContent,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import { useCart } from '@/context/CartContext';
-
+import React, { useState } from "react";
+import { FiShoppingBag } from "react-icons/fi";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useSession } from "next-auth/react";
+import { HiOutlineMenuAlt3 } from "react-icons/hi";
+import { useCart } from "@/context/CartContext";
+import { Logo } from "./Logo";
+import DesktopMenu from "./DesktopMenu";
+import MobileMenu from "./MobileMenu";
+import { DiscountBanner } from "./DiscountBanner";
+import { IoClose } from 'react-icons/io5';
 
 const headerLinks = [
-  { label: 'Shop by Products', href: '/frontend/products' },
+  { label: "Shop by Products", href: "/frontend/products" },
 ];
 
 export const Header = () => {
-  const pathname = usePathname();
   const router = useRouter();
   const { cartItems } = useCart();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  const handleLogin = () => {
+    router.replace("/auth/sign-in");
+  };
 
   const { data: session, status } = useSession();
   const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleLogin = () => {
-    router.replace('/auth/sign-in');
-  };
+
 
   return (
-    <header className="w-full antialiased">
-      <nav className="max-w-7xl h-16 p-2 px-4 mx-auto flex items-center justify-between">
-        <div>
-          <h2 className={cn("font-semibold flex items-center justify-start text-sm md:text-md lg:text-xl capitalize leading-snug", Satoshi_Black.className)}>
-            Hometung <br />Furniture.
-          </h2>
-        </div>
+    <nav className="bg-white w-full">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 py-8">
+        <div className="flex items-center justify-between h-16">
+          <div className="flex-shrink-0">
+            <Logo />
+          </div>
 
-        <div className="hidden-header flex items-center justify-start gap-6 md:gap-8 py-3 sm:justify-center">
-          <>
-            {headerLinks.map((menu) => (
-              <Link href={menu.href} key={menu.label} className={cn('uppercase text-pricesageBlackTwo font-semibold md:text-sm lg:text-lg underline', Satoshi_Bold)}>
-                {menu.label}
-              </Link>
-            ))}
-          </>
-          <UserSearch />
-        </div>
+          {/* Pass props to DesktopMenu */}
+          <DesktopMenu
+            headerLinks={headerLinks}
+            cartItemCount={cartItemCount}
+            session={session}
+            status={status}
+            handleLogin={handleLogin}
+          />
 
-        <div className="flex gap-6 items-center hidden-header">
-          <div className="flex flex-col items-center relative z-50">
-            <Link href="/frontend/cart" >
-              <FiShoppingBag className="w-4 h-4 lg:w-6 lg:h-6" />
-              <span className={cn('uppercase font-semibold text-sm underline', Satoshi_Bold)}>Cart</span>
+          {/* Mobile Menu Button */}
+          <div className="hamburger-menu space-x-4">
+            <Link href="/frontend/cart" className="flex flex-col items-center relative">
+              <FiShoppingBag size={24} />
+              <span className="font-satoshi-bold uppercase font-semibold text-sm underline">Cart</span>
               {cartItemCount > 0 && (
-                <span className="z-10 absolute top-0 right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs">
+                <span className="z-10 absolute right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
+                  style={{
+                    top: '-8px'
+                  }}>
                   {cartItemCount}
                 </span>
               )}
             </Link>
-          </div>
 
-          <div className="grid grid-rows-2 font-semibold ">
-            <span>Welcome</span>
-            <span>{session?.user.username}</span>
+
+            <button
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              className="text-gray-600 hover:text-gray-900 focus:outline-none"
+            >
+              {isMenuOpen ? <IoClose size={30} /> : <HiOutlineMenuAlt3 size={30} />}
+            </button>
+
           </div>
-          {status === "authenticated" ? <SignOut /> : <Button onClick={handleLogin}>Login</Button>}
         </div>
 
-        <div className="lg:hidden flex space-x-4">
-          <Link href="/cart" className="flex flex-col items-center">
-            <FiShoppingBag className="w-4 h-4 lg:w-6 lg:h-6" />
-            <span className={cn('uppercase text-pricesageBlackTwo font-semibold text-sm underline', Satoshi_Bold)}>Cart</span>
-          </Link>
-          <Sheet>
-            <SheetTrigger><HiOutlineMenuAlt3 className="h-8 w-8" /></SheetTrigger>
-            <SheetContent className='bg-white w-3/4 flex flex-col space-y-4'>
-              <div className="pt-8">
-                <p>Search for Product</p>
-                <UserSearch />
-              </div>
-              {headerLinks.map((menu) => (
-                <Link href={menu.href} key={menu.label} className={cn('uppercase text-pricesageBlackTwo font-semibold md:text-sm lg:text-lg underline', Satoshi_Bold)}>
-                  {menu.label}
-                </Link>
-              ))}
-              {status === "authenticated" ? <SignOut /> : <Button onClick={handleLogin}>Login</Button>}
-            </SheetContent>
-          </Sheet>
 
-
-        </div>
-      </nav>
-
-      {/* Discount banner */}
-      <div className="h-10 bg-black flex items-center justify-center text-white px-4">
-        <p className={cn('uppercase text-pricesageBlackTwo font-medium text-md md:text-xl underline', Satoshi_Medium)}>
-          Special offer! Get 20% off now <span className="underline text-medium">Give it to me!</span>
-        </p>
+        {/* Pass props to MobileMenu */}
+        <MobileMenu
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          headerLinks={headerLinks}
+          status={status}
+          handleLogin={handleLogin}
+        />
       </div>
-    </header>
+      <DiscountBanner />
+    </nav>
   );
 };

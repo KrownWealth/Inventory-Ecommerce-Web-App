@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { MdOutlineLogout } from 'react-icons/md';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { signOut, useSession } from 'next-auth/react';
-import { SignOut } from '@/views';
+
 import { useRouter } from 'next/navigation';
 
 interface SidebarFooterProps {

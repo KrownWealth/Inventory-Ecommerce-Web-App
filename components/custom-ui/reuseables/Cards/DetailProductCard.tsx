@@ -3,7 +3,6 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { Satoshi_Bold, Satoshi_Medium } from "@/lib/fonts";
 import { cn, FormattedPrice, toastNotification } from "@/lib";
 import { ProductType } from "@/types";
 import { StarRating } from "../Rating/starRating";
@@ -197,7 +196,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
             <Button
               aria-label="buy-now"
               onClick={handleBuyNow}
-              className={cn("text-white font-bold w-full mb-4 hover:bg-gray-700", Satoshi_Medium.className)}>
+              className="font-satoshi-medium text-white font-bold w-full mb-4 hover:bg-gray-700">
               Buy Now
             </Button>
           </div>
@@ -212,9 +211,9 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
 
 const Label: React.FC<{ label: string }> = ({ label }) => (
-  <span className={cn("font-semibold", Satoshi_Bold.className)}>{label}:</span>
+  <span className="font-satoshi-black">{label}:</span>
 );
 
 const DetailText: React.FC<{ text: string | number }> = ({ text }) => (
-  <span className={cn("font-medium ", Satoshi_Medium.className)}>{text}</span>
+  <span className={cn("font-satoshi-medium")}>{text}</span>
 );

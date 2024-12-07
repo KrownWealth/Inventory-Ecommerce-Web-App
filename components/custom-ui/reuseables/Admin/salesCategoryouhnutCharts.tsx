@@ -27,8 +27,8 @@ const CustomerMapDoughnut = () => {
     <Card className="h-auto w-full">
       <CardHeader>
         <div className="flex justify-between">
-          <h4 className="font-semibold text-sm md:text-lg">Customer Map</h4>
-          <DatePickerWithRange date={date} setDate={setDate} />
+          <h4 className="font-semibold text-md md:text-lg pb-2">Customer Map</h4>
+          {/* <DatePickerWithRange date={date} setDate={setDate} /> */}
         </div>
       </CardHeader>
       <CardContent className="flex flex-col md:flex-row items-center justify-center gap-8">

@@ -1,37 +1,52 @@
-import React from 'react';
-import Image from 'next/image';
-import { Satoshi_Black } from '@/lib/fonts';
-import { cn } from '@/lib';
-import { ShopBtn } from '@/components/custom-ui/reuseables';
-import { Header, Footer } from '@/views';
-const Page = async () => {
+"use client";
+
+import React from "react";
+import { useRouter } from "next/navigation";
+import { Card } from "@/components/ui/card";
+import Image from "next/image";
+
+const OnboardingScreen = () => {
+  const router = useRouter();
+
+  const navigateTo = (role: string) => {
+    if (role === "admin") {
+      router.push("/dashboard");
+    } else if (role === "user") {
+      router.push("/frontend");
+    }
+  };
 
   return (
-    <>
-      <Header />
-      <main>
-        <section className='relative flex w-full h-[450px] '>
-          <div className='bg-[#004631] z-10 flex flex-col justify-center md:pl-20 pl-8'>
+    <div className="min-h-screen flex items-center justify-center bg-pricesageBlackTwo text-white px-4">
+      <Card className="border-none max-w-sm md:max-w-lg w-full bg-pricesageBlackTwo rounded-sm 
+      shadow-2xl shadow-[rgba(255,255,255,0.1)] p-4 md:p-10 space-y-8">
+        <div className="flex items-center justify-center mx-auto">
+          <Image src="/images/price-sage-logo-trans.png" alt="logo" width={200} height={200} />
+        </div>
+        <h1 className="text-4xl font-extrabold text-white capitalize">
+          Welcome
+        </h1>
+        <p className="text-pricesagePaleBlue leading-relaxed">
+          Choose your interface to get started. Whether you're an admin or a user, we've got you covered.
+        </p>
+        <div className="space-y-5">
+          <button
+            onClick={() => navigateTo("user")}
+            className="w-full py-3 bg-white hover:bg-pricesageOrange text-black hover:text-white font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
+          >
+            Access User Interface
+          </button>
+          <button
+            onClick={() => navigateTo("admin")}
+            className="w-full py-3 bg-pricesageBurntOrange hover:bg-pricesageOrange text-white font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
+          >
+            Access Admin Dashboard
+          </button>
 
-            <h2 className={cn("font-semibold flex items-center justify-center text-2xl md:text-4xl capitalize leading-snug text-white ", Satoshi_Black.className)}>
-              Deluxe & Luxury Interiors at Your Fingertip
-            </h2>
-            <ShopBtn />
-
-          </div>
-
-          <div className='hero-bg relative'>
-            <Image src="/images/home-images.webp" alt="Home Image" fill className='object-cover' />
-          </div>
-
-        </section>
-        <section className='max-w-7xl py-12 px-8 md:px-12 mx-auto'>
-          <h2 className='text-2xl md:text-4xl text-black font-medium'> Shop beautiful Interiors from the comfort of your home.</h2>
-        </section>
-      </main>
-      <Footer />
-    </>
+        </div>
+      </Card>
+    </div>
   );
 };
 
-export default Page;
+export default OnboardingScreen;

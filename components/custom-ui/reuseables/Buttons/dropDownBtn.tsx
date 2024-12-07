@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
+import { FaArrowsAltV } from 'react-icons/fa';
 
 interface DropdownButtonProps {
   categoryId: string;
@@ -24,14 +25,14 @@ const DropdownButton: React.FC<DropdownButtonProps> = ({ categoryId, onEdit, onD
   };
 
   return (
-    <div className="relative inline-block text-left">
+    <div className="relative inline-block text-left z-50">
       <button
         role="button"
         aria-label="Options"
         onClick={toggleDropdown}
-        className="px-4 py-2 bg-blue-500 text-white rounded-md focus:outline-none"
+        className="px-4 py-2 rounded-md focus:outline-none"
       >
-        Options
+        <FaArrowsAltV className="h-4 w-4" />
       </button>
 
       {isOpen && (

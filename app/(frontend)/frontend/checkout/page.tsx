@@ -19,7 +19,7 @@ const CheckoutPage = async () => {
 
   const cartItems: CartItemType[] = await getCartItemsForUser(userId);
   const totalPrice = cartItems.reduce((total, item) => {
-    return total + (item.product.sellingPrice ?? 0) * item.quantity;
+    return total + (item.product?.sellingPrice ?? 0) * item.quantity;
   }, 0);
 
 
@@ -30,9 +30,9 @@ const CheckoutPage = async () => {
     currency: "USD",
     metadata: {
       userId: userId,
-      productId: cartItems.length > 0 ? cartItems[0].product.id : '',
+      productId: cartItems?.length > 0 ? cartItems[0].product?.id || '' : '',
       cartItems: JSON.stringify(cartItems.map(item => ({
-        productId: item.product.id,
+        productId: item.product?.id || '',
         quantity: item.quantity
       }))),
     },
@@ -48,8 +48,8 @@ const CheckoutPage = async () => {
     <section className="w-full">
       <div className="max-w-7xl py-10 px-8 md:px-12 mx-auto ">
         <div>
-          <h2 className='text-lg md:text-2xl py-4 font-semibold'>All your orders in one place</h2>
-          <div className="grid grid-rows-2 md:grid-cols-2 w-full gap-12">
+          <h2 className='text-lg md:text-2xl pt-4 pb-8 font-semibold'>All your orders in one place</h2>
+          <div className="grid grid-rows-2 md:grid-rows-2 lg:grid-cols-2 w-full gap-12">
             <div className="grid">
               <CartItems />
             </div>

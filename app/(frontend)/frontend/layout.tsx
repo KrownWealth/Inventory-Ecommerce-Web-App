@@ -9,7 +9,7 @@ const Layout = ({
   return (
     <>
       <Header />
-      <main className='py-10 max-h-screen h-screen'>{children}</main>
+      <main className='pb-12'>{children}</main>
       <Footer />
     </>
   )

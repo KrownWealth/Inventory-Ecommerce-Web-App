@@ -67,7 +67,55 @@
     @apply bg-background text-foreground;
   }
 }
+@layer utilities {
+  :root {
+    --font-satoshi-black: "Satoshi Black", sans-serif;
+    --font-satoshi-bold: "Satoshi Bold", sans-serif;
+    --font-satoshi-light: "Satoshi Light", sans-serif;
+    --font-satoshi-medium: "Satoshi Medium", sans-serif;
+    --font-satoshi-regular: "Satoshi Regular", sans-serif;
+  }
+}
 
+/* Utility Font Classes */
+.font-satoshi-black {
+  @apply font-semibold;
+  font-family: var(--font-satoshi-black);
+}
+
+.font-satoshi-bold {
+  @apply font-bold;
+  font-family: var(--font-satoshi-bold);
+}
+
+.font-satoshi-light {
+  @apply font-light;
+  font-family: var(--font-satoshi-light);
+}
+
+.font-satoshi-medium {
+  @apply font-medium;
+  font-family: var(--font-satoshi-medium);
+}
+
+.font-satoshi-regular {
+  @apply font-normal;
+  font-family: var(--font-satoshi-regular);
+}
+
+
+/* Navigation */
+
+.nav__toggle,
+.nav__close {
+ font-size: 1.5rem;
+ color: var(--title-color);
+ cursor: pointer;
+}
+
+.show-menu {
+ right: 0;
+}
 
 .hero-bg {
   position: relative;
@@ -82,7 +130,7 @@
   top: 0;
   /* left: -50px; */
   left: 0;
-  width: 50%;
+  width: 40%;
   height: 100%;
   background: linear-gradient(to top left, transparent 50%, #004631 50%);
   z-index: 2;
@@ -91,20 +139,31 @@
 .hero-bg img {
   width: 100%;
   height: 100%;
+  top: -24px;
   object-fit: cover;
 }
 
+
+.hamburger-menu {
+  display: none;
+  align-items: center;
+}
+
+
 @media only screen and (min-width: 320px) and (max-width: 480px) {
-  /* Mobile styles */
   .hero-bg {
-  width: 100%;
+    width: 100%;
+  }
+
+  .hero-bg::before {
+    width: 100%;
+  }
+  
 }
 
-  .hero-bg::before{
-     width: 100%;
-  }
-  .hidden-header{
-    display: none;
+
+@media (max-width: 1024px) {
+  .hamburger-menu {
+    display: flex;
   }
 }
-

@@ -56,7 +56,7 @@ export default function SignupView() {
       toastNotification("success", "top-right", undefined, {
         message: "Successfully signup",
       });
-      router.push('/auth/sign-in')
+      router.replace('/auth/sign-in')
       console.log("Signup successful", data);
     } catch (error) {
       console.error("User registeration fail", error);

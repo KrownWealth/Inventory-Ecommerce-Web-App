@@ -31,7 +31,7 @@ function UserSearch() {
   };
 
   return (
-    <div className="items-center w-full lg:w-[580px] hidden lg:flex">
+    <div className="items-center w-full lg:w-[580px]">
       <div className="relative w-full">
 
         <PiMagnifyingGlass className="absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-gray-600 peer-focus:text-gray-900" />

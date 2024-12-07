@@ -62,8 +62,8 @@ const SalesHistoryLineChart = () => {
     <Card>
       <CardHeader>
         <div className="flex justify-between">
-          <h4 className="font-semibold text-sm md:text-lg">Sales History</h4>
-          <DatePickerWithRange date={date} setDate={setDate} />
+          <h4 className="font-semibold text-md md:text-lg pb-2">Sales History</h4>
+          {/* <DatePickerWithRange date={date} setDate={setDate} /> */}
         </div>
         <div className="flex items-center justify-center gap-2 font-medium leading-none text-sm md:text-[16px]">
           Customer increase by 5.2% this month{" "}

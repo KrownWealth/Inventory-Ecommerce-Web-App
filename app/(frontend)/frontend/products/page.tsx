@@ -34,7 +34,7 @@ const ProductView = async () => {
   return (
     <section className="w-full mt-10">
       <div className="max-w-7xl px-8 md:px-12 mx-auto">
-        <h2 className={cn('font-bold text-2xl md:text-3xl lg:text-4xl', Satoshi_Bold.className)}>All Products</h2>
+        <h2 className="font-satoshi-bold text-2xl md:text-3xl lg:text-4xl">All Products</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 my-8">
           {products.map((product) => (
             <ProductCard

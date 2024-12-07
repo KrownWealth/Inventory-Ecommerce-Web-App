@@ -2,9 +2,6 @@
 
 import React from 'react';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
-import { DropdownMenu, DropdownMenuItem, DropdownMenuContent, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { FaArrowsAltV } from 'react-icons/fa';
 import DropdownButton from '../Buttons/dropDownBtn';
 
 interface CategoryTableProps {
@@ -21,7 +18,7 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete }) =
   ];
 
   return (
-    <div className="border shadow-sm rounded-lg overflow-auto lg:w-full w-[280px]">
+    <div className="border shadow-sm rounded-lg overflow-auto lg:w-full w-[280px] z-10">
       <Table>
         <TableHeader>
           <TableRow>
@@ -41,20 +38,6 @@ const CategoryTable: React.FC<CategoryTableProps> = ({ categories, onDelete }) =
                   onEdit={() => console.log(`Editing category: ${category.name}`)}
                   onDelete={onDelete}
                 />
-                {/* <DropdownMenu>
-                  <DropdownMenuTrigger asChild>
-                    <Button aria-haspopup="true" size="icon" variant="ghost">
-                      <FaArrowsAltV className="h-4 w-4" />
-                      <span className="sr-only">Toggle Category</span>
-                    </Button>
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end">
-                    <DropdownMenuItem data-testid="delete-category"
-                      onClick={() => onDelete(category.id)}>
-                      Delete
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu> */}
               </TableCell>
             </TableRow>
           ))}

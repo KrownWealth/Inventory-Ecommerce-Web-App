@@ -9,7 +9,8 @@ const ShopBtn = () => {
   return (
     <Button className='bg-white w-full md:w-1/2 items-start justify-center mt-8 text-[#004631] font-semibold cursor-pointer'
       onClick={() => router.push('/frontend/products')}>
-      Shop Now</Button>
+      Shop Now
+    </Button>
   )
 }
 export default ShopBtn

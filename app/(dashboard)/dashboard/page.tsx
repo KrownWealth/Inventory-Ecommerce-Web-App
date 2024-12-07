@@ -70,9 +70,11 @@ const AdminHome = async () => {
     <>
       <header className="flex h-[75px] pt-4 items-center justify-between border-b bg-muted/40 px-4 lg:px-8">
         <PageHead pageTitle="Dashboard" />
-        <p>Welcome {session?.user.username}</p>
+        <p className="text-sm md:text-lg">
+          Welcome <span className="block md:inline">{session?.user.username}</span>
+        </p>
       </header>
-      <div className="flex flex-col space-y-4 px-4 lg:px-8 py-4">
+      <div className="flex flex-col space-y-4 px-8 lg:px-8 py-4">
         <div className="flex flex-col md:flex-row gap-4">
           {dashBoardContent.map((content, index) => (
             <DashBoardCard

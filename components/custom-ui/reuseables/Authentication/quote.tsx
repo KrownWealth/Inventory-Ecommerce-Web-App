@@ -10,7 +10,7 @@ export function Quote() {
 
           <FaQuoteLeft className="absolute top-0 left-0 h-8 w-8" />
           <h1 className="text-4xl font-bold pl-12 leading-snug">
-            Shopping from @Hometung for all my furninture interiors is one of the best desicion.
+            Shopping from @Hometung for all my interior furnitures is one of the best desicion.
           </h1>
           <p className="mt-4 pl-12">@Sarah Wealth</p>
         </div>

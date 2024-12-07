@@ -16,7 +16,7 @@ const AddProductPageHead: React.FC<ProductPageHeadProps> = ({ handleAddProductOp
     <div className="flex items-center py-4">
       <FilterByCategory onCategoryChange={handleCategoryChange} />
 
-      <Button onClick={handleAddProductOpen} className="ml-auto text-sm lg:text-lg" size="sm">
+      <Button onClick={handleAddProductOpen} className="ml-auto text-sm lg:text-lg text-white" size="sm">
         {btnText}
       </Button>
     </div>

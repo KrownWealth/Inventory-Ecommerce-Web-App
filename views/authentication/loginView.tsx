@@ -51,11 +51,12 @@ export default function LoginView() {
         return;
       }
 
+
       if (session?.user?.role) {
         if (session.user.role === 'ADMIN') {
-          router.push('/dashboard');
+          router.replace('/dashboard');
         } else if (session.user.role === 'NORMAL_USER') {
-          router.push('/frontend');
+          router.replace('/frontend');
         }
         toastNotification("success", "top-right", undefined, {
           message: "Login Successful",
@@ -118,7 +119,7 @@ export default function LoginView() {
             {loading ? (
               <>
                 <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
-                <span className="ml-2">Loading...</span>
+                <span className="ml-2">Aunthenticating...</span>
               </>
             ) : (
               <span>Login</span>

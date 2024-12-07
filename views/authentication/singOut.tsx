@@ -12,7 +12,7 @@ const SignOut = () => {
         callbackUrl: `${window.location.origin}/auth/sign-in`
       })}
       variant="destructive"
-      className='text-sm'
+      className='text-sm text-white'
 
     >Logout</Button>
   )

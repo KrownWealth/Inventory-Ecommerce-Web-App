@@ -30,7 +30,7 @@ const SidebarMenu: React.FC<SidebarMenuProps> = ({ isCollapsed }) => {
         <Link
           key={item.href}
           href={item.href}
-          className={`flex items-center p-2 rounded-lg transition-all hover:text-primary ${pathname === item.href ? 'bg-primary text-white hover:text-white' : 'text-muted-foreground'
+          className={`flex items-center p-2 rounded-lg transition-all hover:text-primary ${pathname === item.href ? 'bg-black text-white hover:text-white' : 'text-muted-foreground'
             }`}
           prefetch={false}
         >

@@ -1,15 +1,15 @@
 import React from 'react';
 import { DetailedProductCard } from '@/components/custom-ui/reuseables';
 import { ProductReview } from '@/views';
-import { db, cn } from '@/lib';
+import { db } from '@/lib';
 import connectMongoDb from '@/lib/mongodb';
 import Review from '@/models/reviewModel';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/authOptions';
-import { Satoshi_Bold } from '@/lib/fonts';
+
 
 interface ReviewObject {
-  userId: number;
+  userId: string;
   rating: number;
   comment: string;
   createdAt: Date;
@@ -50,14 +50,15 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
       let username = 'Unknown User';
 
       if (session && session.user) {
-        const sessionUserId = Number(session.user.id);
+        const sessionUserId = session.user.id;
 
-        if (review.userId === sessionUserId) {
-          username = session.user.name || 'Unknown User';
+        if (review.userId !== sessionUserId) {
+          username = "Unknown User";
+
         } else {
           try {
             const user = await db.user.findUnique({
-              where: { id: Number(review.userId) },
+              where: { id: review.userId },
               select: { username: true },
             });
             username = user?.username || 'Unknown User';
@@ -76,9 +77,9 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
 
 
   return (
-    <div className="w-full mt-10">
+    <div className="w-full my-10">
       <div className="max-w-7xl bg-white px-8 md:px-12 mx-auto">
-        <h2 className={cn('font-bold text-2xl md:text-3xl lg:text-4xl', Satoshi_Bold.className)}>Product Detail</h2>
+        <h2 className="font-satoshi-bold text-2xl md:text-3xl lg:text-4xl">Product Detail</h2>
         <DetailedProductCard slug={slug} />
 
         <section className="mt-10">

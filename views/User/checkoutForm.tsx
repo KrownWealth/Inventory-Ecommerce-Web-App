@@ -4,7 +4,7 @@ import { loadStripe } from '@stripe/stripe-js'
 import { Elements, LinkAuthenticationElement, PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js"
 import React, { FormEvent, useState } from 'react'
 import { Button } from '@/components/ui/button'
-import { Card, CardTitle, CardHeader, CardContent, CardFooter } from "@/components/ui/card";
+import { Card, CardTitle, CardHeader, CardContent, CardFooter, CardDescription } from "@/components/ui/card";
 import { FormattedPrice } from '@/lib'
 import { useCart } from '@/context/CartContext'
 
@@ -66,6 +66,7 @@ function Form({ priceIncent, orderId }: { priceIncent: number, orderId: number }
         <Card>
           <CardHeader>
             <CardTitle>Checkout</CardTitle>
+            <CardDescription className="py-2">Please make use of: 5555&nbsp;&nbsp;5555&nbsp;&nbsp;5555&nbsp;&nbsp;4444 in the card number, and input any future date in the in the expiration date, random number in the CVC.</CardDescription>
           </CardHeader>
           <CardContent>
             <PaymentElement />
@@ -74,7 +75,7 @@ function Form({ priceIncent, orderId }: { priceIncent: number, orderId: number }
             </div>
             {errorMessage && <div className="text-error">{errorMessage}</div>}
             <CardFooter className="flex justify-center">
-              <Button disabled={!stripe || !elements || loading}>
+              <Button className="my-8" disabled={!stripe || !elements || loading}>
                 {loading ? 'Processing...' : `Pay ${FormattedPrice(priceIncent / 100)}`}
               </Button>
             </CardFooter>

@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect } from 'react';
 import { PageHead, DatePickerWithRange, OrdersTable } from '@/components/custom-ui/reuseables';
 import { Order } from '@/types';

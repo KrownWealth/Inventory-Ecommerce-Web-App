@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/chart"
 import { DatePickerWithRange } from '../DateRange/dateRangePicker'
 import { DateRange } from 'react-day-picker'
-
+import { BiSolidRectangle } from "react-icons/bi";
 
 
 const chartData = [
@@ -32,11 +32,11 @@ const chartData = [
 const chartConfig = {
   desktop: {
     label: "Gross Margin",
-    color: "hsl(var(--chart-1))",
+    color: "#f45c23",
   },
   mobile: {
     label: "Revenue",
-    color: "hsl(var(--chart-2))",
+    color: "#28A745",
   },
 } satisfies ChartConfig
 const SalesBarCharts = () => {
@@ -50,16 +50,17 @@ const SalesBarCharts = () => {
     <Card className="h-auto w-full ">
       <CardHeader className="flex flex-col justify-between p-4">
         <div className="flex justify-between">
-          <h4 className="font-semibold text-sm md:text-lg">Revenue</h4>
-          <DatePickerWithRange date={date} setDate={setDate} />
+          <h4 className="font-semibold text-md md:text-lg pb-2">Revenue</h4>
+          {/* <DatePickerWithRange date={date} setDate={setDate} /> */}
         </div>
         <div className="flex items-center justify-center gap-2">
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-primary rounded-md bg-green-500" />
+            <BiSolidRectangle className="w-3 h-3 text-[#f45c23]" />
+
             <span className="text-sm font-medium">Gross Margin</span>
           </div>
           <div className="flex items-center gap-1">
-            <div className="w-3 h-3 bg-secondary rounded-md bg-amber-500" />
+            <BiSolidRectangle className="w-3 h-3 text-[#28A745]" />
             <span className="text-sm font-medium">Revenue</span>
           </div>
         </div>
