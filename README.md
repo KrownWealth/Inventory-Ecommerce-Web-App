@@ -1,4 +1,7 @@
-# E-commerce Admin Inventory Management System(Price Sage) and Customer Product Page(Hometung)
+# Inventory E-commerce Management Web Application(Hometung Pricesage) 
+
+![Macbook-Air-localhost (1)](https://github.com/user-attachments/assets/c740c020-b91d-486e-ab63-02b2dbc448da)
+
 
 ## Project Overview
 
