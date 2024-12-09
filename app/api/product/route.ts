@@ -9,6 +9,7 @@ import {
   DescriptionSchema,
   CategorySchema,
   StatusSchema,
+  MarkupPercentageSchema,
 } from '@/lib'; 
 
 cloudinary.v2.config({
@@ -22,6 +23,7 @@ const ProductSchema = z.object({
   name: ProductNameSchema,
   description: DescriptionSchema,
   costPrice: CostPriceSchema,
+  markupPercentage: MarkupPercentageSchema,
   sellingPrice: z.number().positive({
     message: "Selling price must be a positive number.",
   }), 
@@ -63,9 +65,9 @@ export async function POST(req: Request) {
   try {
     const body = await req.json();
     const parsedBody = ProductSchema.parse(body);
-    const { name, description, costPrice, sellingPrice, stock, category, status, image, slug } = parsedBody;
+    const { name, description, costPrice, markupPercentage, sellingPrice, stock, category, status, image, slug } = parsedBody;
 
-    if (!name || !description || !costPrice || !sellingPrice || !stock || !category || !status || !image || !slug) {
+    if (!name || !description || !costPrice || !markupPercentage || !sellingPrice || !stock || !category || !status || !image || !slug) {
       return new NextResponse('Missing Fields', { status: 400 });
     }
     const uploadResponse = await cloudinary.v2.uploader.upload(image, {
@@ -77,6 +79,7 @@ export async function POST(req: Request) {
         name,
         description,
         costPrice,
+        markupPercentage,
         sellingPrice,
         slug,
         stock,

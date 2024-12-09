@@ -133,7 +133,7 @@ const EditProductModal: React.FC<EditProductModalProps> = ({
         updatedAt,
       });
     }
-  }, [isModalOpen, id, name, costPrice, sellingPrice, stock, category, categories, image, status, description, slug, createdAt, updatedAt]);
+  }, [isModalOpen, id, name, costPrice, markupPercentage, sellingPrice, stock, category, categories, image, status, description, slug, createdAt, updatedAt]);
 
   const handleImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];

@@ -40,7 +40,7 @@ import CheckoutButton from "./Buttons/checkoutBtn";
 // skeleton
 
 import CartItemSkeleton from "./Skeleton/cartItemSkeleton";
-
+import DetailedProductSkeleton from "./Skeleton/detailProductSkleton";
 
 
 
@@ -77,5 +77,6 @@ export {
   ViewOrderBtn,
   GoBackBtn,
   DataCard,
-  DropdownButton
+  DropdownButton,
+  DetailedProductSkeleton
 }

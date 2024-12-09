@@ -14,8 +14,9 @@ import { Input } from "@/components/ui/input";
 import TextAreaField from "@/components/form/textArea";
 import { AddProductImage } from "@/views";
 import { useFormField } from "@/lib";
-import { ProductsType, ProductType } from "@/types";
+import { ProductsType } from "@/types";
 import { Button } from "@/components/ui/button";
+import { BiLoaderAlt } from "react-icons/bi";
 import {
   ProductNameSchema,
   CostPriceSchema,
@@ -228,7 +229,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <Select name="category" onValueChange={handleCategoryChange}>
             <SelectTrigger aria-label="Select category" className="w-full">
               <SelectValue placeholder="Select category" />
-              {isLoading && <img src="/images/spinner-small.svg" alt="loading" className="ml-2" />}
+              {isLoading && <BiLoaderAlt size={24} />}
             </SelectTrigger>
             <SelectContent>
               {isLoading ? (
@@ -295,7 +296,8 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <Button type="submit" disabled={isLoading} className="mt-4">
             {isLoading ? (
               <>
-                <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+                <BiLoaderAlt size={24} />
+                {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
                 <span className="ml-2">
                   {formMode === "Add" ? "Adding Product..." : "Editing Product..."}
                 </span>

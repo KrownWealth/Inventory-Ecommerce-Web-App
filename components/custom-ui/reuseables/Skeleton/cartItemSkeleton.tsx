@@ -1,4 +1,3 @@
-// components/CartItemSkeleton.tsx
 import React from 'react';
 
 const CartItemSkeleton = () => {

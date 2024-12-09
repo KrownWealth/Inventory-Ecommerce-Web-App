@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn, FormattedPrice, toastNotification } from "@/lib";
@@ -10,6 +10,7 @@ import { useRouter } from "next/navigation";
 import { useCart } from '@/context/CartContext';
 import { useSession } from "next-auth/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
+import DetailedProductSkeleton from "../Skeleton/detailProductSkleton";
 
 
 interface DetailedProductCardProps {
@@ -116,7 +117,8 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   if (loading) return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center">
-        <img src="/images/spinner.svg" alt="loading" className="mx-auto" />
+        <Suspense fallback={<DetailedProductSkeleton />}> <DetailedProductSkeleton /> </Suspense>
+        {/* <img src="/images/spinner.svg" alt="loading" className="mx-auto" /> */}
         <p className="text-muted-foreground mt-2">Fetching product details...</p>
       </div>
     </div>

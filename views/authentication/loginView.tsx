@@ -10,6 +10,7 @@ import PasswordField from "@/components/form/passwordField";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
+import { BiLoaderAlt } from "react-icons/bi";
 
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
@@ -118,7 +119,8 @@ export default function LoginView() {
             disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
             {loading ? (
               <>
-                <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+                <BiLoaderAlt size={24} />
+                {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
                 <span className="ml-2">Aunthenticating...</span>
               </>
             ) : (

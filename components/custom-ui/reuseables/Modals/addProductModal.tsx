@@ -135,6 +135,7 @@ const AddProductModal: React.FC<AddProductModalProps> = ({
     const productSlug = createSlug(productData.name);
 
     try {
+
       const response = await fetch("/api/product", {
         method: "POST",
         headers: { "Content-Type": "application/json" },

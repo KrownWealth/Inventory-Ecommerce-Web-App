@@ -16,21 +16,22 @@ model Category {
 }
 
 model Product {
-  id           String      @id @default(uuid())
-  name         String
-  image        String
-  stock        Int
-  description  String
-  status       String
-  createdAt    DateTime    @default(now())
-  updatedAt    DateTime    @updatedAt
-  categoryName String?
-  costPrice    Int
-  sellingPrice Int?
-  slug         String      @unique
-  cartItems    CartItem[]
-  orderItems   OrderItem[]
-  category     Category?   @relation(fields: [categoryName], references: [name])
+  id               String      @id @default(uuid())
+  name             String
+  image            String
+  stock            Int
+  markupPercentage Float       @default(0)
+  description      String
+  status           String
+  createdAt        DateTime    @default(now())
+  updatedAt        DateTime    @updatedAt
+  categoryName     String?
+  costPrice        Int
+  sellingPrice     Int?
+  slug             String      @unique
+  cartItems        CartItem[]
+  orderItems       OrderItem[]
+  category         Category?   @relation(fields: [categoryName], references: [name])
 }
 
 model User {

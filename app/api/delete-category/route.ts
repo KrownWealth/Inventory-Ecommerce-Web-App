@@ -1,23 +1,22 @@
-// /api/products/[id].ts
 
-import { NextApiRequest, NextApiResponse } from 'next';
+import { NextResponse } from "next/server";
 import { db } from '@/lib';
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const { id } = req.query;
+export async function DELETE(req: Request) {
+  try {
+    const { id }= await req.json();
 
-  if (req.method === 'DELETE') {
-    try {
+    if (id) {
       await db.category.delete({
         where: {
           id: String(id),
         },
       });
-      return res.status(200).json({ message: 'Product deleted successfully' });
-    } catch (error) {
-      return res.status(500).json({ message: 'Failed to delete product', error });
+      return NextResponse.json({ message: "Category deleted successfully" }, { status: 200 });
     }
-  } else {
-    return res.status(405).json({ message: 'Method not allowed' });
+
+  } catch (error) {
+    console.error("Error deleting category", error);
+    return NextResponse.json({ error: "Failed to delete category." }, { status: 500 });
   }
 }
