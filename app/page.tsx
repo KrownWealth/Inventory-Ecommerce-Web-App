@@ -27,7 +27,7 @@ const OnboardingScreen = () => {
           Welcome
         </h1>
         <p className="text-pricesagePaleBlue leading-relaxed">
-          Choose your interface to get started. Whether you're an admin or a user, we've got you covered.
+          Choose your interface to get started. Whether you&apos;re an admin or a user, we&apos;ve got you covered.
         </p>
         <div className="space-y-5">
           <button

@@ -1,9 +1,12 @@
 import { NextAuthOptions, User, Session } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import { db } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import { JWT } from "next-auth/jwt";
+import { profile } from "console";
+
 
 interface ExtendedUser extends User {
   id: string;
@@ -23,6 +26,18 @@ export const authOptions: NextAuthOptions = {
     signIn: '/auth/sign-in',
   },
   providers: [
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+       profile(profile) {
+          return {
+            id: profile.sub,
+            username: `${profile.given_name} ${profile.family_name}`,
+            email: profile.email,
+            role: 'NORMAL_USER',
+          };
+        },
+    }),
     CredentialsProvider({
       id: "credentials",
       name: 'Credentials',
@@ -34,15 +49,17 @@ export const authOptions: NextAuthOptions = {
         if (!credentials?.email || !credentials.password) {
           throw new Error("Please provide both email and password.");
         }
-        
+
         const existingUser = await db.user.findUnique({
           where: { email: credentials.email }
         });
-      
+
         if (!existingUser) {
           throw new Error("Invalid credentials: Email does not exist.");
         }
-        
+        if (!existingUser.password) {
+          throw new Error("Invalid credentials: Password is missing.");
+        }
         const passwordMatch = await compare(credentials.password, existingUser.password);
 
         if (!passwordMatch) {
@@ -56,7 +73,7 @@ export const authOptions: NextAuthOptions = {
           email: existingUser.email,
           role: existingUser.role,
         } as ExtendedUser;
-        
+
       }
     })
   ],
@@ -70,16 +87,16 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-   async session({ session, token }) {
-  session.user = {
-    ...session.user,
-    id: token.id,
-    email: token.email,
-    username: token.username,
-    role: token.role,
-  } as ExtendedUser;
-  return session;
-}
+    async session({ session, token }) {
+      session.user = {
+        ...session.user,
+        id: token.id,
+        email: token.email,
+        username: token.username,
+        role: token.role,
+      } as ExtendedUser;
+      return session;
+    }
 
   },
 };

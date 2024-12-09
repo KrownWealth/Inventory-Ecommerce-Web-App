@@ -64,7 +64,7 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({
         </div>
         <div className="grid grid-rows-2 font-semibold">
           <span>Welcome</span>
-          <span>{session?.user?.username}</span>
+          <span>{session?.user?.username.slice(0, 9)}</span>
         </div>
         {status === 'authenticated' ? (
           <SignOut />
