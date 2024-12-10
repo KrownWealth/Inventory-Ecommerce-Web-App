@@ -14,7 +14,7 @@ export default async function UserProfile() {
       include: {
         orderItems: {
           include: {
-            product: true, // Ensure you have product details if needed
+            product: true,
           },
         },
       },

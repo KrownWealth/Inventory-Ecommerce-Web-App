@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import Image from "next/image"
-import { cn, FormattedPrice } from "@/lib"
+import { FormattedPrice } from "@/lib"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { StarRating } from "../Rating/starRating"
