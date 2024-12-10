@@ -20,7 +20,6 @@ model Product {
   name             String
   image            String
   stock            Int
-  markupPercentage Float       @default(0)
   description      String
   status           String
   createdAt        DateTime    @default(now())
@@ -29,6 +28,7 @@ model Product {
   costPrice        Int
   sellingPrice     Int?
   slug             String      @unique
+  markupPercentage Float       @default(0)
   cartItems        CartItem[]
   orderItems       OrderItem[]
   category         Category?   @relation(fields: [categoryName], references: [name])
@@ -42,12 +42,12 @@ model User {
   updatedAt     DateTime   @updatedAt
   username      String     @unique
   id            String     @id @default(uuid())
-  accounts      Account[]
-  sessions      Session[]
   provider      String?
   emailVerified Boolean?
   cartItems     CartItem[]
   orders        Order[]
+  accounts      Account[]
+  sessions      Session[]
 }
 
 model Account {
@@ -63,8 +63,7 @@ model Account {
   scope             String?
   id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -75,8 +74,7 @@ model Session {
   sessionToken String   @unique @map("session_token")
   userId       String   @map("user_id")
   expires      DateTime
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("sessions")
 }
