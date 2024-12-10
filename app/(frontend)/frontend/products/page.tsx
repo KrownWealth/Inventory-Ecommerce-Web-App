@@ -1,7 +1,6 @@
 import React from 'react';
 import { ProductCard } from '@/components/custom-ui/reuseables';
-import { Satoshi_Bold } from '@/lib/fonts';
-import { db, cn } from '@/lib';
+import { db } from '@/lib';
 
 
 const ProductView = async () => {

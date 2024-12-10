@@ -4,6 +4,7 @@ import "./globals.css";
 import { ToastContainer } from "@/lib";
 import Provider from "@/context/SessionProvider";
 import { CartProvider } from "@/context/CartContext";
+import { Suspense } from "react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,7 +29,9 @@ export default function RootLayout({
       <body className={inter.className}>
         <Provider>
           <CartProvider>
-            {children}
+            <Suspense>
+              {children}
+            </Suspense>
             <ToastContainer />
           </CartProvider>
         </Provider>

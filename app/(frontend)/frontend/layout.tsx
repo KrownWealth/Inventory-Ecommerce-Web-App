@@ -1,6 +1,7 @@
 import { Footer, Header } from '@/views'
 import React from 'react'
 
+
 const Layout = ({
   children,
 }: Readonly<{
@@ -9,7 +10,9 @@ const Layout = ({
   return (
     <>
       <Header />
-      <main className='pb-12'>{children}</main>
+      <main className='pb-12'>
+        {children}
+      </main>
       <Footer />
     </>
   )

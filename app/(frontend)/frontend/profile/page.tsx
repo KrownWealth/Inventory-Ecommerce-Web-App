@@ -62,5 +62,6 @@ export default async function UserProfile() {
         </CardContent>
       </Card>
     </section>
+
   );
 }
