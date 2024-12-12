@@ -3,10 +3,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { signIn } from 'next-auth/react';
-import { BiLoaderAlt } from "react-icons/bi";
 import { toastNotification } from '@/lib';
-import { redirect, useRouter } from 'next/navigation';
-import ColorRingAuthLoader from '../Loader/colorRingAuthLoader';
+import { useRouter } from 'next/navigation';
+import ThreeDotsLoader from '../Loader/threeDotLoader';
 
 const SignupWithGoogle = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -52,9 +51,8 @@ const SignupWithGoogle = () => {
       >
         {isLoading ? (
           <>
-            <ColorRingAuthLoader />
-            {/* <BiLoaderAlt className="animate-spin" />
-            <span>Loading...</span> */}
+            <ThreeDotsLoader />
+
           </>
         ) : (
           <>

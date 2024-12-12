@@ -9,8 +9,7 @@ import { FaRegEnvelope } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
-import { BiLoaderAlt } from "react-icons/bi";
-import { ColorRingAuthLoader } from "@/components/custom-ui/reuseables";
+import { ThreeDotsLoader } from "@/components/custom-ui/reuseables";
 
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
@@ -133,9 +132,8 @@ export default function SignupView() {
           <Button type="submit" disabled={isDisabled || success} className="mt-4">
             {loading ? (
               <>
-                <ColorRingAuthLoader />
-                {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
-                {/* <span className="ml-2">Loading...</span> */}
+                <ThreeDotsLoader />
+
               </>
             ) : (
               <span>Signup</span>

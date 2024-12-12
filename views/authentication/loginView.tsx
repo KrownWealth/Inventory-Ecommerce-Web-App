@@ -10,7 +10,7 @@ import PasswordField from "@/components/form/passwordField";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { ColorRingAuthLoader } from "@/components/custom-ui/reuseables";
+import { ThreeDotsLoader } from "@/components/custom-ui/reuseables";
 
 
 
@@ -118,9 +118,8 @@ export default function LoginView() {
             disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101] items-center justify-center">
             {loading ? (
               <>
-                <ColorRingAuthLoader />
-                {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
-                {/* <span className="ml-2">Aunthenticating...</span> */}
+
+                <ThreeDotsLoader />
               </>
             ) : (
               <span>Login</span>
