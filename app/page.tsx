@@ -8,13 +8,6 @@ import Image from "next/image";
 const OnboardingScreen = () => {
   const router = useRouter();
 
-  const navigateTo = (role: string) => {
-    if (role === "admin") {
-      router.push("/dashboard");
-    } else if (role === "user") {
-      router.push("/frontend");
-    }
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-pricesageBlackTwo text-white px-4">
@@ -31,13 +24,13 @@ const OnboardingScreen = () => {
         </p>
         <div className="space-y-5">
           <button
-            onClick={() => navigateTo("user")}
+            onClick={() => router.push("/frontend")}
             className="w-full py-3 bg-white hover:bg-pricesageOrange text-black hover:text-white font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Access User Interface
           </button>
           <button
-            onClick={() => navigateTo("admin")}
+            onClick={() => router.push("/dashbaord")}
             className="w-full py-3 bg-pricesageBurntOrange hover:bg-pricesageOrange text-white font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Access Admin Dashboard
