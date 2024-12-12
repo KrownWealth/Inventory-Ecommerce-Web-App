@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { ModalManager, ProductsPagination, ProductTableTwo, PageHead, InputSearch, DatePickerWithRange } from '@/components/custom-ui/reuseables';
+import { ModalManager, ProductsPagination, ProductTableTwo, PageHead, InputSearch, DatePickerWithRange, ThreeDotsLoader } from '@/components/custom-ui/reuseables';
 import { ProductsType } from '@/types';
 import { toastNotification } from '@/lib';
 import { DateRange } from 'react-day-picker';
@@ -170,7 +170,8 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
           {isLoading ? (
             <div className="flex items-center justify-center h-screen">
               <div className="text-center">
-                <BiLoaderAlt size={24} />
+                <ThreeDotsLoader />
+                {/* <BiLoaderAlt size={24} /> */}
                 {/* <img src="/images/spinner.svg" alt="loading" className="mx-auto" /> */}
                 <p className="text-muted-foreground mt-2">Loading products...</p>
               </div>

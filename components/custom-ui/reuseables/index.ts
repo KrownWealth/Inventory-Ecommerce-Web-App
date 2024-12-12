@@ -42,7 +42,9 @@ import CheckoutButton from "./Buttons/checkoutBtn";
 import CartItemSkeleton from "./Skeleton/cartItemSkeleton";
 import DetailedProductSkeleton from "./Skeleton/detailProductSkleton";
 
-
+//Loader
+import ColorRingAuthLoader from "./Loader/colorRingAuthLoader";
+import ThreeDotsLoader from "./Loader/threeDotLoader";
 
 
 export {
@@ -78,5 +80,8 @@ export {
   GoBackBtn,
   DataCard,
   DropdownButton,
-  DetailedProductSkeleton
+  DetailedProductSkeleton,
+
+  ColorRingAuthLoader,
+  ThreeDotsLoader
 }

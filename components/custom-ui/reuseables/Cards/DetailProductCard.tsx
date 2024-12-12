@@ -11,6 +11,7 @@ import { useCart } from '@/context/CartContext';
 import { useSession } from "next-auth/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import DetailedProductSkeleton from "../Skeleton/detailProductSkleton";
+import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 
 interface DetailedProductCardProps {
@@ -117,9 +118,10 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   if (loading) return (
     <div className="flex items-center justify-center h-screen">
       <div className="text-center">
-        <Suspense fallback={<DetailedProductSkeleton />}> <DetailedProductSkeleton /> </Suspense>
+        <ThreeDotsLoader />
+        {/* <Suspense fallback={<DetailedProductSkeleton />}> <DetailedProductSkeleton /> </Suspense> */}
         {/* <img src="/images/spinner.svg" alt="loading" className="mx-auto" /> */}
-        <p className="text-muted-foreground mt-2">Fetching product details...</p>
+        <p className="text-muted-foreground mt-2">Laoding product details...</p>
       </div>
     </div>
   );

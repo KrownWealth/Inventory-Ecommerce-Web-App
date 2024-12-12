@@ -66,7 +66,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Invalid credentials: Incorrect password.");
         }
 
-        // Successful authentication
         return {
           id: existingUser.id.toString(),
           username: existingUser.username,

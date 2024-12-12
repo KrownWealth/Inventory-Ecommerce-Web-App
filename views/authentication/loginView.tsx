@@ -10,10 +10,9 @@ import PasswordField from "@/components/form/passwordField";
 import { signIn } from "next-auth/react"
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
-import { BiLoaderAlt } from "react-icons/bi";
+import { ColorRingAuthLoader } from "@/components/custom-ui/reuseables";
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
 export default function LoginView() {
 
@@ -116,12 +115,12 @@ export default function LoginView() {
         </div>
         <div className="flex items-center justify-center w-full pt-8">
           <Button type="submit"
-            disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101]">
+            disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101] items-center justify-center">
             {loading ? (
               <>
-                <BiLoaderAlt size={24} />
+                <ColorRingAuthLoader />
                 {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
-                <span className="ml-2">Aunthenticating...</span>
+                {/* <span className="ml-2">Aunthenticating...</span> */}
               </>
             ) : (
               <span>Login</span>

@@ -2,40 +2,40 @@
 
 import React, { useState } from 'react';
 import Image from 'next/image';
-import { signIn, useSession } from 'next-auth/react';
+import { signIn } from 'next-auth/react';
 import { BiLoaderAlt } from "react-icons/bi";
 import { toastNotification } from '@/lib';
+import { redirect, useRouter } from 'next/navigation';
+import ColorRingAuthLoader from '../Loader/colorRingAuthLoader';
 
 const SignupWithGoogle = () => {
-  const { data: session } = useSession();
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
-  if (session && session.user) {
-    return <p>Welcome, {session.user.name || session.user.email}</p>;
-  }
 
   const handleSigninWithGoogle = async () => {
     setIsLoading(true);
     try {
-      const signInData = await signIn('google', { callbackUrl: '/frontend' });
-      if (signInData?.error) {
-        toastNotification("error", "top-right", undefined, {
-          message: signInData.error || "Login Failed",
-        });
-      } else {
+      const result = await signIn("google", { callbackUrl: "/frontend" });
+
+      if (result?.ok) {
         toastNotification("success", "top-right", undefined, {
           message: "Login Successful",
         });
+        //router.push("/frontend");
+      } else {
+        throw new Error("Login failed.");
       }
     } catch (error) {
-      console.error("User registration failed", error);
+      console.error("Google Sign-In Error", error);
       toastNotification("error", "top-right", undefined, {
-        message: "An error occurred. Please try again.",
+        message: "An error occurred during Google login. Please try again.",
       });
     } finally {
       setIsLoading(false);
     }
   };
+
 
   return (
     <div className="flex flex-col items-center justify-center w-full">
@@ -52,8 +52,9 @@ const SignupWithGoogle = () => {
       >
         {isLoading ? (
           <>
-            <BiLoaderAlt className="animate-spin" />
-            <span>Loading...</span>
+            <ColorRingAuthLoader />
+            {/* <BiLoaderAlt className="animate-spin" />
+            <span>Loading...</span> */}
           </>
         ) : (
           <>
