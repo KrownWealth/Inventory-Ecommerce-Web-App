@@ -7,7 +7,7 @@ import { toastNotification } from '@/lib';
 import { DateRange } from 'react-day-picker';
 import { useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
-import { BiLoaderAlt } from "react-icons/bi";
+
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
 
@@ -171,8 +171,6 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
             <div className="flex items-center justify-center h-screen">
               <div className="text-center">
                 <ThreeDotsLoader />
-                {/* <BiLoaderAlt size={24} /> */}
-                {/* <img src="/images/spinner.svg" alt="loading" className="mx-auto" /> */}
                 <p className="text-muted-foreground mt-2">Loading products...</p>
               </div>
             </div>
