@@ -170,7 +170,7 @@ const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; p
           {isLoading ? (
             <div className="flex items-center justify-center h-screen">
               <div className="text-center">
-                <ThreeDotsLoader />
+                <ThreeDotsLoader color="000000" />
                 <p className="text-muted-foreground mt-2">Loading products...</p>
               </div>
             </div>

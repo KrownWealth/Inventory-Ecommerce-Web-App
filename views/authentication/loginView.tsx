@@ -119,7 +119,7 @@ export default function LoginView() {
             {loading ? (
               <>
 
-                <ThreeDotsLoader />
+                <ThreeDotsLoader color="#ffffff" />
               </>
             ) : (
               <span>Login</span>

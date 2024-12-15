@@ -132,7 +132,7 @@ export default function SignupView() {
           <Button type="submit" disabled={isDisabled || success} className="mt-4">
             {loading ? (
               <>
-                <ThreeDotsLoader />
+                <ThreeDotsLoader color="#ffffff" />
 
               </>
             ) : (

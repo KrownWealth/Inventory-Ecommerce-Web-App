@@ -14,6 +14,7 @@ const CustomerView = ({ searchParams }: { searchParams?: { query?: string; page?
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [totalPages, setTotalPages] = useState(1);
+
   const [metrics, setMetrics] = useState({ daily: 0, monthly: 0, yearly: 0 });
 
   const [date, setDate] = useState<DateRange | undefined>({
