@@ -51,7 +51,7 @@ const SignupWithGoogle = () => {
       >
         {isLoading ? (
           <>
-            <ThreeDotsLoader />
+            <ThreeDotsLoader color="#000000" />
 
           </>
         ) : (
