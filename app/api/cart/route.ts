@@ -12,7 +12,6 @@ interface DeleteRequest {
   userId: string;
 }
 
-
 export async function POST(req: Request) {
   try {
     const { userId, productId, quantity }: CartItemRequest = await req.json();

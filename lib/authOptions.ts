@@ -1,11 +1,11 @@
-import { NextAuthOptions, User, Session } from "next-auth";
+import { NextAuthOptions, User } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GoogleProvider from "next-auth/providers/google";
 import { db } from "./db";
 import { PrismaAdapter } from "@next-auth/prisma-adapter";
 import { compare } from "bcrypt";
 import { JWT } from "next-auth/jwt";
-import { profile } from "console";
+
 
 
 interface ExtendedUser extends User {
@@ -18,7 +18,7 @@ interface ExtendedUser extends User {
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   secret: process.env.NEXTAUTH_SECRET,
-  //debug: process.env.NODE_ENV === 'development',
+  debug: process.env.NODE_ENV === 'development',
   session: {
     strategy: 'jwt',
   },
@@ -42,8 +42,8 @@ export const authOptions: NextAuthOptions = {
       id: "credentials",
       name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "text" },
-        password: { label: "Password", type: "password" },
+        email: {},
+        password: {},
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials.password) {
@@ -79,10 +79,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: ExtendedUser }) {
       if (user) {
-        token.id = user.id;
-        token.email = user.email;
-        token.username = user.username;
-        token.role = user.role;
+        return { ...token, ...user };
+        // token.id = user.id;
+        // token.email = user.email;
+        // token.username = user.username;
+        // token.role = user.role;
+        // accessToken: user.accessToken
       }
       return token;
     },

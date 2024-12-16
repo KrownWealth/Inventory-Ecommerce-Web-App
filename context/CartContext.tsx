@@ -86,6 +86,8 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setCartItems(updatedCartItems);
 
       // Persist the item to the backend
+
+
       const response = await fetch(`${baseUrl}/api/cart`, {
         method: 'POST',
         headers: {
