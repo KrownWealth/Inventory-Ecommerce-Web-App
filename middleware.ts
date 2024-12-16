@@ -5,6 +5,15 @@ export default withAuth(
   function middleware(request: NextRequestWithAuth) {
     const { pathname } = request.nextUrl;
 
+    // Handle CORS for API routes
+    if (pathname.startsWith("/api")) {
+      const response = NextResponse.next();
+      response.headers.set("Access-Control-Allow-Origin", "https://inventory-ecommerce-web.vercel.app");
+      response.headers.set("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE, OPTIONS");
+      response.headers.set("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      return response;
+    }
+
     // If user is not authenticated, redirect to the sign-in page
     if (!request.nextauth.token) {
       return NextResponse.redirect(new URL('/auth/sign-in', request.url));
@@ -36,5 +45,5 @@ export default withAuth(
 );
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/frontend/:path*'],
+  matcher: ["/api/:path*", '/dashboard/:path*', '/frontend/:path*'],
 };
