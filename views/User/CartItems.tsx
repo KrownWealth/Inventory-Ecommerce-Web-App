@@ -9,7 +9,7 @@ import { useDebouncedCallback } from 'use-debounce';
 import { CartItemSkeleton } from '@/components/custom-ui/reuseables';
 import { usePathname } from 'next/navigation';
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 export const CartItems = () => {
   const { fetchCartItems, addToCart, removeFromCart, cartItems, loading, totalPrice } = useCart();

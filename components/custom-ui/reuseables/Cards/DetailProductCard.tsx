@@ -198,10 +198,9 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
             <Button
               aria-label="buy-now"
               onClick={handleBuyNow}
-              className="font-satoshi-medium text-white font-bold w-full mb-4 hover:bg-gray-700">
+              className="font-satoshi-medium text-white bg-[#010101] font-bold w-full mb-4">
               {loading ? (
                 <>
-
                   <ThreeDotsLoader color="#ffffff" />
                 </>
               ) : (

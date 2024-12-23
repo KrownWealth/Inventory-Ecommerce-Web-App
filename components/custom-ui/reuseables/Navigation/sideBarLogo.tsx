@@ -12,7 +12,7 @@ interface SidebarHeaderProps {
 
 const SidebarHeaderLogo: React.FC<SidebarHeaderProps> = ({ isCollapsed, toggleSidebar }) => {
   return (
-    <div data-testid="logo-available" className="flex items-center justify-center relative">
+    <div data-testid="logo-available" className="flex items-center justify-center relative pt-6 lg:pt-0">
       <Link href="/dashboard" className="flex items-center justify-center gap-2">
         <Image
           src="/images/no-text-logo.png"

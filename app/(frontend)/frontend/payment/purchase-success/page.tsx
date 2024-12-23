@@ -12,12 +12,11 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 });
 
 const PaymentSuccess = async ({ searchParams }: { searchParams: { payment_intent: string } }) => {
-  // Retrieve the payment intent
+
   const paymentIntent = await stripe.paymentIntents.retrieve(searchParams.payment_intent);
 
   if (!paymentIntent.metadata.productId) return notFound();
 
-  // Check if the order exists in the database
   const order = await db.product.findUnique({
     where: { id: paymentIntent.metadata.productId }
   });
@@ -28,7 +27,6 @@ const PaymentSuccess = async ({ searchParams }: { searchParams: { payment_intent
 
   if (isSuccess) {
     try {
-      // Create an order if it doesn't exist
       const existingOrder = await db.order.findUnique({
         where: { paymentIntentId: searchParams.payment_intent },
       });
@@ -36,7 +34,6 @@ const PaymentSuccess = async ({ searchParams }: { searchParams: { payment_intent
       if (!existingOrder) {
         const cartItems = JSON.parse(paymentIntent.metadata.cartItems);
 
-        // Create the order in the database
         await db.order.create({
           data: {
             userId: paymentIntent.metadata.userId,
@@ -53,7 +50,6 @@ const PaymentSuccess = async ({ searchParams }: { searchParams: { payment_intent
           },
         });
 
-        // Clear the cart items
         await db.cartItem.deleteMany({
           where: { userId: paymentIntent.metadata.userId },
         });
