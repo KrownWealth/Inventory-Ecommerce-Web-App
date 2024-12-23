@@ -15,6 +15,8 @@ interface CheckoutProps {
 }
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
+
 
 const CheckoutForm: React.FC<CheckoutProps> = ({ clientSecret, priceInCent, userId }) => {
   const { cartItems } = useCart();
@@ -45,7 +47,7 @@ function Form({ priceIncent, orderId }: { priceIncent: number, orderId: number }
       const { error } = await stripe.confirmPayment({
         elements,
         confirmParams: {
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/frontend/purchase-success`,
+          return_url: `${baseUrl}/frontend/purchase-success`,
         },
       });
 

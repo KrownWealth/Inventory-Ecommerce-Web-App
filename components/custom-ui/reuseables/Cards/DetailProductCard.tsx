@@ -119,8 +119,6 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
     <div className="flex items-center justify-center h-screen">
       <div className="text-center">
         <ThreeDotsLoader color="#ffffff" />
-        {/* <Suspense fallback={<DetailedProductSkeleton />}> <DetailedProductSkeleton /> </Suspense> */}
-        {/* <img src="/images/spinner.svg" alt="loading" className="mx-auto" /> */}
         <p className="text-muted-foreground mt-2">Laoding product details...</p>
       </div>
     </div>

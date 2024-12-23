@@ -41,7 +41,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
     setLoading(true);
     try {
-
       const response = await fetch(`${baseUrl}/api/cart`, {
         method: "GET",
         headers: { "user-id": String(userId) },
