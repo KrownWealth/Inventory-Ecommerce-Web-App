@@ -29,13 +29,12 @@ const applyCors = (req: NextRequestWithAuth) => {
 
 export default withAuth(
   function middleware(request: NextRequestWithAuth) {
-    // Apply CORS
+
     const corsResponse = applyCors(request);
     if (corsResponse) return corsResponse; 
 
     const { pathname } = request.nextUrl;
 
-    // Authentication and authorization logic
     if (!request.nextauth.token) {
       return NextResponse.redirect(new URL("/auth/sign-in", request.url));
     }
@@ -52,7 +51,7 @@ export default withAuth(
       }
     }
 
-    return NextResponse.next(); // Continue to the requested route
+    return NextResponse.next();
   },
   {
     callbacks: {
