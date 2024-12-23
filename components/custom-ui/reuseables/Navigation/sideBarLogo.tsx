@@ -1,6 +1,8 @@
 import React from 'react'
 import Link from 'next/link'
 import { FaArrowLeft, FaArrowRight, FaPercentage, FaRegArrowAltCircleLeft, FaRegArrowAltCircleRight } from 'react-icons/fa'
+import { Logo } from '@/views/Navigation/Logo';
+import Image from 'next/image';
 
 
 interface SidebarHeaderProps {
@@ -10,11 +12,18 @@ interface SidebarHeaderProps {
 
 const SidebarHeaderLogo: React.FC<SidebarHeaderProps> = ({ isCollapsed, toggleSidebar }) => {
   return (
-    <div data-testid="logo-available" className="flex h-[75px] items-start justify-between pt-8 relative">
-      <Link href="/admin" className="flex items-center gap-2 font-semibold" prefetch={false}>
-        <FaPercentage data-testid="logo-icon" className='h-8 w-8' />
-        <span className={`${isCollapsed ? 'hidden' : 'block'}`}>PriceMarkup</span>
+    <div data-testid="logo-available" className="flex items-center justify-center relative">
+      <Link href="/dashboard" className="flex items-center justify-center gap-2">
+        <Image
+          src="/images/no-text-logo.png"
+          alt="Hometung Pricesage Logo"
+          width={80}
+          height={80}
+          className="h-auto w-auto object-contain"
+          priority
+        />
       </Link>
+
       <button
         className={`absolute md:-right-4 top-1/2 transform p-1 z-50 hidden lg:block transition-all duration-300 ${isCollapsed ? 'top-3/4' : 'top-1/2'
           }`}
