@@ -110,7 +110,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
         </div>
 
         <div className="grid grid-rows-2 gap-2 mb-4">
-          <Label className="text-sm md:text-lg">Submit Review</Label>
+          <Label className="text-sm md:text-lg">Submit a Review</Label>
           <textarea
             placeholder="Your review"
             value={comment}

@@ -1,4 +1,4 @@
-import React from 'react';
+
 import { DetailedProductCard } from '@/components/custom-ui/reuseables';
 import { ProductReview } from '@/views';
 import { db } from '@/lib';
@@ -87,24 +87,25 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
             <h2 className="font-semibold text-lg">Reviews</h2>
             <h2 className="font-semibold text-lg">Discussion</h2>
           </div>
+          <div className="flex flex-col lg:flex-row gap-12">
 
-          <ProductReview productId={productId} />
-
-          {/* Show existing reviews */}
-          <section className="gap-4 py-8">
-            <h2 className='font-semibold text-lg'>Customer Reviews</h2>
-            {reviewsWithUsernames.length > 0 ? (
-              reviewsWithUsernames.map((review: ReviewObject & { username: string }, index: number) => (
-                <div key={index}>
-                  <p><strong>{review.username}</strong> says:</p>
-                  <p>{review.comment}</p>
-                  {/* <p>Rating: {review.rating}</p> */}
-                </div>
-              ))
-            ) : (
-              <p>No reviews yet.</p>
-            )}
-          </section>
+            <ProductReview productId={productId} />
+            <hr className="hidden lg:inline-block w-[2px] h-auto bg-gray-200" />
+            <div className="gap-4 items-start">
+              <h2 className='font-semibold text-lg'>Customer Reviews</h2>
+              {/* <div><p>Total Rating: {review.rating}</p></div> */}
+              {reviewsWithUsernames.length > 0 ? (
+                reviewsWithUsernames.map((review: ReviewObject & { username: string }, index: number) => (
+                  <div key={index}>
+                    <p><strong>{review.username}</strong> says:</p>
+                    <p>{review.comment}</p>
+                  </div>
+                ))
+              ) : (
+                <p>No reviews yet.</p>
+              )}
+            </div>
+          </div>
         </section>
       </div>
     </div>
