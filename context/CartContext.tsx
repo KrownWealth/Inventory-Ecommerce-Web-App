@@ -59,7 +59,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       setTotalPrice(calculatedTotalPrice);
     } catch (error) {
       console.error("Error fetching cart items:", error);
-      //setError(error.message);
     } finally {
       setLoading(false)
     }
@@ -85,7 +84,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
       setCartItems(updatedCartItems);
 
-      // Persist the item to the backend
 
 
       const response = await fetch(`${baseUrl}/api/cart`, {
