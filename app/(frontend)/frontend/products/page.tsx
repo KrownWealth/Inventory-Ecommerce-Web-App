@@ -2,6 +2,8 @@ import React from 'react';
 import { ProductCard } from '@/components/custom-ui/reuseables';
 import { db } from '@/lib';
 
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app";
+
 
 const ProductView = async () => {
 
@@ -11,9 +13,10 @@ const ProductView = async () => {
     },
   });
 
+
   const ratingsData = await Promise.all(
     products.map(async (product) => {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews/${product.id}`, {
+      const res = await fetch(`${baseUrl}/api/reviews/${product.id}`, {
         cache: 'no-store',
       });
       const { data } = await res.json();

@@ -35,7 +35,10 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
 
   const fetchCartItems = async () => {
-    if (!userId) return;
+    if (!userId) {
+      console.warn("User ID is undefined. Cannot fetch cart items.");
+      return;
+    }
     setLoading(true);
     try {
 
