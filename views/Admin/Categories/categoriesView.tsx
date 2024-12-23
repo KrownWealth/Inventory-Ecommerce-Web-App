@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { AddCategoryModal, PageHead, CategoryTable } from '@/components/custom-ui/reuseables';
+import { AddCategoryModal, PageHead, CategoryTable, ThreeDotsLoader } from '@/components/custom-ui/reuseables';
 import { Button } from '@/components/ui/button';
 import { toastNotification } from '@/lib';
 
@@ -64,7 +64,7 @@ const CategoryView = () => {
       {isLoading ? (
         <div className="flex items-center justify-center h-screen">
           <div className="text-center">
-            <img src="/images/spinner.svg" alt="loading" className="mx-auto" />
+            <ThreeDotsLoader color="000000" />
             <p className="text-muted-foreground mt-2">Loading categories...</p>
           </div>
         </div>

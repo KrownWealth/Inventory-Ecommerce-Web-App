@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react';
-import { PageHead, DatePickerWithRange, OrdersTable } from '@/components/custom-ui/reuseables';
+import { PageHead, DatePickerWithRange, OrdersTable, ThreeDotsLoader } from '@/components/custom-ui/reuseables';
 import { Order } from '@/types';
 import { DateRange } from 'react-day-picker';
 
@@ -61,7 +61,7 @@ const OrderView = () => {
       <div className="flex flex-col space-y-4 px-4 lg:px-8">
         {isLoading ? (
           <div className="text-center">
-            <img src="/images/spinner.svg" alt="loading" className="mx-auto" />
+            <ThreeDotsLoader color="000000" />
             <p className="text-muted-foreground mt-2">Loading orders...</p>
           </div>
         ) : error ? (

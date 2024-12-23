@@ -43,9 +43,11 @@ const SidebarFooter: React.FC<SidebarFooterProps> = ({ isCollapsed }) => {
             callbackUrl: `${window.location.origin}/auth/sign-in`
           })}
           variant="destructive"
-          className={`${isCollapsed ? 'hidden' : 'flex items-center justify-center mx-auto'}`}>
+          className="flex items-center justify-center mx-auto">
           <MdOutlineLogout />
-          Logout
+          <span className={`${isCollapsed ? 'hidden' : 'inline-flex'}`}>
+            Logout
+          </span>
         </Button>
       ) : (
         <Button onClick={handleLogin}>Login</Button>
