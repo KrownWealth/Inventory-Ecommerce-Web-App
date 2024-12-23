@@ -46,18 +46,26 @@ const DesktopMenu: React.FC<DesktopMenuProps> = ({
         <div className="flex flex-col items-center relative z-50">
           <Link href="/frontend/cart">
             <FiShoppingBag size={24} />
-            <span className="font-satoshi-bold uppercase 
-            font-semibold text-sm underline">
+            <span className="font-satoshi-bold uppercase font-semibold text-sm underline">
               Cart
             </span>
-            {cartItemCount > 0 && (
-              <span className="z-10 absolute right-0 bg-destructive p-1
-               text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
+            {cartItemCount > 0 ? (
+              <span
+                className="z-10 absolute right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
                 style={{
-                  top: '-8px'
-                }}>
-
+                  top: "-8px",
+                }}
+              >
                 {cartItemCount}
+              </span>
+            ) : (
+              <span
+                className="z-10 absolute right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
+                style={{
+                  top: "-8px",
+                }}
+              >
+                0
               </span>
             )}
           </Link>

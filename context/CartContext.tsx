@@ -15,7 +15,7 @@ interface CartContextType {
   loading: boolean;
 }
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
@@ -71,23 +71,29 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     fetchCartItems();
   }, [userId]);
 
+
   const addToCart = async (item: CartItemType) => {
     if (!userId) return;
+
     try {
+
       const existingItem = cartItems.find(
         (cartItem) => cartItem.productId === item.productId && cartItem.userId === userId
       );
-      const updatedCartItems = existingItem
-        ? cartItems.map(cartItem =>
+
+      let updatedCartItems;
+
+      if (existingItem) {
+        updatedCartItems = cartItems.map(cartItem =>
           cartItem.productId === item.productId
-            ? { ...cartItem, quantity: item.quantity }
+            ? { ...cartItem, quantity: cartItem.quantity + item.quantity }
             : cartItem
-        )
-        : [...cartItems, item];
+        );
+      } else {
+        updatedCartItems = [...cartItems, item];
+      }
 
       setCartItems(updatedCartItems);
-
-
 
       const response = await fetch(`${baseUrl}/api/cart`, {
         method: 'POST',
@@ -95,13 +101,18 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
           'Content-Type': 'application/json',
           'user-id': String(userId),
         },
-        body: JSON.stringify(item),
+        body: JSON.stringify({
+          userId,
+          productId: item.productId,
+          quantity: existingItem ? existingItem.quantity + item.quantity : item.quantity,
+        }),
       });
 
       if (!response.ok) {
         throw new Error('Failed to add item to cart on the server.');
       }
 
+      // Calculate new total price
       const newTotalPrice = updatedCartItems.reduce(
         (total, cartItem) => total + cartItem.sellingPrice * cartItem.quantity,
         0
@@ -115,7 +126,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     }
   };
-
 
   const removeFromCart = async (itemId: number) => {
     try {

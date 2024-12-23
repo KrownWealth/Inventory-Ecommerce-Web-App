@@ -12,9 +12,9 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ProductsType } from "@/types";
 import { z, ZodError } from "zod";
 import { toastNotification } from "@/lib";
+import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 
 const CategorySchema = z.object({
@@ -111,8 +111,16 @@ const AddCategoryModal: React.FC<AddCategoryModalProps> = ({
             </div>
           </div>
           <DialogFooter>
-            <Button type="submit" disabled={isLoading} className="mt-4">
-              {isLoading ? "Loading..." : "Submit"}
+            <Button type="submit"
+              disabled={isLoading} className="mt-4 ">
+              {isLoading ? (
+                <>
+
+                  <ThreeDotsLoader color="#ffffff" />
+                </>
+              ) : (
+                <span>Add Category</span>
+              )}
             </Button>
           </DialogFooter>
         </form>

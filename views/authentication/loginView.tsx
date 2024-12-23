@@ -113,7 +113,7 @@ export default function LoginView() {
             </span>
           </Link>
         </div>
-        <div className="flex items-center justify-center w-full pt-8">
+        <div className="flex items-center justify-center w-full pt-6">
           <Button type="submit"
             disabled={isDisabled} className="mt-4 p-6 w-1/2 text-white bg-[#010101] items-center justify-center">
             {loading ? (

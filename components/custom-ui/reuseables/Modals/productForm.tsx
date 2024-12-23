@@ -24,6 +24,7 @@ import {
   StockSchema,
   DescriptionSchema
 } from "@/lib";
+import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 // Constants for status options
 const STATUS_OPTIONS = [
@@ -296,8 +297,7 @@ const ProductForm: React.FC<ProductFormProps> = ({
           <Button type="submit" disabled={isLoading} className="mt-4">
             {isLoading ? (
               <>
-                <BiLoaderAlt size={24} />
-                {/* <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" /> */}
+                <ThreeDotsLoader color="#ffffff" />
                 <span className="ml-2">
                   {formMode === "Add" ? "Adding Product..." : "Editing Product..."}
                 </span>

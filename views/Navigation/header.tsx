@@ -53,12 +53,23 @@ export const Header = () => {
             <Link href="/frontend/cart" className="flex flex-col items-center relative">
               <FiShoppingBag size={24} />
               <span className="font-satoshi-bold uppercase font-semibold text-sm underline">Cart</span>
-              {cartItemCount > 0 && (
-                <span className="z-10 absolute right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
+              {cartItemCount > 0 ? (
+                <span
+                  className="z-10 absolute right-0 bg-destructive p-1 text-white w-4 h-4 rounded-full flex items-center justify-center text-xs"
                   style={{
-                    top: '-8px'
-                  }}>
+                    top: "-8px",
+                  }}
+                >
                   {cartItemCount}
+                </span>
+              ) : (
+                <span
+                  className="z-10 absolute right-0 bg-gray-300 p-1 text-black w-4 h-4 rounded-full flex items-center justify-center text-xs"
+                  style={{
+                    top: "-8px",
+                  }}
+                >
+                  0
                 </span>
               )}
             </Link>

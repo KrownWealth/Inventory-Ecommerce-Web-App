@@ -201,7 +201,14 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
               aria-label="buy-now"
               onClick={handleBuyNow}
               className="font-satoshi-medium text-white font-bold w-full mb-4 hover:bg-gray-700">
-              Buy Now
+              {loading ? (
+                <>
+
+                  <ThreeDotsLoader color="#ffffff" />
+                </>
+              ) : (
+                <span> Buy Now</span>
+              )}
             </Button>
           </div>
           <p className="text-green-600">Free delivery on orders over $500</p>
