@@ -6,7 +6,7 @@ import { Order } from '@/types';
 import { DateRange } from 'react-day-picker';
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 
 

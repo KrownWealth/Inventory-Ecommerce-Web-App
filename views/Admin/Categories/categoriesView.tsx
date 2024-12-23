@@ -7,7 +7,7 @@ import { toastNotification } from '@/lib';
 
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 const CategoryView = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

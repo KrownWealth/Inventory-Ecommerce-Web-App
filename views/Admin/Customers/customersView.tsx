@@ -2,12 +2,11 @@
 
 import React, { useState, useEffect } from 'react';
 import { PageHead, DatePickerWithRange, CustomerTable, DataCard } from '@/components/custom-ui/reuseables';
-import { useRouter } from 'next/navigation';
 import { FaUser } from 'react-icons/fa';
 import { DateRange } from 'react-day-picker';
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 const CustomerView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [customerInfo, setCustomerInfo] = useState([]);

@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 const AdminProductView = ({ searchParams }: { searchParams?: { query?: string; page?: string; }; }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
