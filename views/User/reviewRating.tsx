@@ -12,6 +12,10 @@ interface ProductReviewProps {
   productId: string;
 }
 
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
+
+
 const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
   const [rating, setRating] = useState(0);
   const [hover, setHover] = useState<number | null>(null);
@@ -46,7 +50,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
     const reviewData = { productId, userId, rating, comment };
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/reviews/${productId}`, {
+      const response = await fetch(`${baseUrl}/api/reviews/${productId}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(reviewData),
@@ -78,7 +82,6 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
     <section>
       {error && <p className="text-red-500">{error}</p>}
       {success && <p className="text-green-500">Review submitted successfully!</p>}
-      {/* submit new  review */}
       <div className="flex flex-col items-start justify-start my-12">
         <div className="flex flex-row items-center space-x-4 pb-2">
           <Label className="text-sm md:text-lg">Rate this product</Label>
@@ -129,9 +132,6 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
           )}
         </Button>
       </div>
-
-      {/* show existing review */}
-
     </section>
   );
 };
