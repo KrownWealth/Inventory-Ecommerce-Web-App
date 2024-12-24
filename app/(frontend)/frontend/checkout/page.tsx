@@ -24,7 +24,7 @@ const CheckoutPage = async () => {
 
 
   const amountInCents = Math.round(totalPrice * 100);
-
+  console.log("Amount in cent", amountInCents)
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amountInCents,
     currency: "USD",

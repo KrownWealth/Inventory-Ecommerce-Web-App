@@ -15,6 +15,7 @@ export const CartItems = () => {
   const { fetchCartItems, addToCart, removeFromCart, cartItems, loading, totalPrice } = useCart();
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<ProductType[]>([]);
+  const [quantityCount, setQuantityCount] = useState<{ [itemId: string]: number }>({});
 
   const pathname = usePathname();
 
@@ -61,21 +62,39 @@ export const CartItems = () => {
   }, [debouncedFetchCartItems]);
 
 
+
   const incrementQuantity = async (itemId: number) => {
+    const newQuantity = (quantityCount[itemId] || 0) + 1;
+    setQuantityCount((prevCount) => ({
+      ...prevCount,
+      [itemId]: newQuantity,
+    }))
     const existingItem = cartItems.find(item => item.id === itemId);
     if (existingItem) {
-      await addToCart({ ...existingItem, quantity: existingItem.quantity + 1 });
+      await addToCart({ ...existingItem, quantity: newQuantity });
     }
   };
 
   const decrementQuantity = async (itemId: number) => {
-    const existingItem = cartItems.find(item => item.id === itemId);
-    if (existingItem && existingItem.quantity > 1) {
-      await addToCart({ ...existingItem, quantity: existingItem.quantity - 1 });
-    } else if (existingItem) {
+    const currentQuantity = quantityCount[itemId] || 0;
+    const newQuantity = currentQuantity - 1;
+
+    if (newQuantity <= 0) {
+      // If the new quantity is zero or less, remove the item from the cart
       await removeFromCart(itemId);
+      setQuantityCount((prevCount) => {
+        const newState = { ...prevCount };
+        delete newState[itemId]; // Remove the item from the quantity state
+        return newState;
+      });
+    } else {
+      // Otherwise, update the quantity
+      setQuantityCount((prevCount) => ({
+        ...prevCount,
+        [itemId]: newQuantity,
+      }));
     }
-  }
+  };
 
   const calculateTotalUnits = (cartItems: CartItemType[]) =>
     cartItems.reduce((sum, item) => sum + item.quantity, 0);

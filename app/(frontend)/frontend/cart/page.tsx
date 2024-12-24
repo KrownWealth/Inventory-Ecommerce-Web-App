@@ -8,7 +8,7 @@ const CartPage = () => {
     return "/auth/sign-in"
   }
   return (
-    <section className="max-w-7xl mx-auto items-center justify-center ">
+    <section className="max-w-7xl min-h-screen mx-auto mt-10 items-center justify-center ">
       <CartItems />
     </section>
   )
