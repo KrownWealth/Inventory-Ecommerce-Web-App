@@ -1,5 +1,5 @@
 
-import { DetailedProductCard } from '@/components/custom-ui/reuseables';
+import { DetailedProductCard, StarRating } from '@/components/custom-ui/reuseables';
 import { ProductReview } from '@/views';
 import { db } from '@/lib';
 import connectMongoDb from '@/lib/mongodb';
@@ -10,14 +10,10 @@ import { authOptions } from '@/lib/authOptions';
 
 interface ReviewObject {
   userId: string;
+  username?: string;
   rating: number;
   comment: string;
   createdAt: Date;
-}
-
-interface User {
-  id: string;
-  username: string;
 }
 
 interface SingleProductPageProps {
@@ -45,43 +41,23 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
   await connectMongoDb();
   const productReviews = await Review.findOne({ productId });
 
-  const reviewsWithUsernames = await Promise.all(
-    productReviews?.reviews.map(async (review: ReviewObject) => {
-      let username = 'Unknown User';
+  const reviews: ReviewObject[] = productReviews?.reviews || [];
+  const reviewCount = reviews.length;
+  const averageRating = reviewCount > 0
+    ? reviews.reduce((sum: number, review: ReviewObject) => sum + review.rating, 0) / reviewCount
+    : 0;
 
-      if (session && session.user) {
-        const sessionUserId = session.user.id;
-
-        if (review.userId !== sessionUserId) {
-          username = "Unknown User";
-
-        } else {
-          try {
-            const user = await db.user.findUnique({
-              where: { id: review.userId },
-              select: { username: true },
-            });
-            username = user?.username || 'Unknown User';
-          } catch (error) {
-            console.error('Failed to fetch user:', error);
-            username = 'Unknown User';
-          }
-        }
-      }
-      return {
-        ...review,
-        username,
-      };
-    }) || []
-  );
 
 
   return (
     <div className="w-full my-10">
       <div className="max-w-7xl bg-white px-8 md:px-12 mx-auto">
         <h2 className="font-satoshi-bold text-2xl md:text-3xl lg:text-4xl">Product Detail</h2>
-        <DetailedProductCard slug={slug} />
-
+        <DetailedProductCard
+          slug={slug}
+          averageRating={averageRating}
+          reviewCount={reviewCount}
+        />
         <section className="mt-10">
           <div className="flex items-center justify-start gap-4 pb-8">
             <h2 className="font-semibold text-lg">Reviews</h2>
@@ -92,12 +68,16 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
             <ProductReview productId={productId} />
             <hr className="hidden lg:inline-block w-[2px] h-auto bg-gray-200" />
             <div className="gap-4 items-start">
-              <h2 className='font-semibold text-lg'>Customer Reviews</h2>
-              {/* <div><p>Total Rating: {review.rating}</p></div> */}
-              {reviewsWithUsernames.length > 0 ? (
-                reviewsWithUsernames.map((review: ReviewObject & { username: string }, index: number) => (
+              <h2 className='font-semibold text-lg pb-4'>Customer Reviews</h2>
+              <div className="flex flex-col gap-4">
+                <p className="flex gap-2 items-center">Total Rating:   <StarRating rating={averageRating} />
+                  <span> {averageRating.toFixed(1)} ({reviewCount} reviews)</span>
+                </p>
+              </div>
+              {reviews.length > 0 ? (
+                reviews.map((review, index) => (
                   <div key={index}>
-                    <p><strong>{review.username}</strong> says:</p>
+                    <p><strong>{review.username || 'Anonymous User'}</strong> says:</p>
                     <p>{review.comment}</p>
                   </div>
                 ))

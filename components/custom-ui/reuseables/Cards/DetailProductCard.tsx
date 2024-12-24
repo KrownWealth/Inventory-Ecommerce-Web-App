@@ -15,18 +15,16 @@ import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 interface DetailedProductCardProps {
   slug: string;
-  initialProductData: ProductType;
-  initialReviews: any[];
+  averageRating: number;
+  reviewCount: number;
 }
 
 
-export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }) => {
+
+export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug, averageRating, reviewCount }) => {
+
   const [product, setProduct] = useState<ProductType | null>(null);
   const [loading, setLoading] = useState(true);
-  const [reviews, setReviews] = useState<any[]>([]);
-  const [totalRating, setTotalRating] = useState(0);
-  const [averageRating, setAverageRating] = useState(0);
-  const [reviewCount, setReviewCount] = useState(0);
   const [quantity, setQuantity] = useState(1);
 
   const { data: session, status } = useSession() || {};
@@ -53,32 +51,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
     fetchProduct();
   }, [slug]);
 
-  useEffect(() => {
-    const fetchRating = async () => {
-      if (!product) return;
 
-      try {
-        const response = await fetch(`/api/reviews/${product.id}`);
-        if (!response.ok) throw new Error("Reviews not found.");
-        const data = await response.json();
-        setReviews(data);
-
-        const total = data.reduce((acc: number, review: any) => acc + review.rating, 0);
-        setTotalRating(total);
-        setReviewCount(data.length);
-
-        const average = data.length > 0 ? total / data.length : 0;
-        setAverageRating(average);
-      } catch (error) {
-        console.error("Error fetching reviews:", error);
-      }
-    };
-
-    fetchRating();
-  }, [product]);
-
-
-  const productId = product?.id;
   const handleIncrement = () => {
     setQuantity((prevQuantity) => prevQuantity + 1);
   };
@@ -165,6 +138,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
             <Label label="Total Rating" />
             <DetailText text={`${averageRating.toFixed(1)} (${reviewCount} reviews)`} />
             <StarRating rating={averageRating} />
+
           </div>
           <div className="grid grid-cols-2">
             <Label label="Available Stock" /> <DetailText text={product.stock} />
