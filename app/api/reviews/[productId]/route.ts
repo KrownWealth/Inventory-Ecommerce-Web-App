@@ -25,17 +25,17 @@ export async function POST(request: NextRequest, { params }: { params: { product
   await connectMongoDb();
 
   try {
-    const { userId, rating, comment } = await request.json();
+    const { userId, username, rating, comment } = await request.json();
     let review = await Review.findOne({ productId });
 
     if (!review) {
       review = new Review({
         productId,
-        reviews: [{ userId, rating, comment }],
+        reviews: [{ userId, username, rating, comment }],
         ratings: rating,
       });
     } else {
-      review.reviews.push({ userId, rating, comment });
+      review.reviews.push({ userId, username, rating, comment });
       const totalRatings = review.reviews.reduce((sum: number, r: {rating: number}) => sum + r.rating, 0);
       review.ratings = totalRatings / review.reviews.length;
     }
@@ -62,7 +62,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { produc
     }
 
     // Update the userId in the reviews array
-     const updatedReviews = review.reviews.map((r: { userId: string; rating: number; comment: string; createdAt: Date; updatedAt?: Date }) => {
+     const updatedReviews = review.reviews.map((r: { userId: string; username: string, rating: number; comment: string; createdAt: Date; updatedAt?: Date }) => {
   if (r.userId === userId) {
     return { ...r, userId: newUserId, updatedAt: new Date() }; 
   }

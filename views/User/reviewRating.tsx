@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { FaRegStar, FaStar } from 'react-icons/fa';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { ThreeDotsLoader } from '@/components/custom-ui/reuseables';
 
 interface ProductReviewProps {
   productId: string;
@@ -36,6 +37,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
   }
 
   const userId = session.user.id;
+  const username = session.user.id;
 
 
   const submitReview = async () => {
@@ -47,7 +49,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
     setLoading(true);
     setError('');
 
-    const reviewData = { productId, userId, rating, comment };
+    const reviewData = { productId, userId, username, rating, comment };
 
     try {
       const response = await fetch(`${baseUrl}/api/reviews/${productId}`, {
@@ -124,7 +126,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
         <Button type="button" onClick={submitReview} disabled={loading} className="px-4 py-2 text-white rounded w-full md:w-1/2">
           {loading ? (
             <>
-              <img src="/images/spinner-small.svg" alt="loading" className="mx-auto" />
+              <ThreeDotsLoader color="#ffffff" />
               <span className="ml-2">Submitting Review...</span>
             </>
           ) : (
