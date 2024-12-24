@@ -37,7 +37,7 @@ const ProductReview: React.FC<ProductReviewProps> = ({ productId }) => {
   }
 
   const userId = session.user.id;
-  const username = session.user.id;
+  const username = session.user.username;
 
 
   const submitReview = async () => {
