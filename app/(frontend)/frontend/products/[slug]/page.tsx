@@ -1,5 +1,5 @@
 
-import { DetailedProductCard, StarRating } from '@/components/custom-ui/reuseables';
+import { DetailedProductCard, GoBackBtn, StarRating } from '@/components/custom-ui/reuseables';
 import { ProductReview } from '@/views';
 import { db } from '@/lib';
 import connectMongoDb from '@/lib/mongodb';
@@ -52,7 +52,10 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
   return (
     <div className="w-full my-10">
       <div className="max-w-7xl bg-white px-8 md:px-12 mx-auto">
-        <h2 className="font-satoshi-bold text-2xl md:text-3xl lg:text-4xl">Product Detail</h2>
+        <div className="flex space-x-2">
+          <GoBackBtn />
+          <h2 className="font-satoshi-bold text-2xl md:text-3xl lg:text-4xl">Product Detail</h2>
+        </div>
         <DetailedProductCard
           slug={slug}
           averageRating={averageRating}
@@ -67,7 +70,7 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
 
             <ProductReview productId={productId} />
             <hr className="hidden lg:inline-block w-[2px] h-auto bg-gray-200" />
-            <div className="gap-4 items-start">
+            <div className="space-y-8 items-start">
               <h2 className='font-semibold text-lg pb-4'>Customer Reviews</h2>
               <div className="flex flex-col gap-4">
                 <p className="flex gap-2 items-center">Total Rating:   <StarRating rating={averageRating} />

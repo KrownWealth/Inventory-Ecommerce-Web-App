@@ -64,7 +64,7 @@ const PaymentSuccess = async ({ searchParams }: { searchParams: { payment_intent
   }
 
   return (
-    <section className="w-full flex justify-center py-10">
+    <section className="w-full flex justify-center my-10">
       <Card className="max-w-lg w-full p-4 space-y-8">
         {isSuccess ? (
           <div className='flex flex-col items-center justify-center space-y-8'>

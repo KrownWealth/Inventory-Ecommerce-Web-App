@@ -4,6 +4,7 @@ import { getServerSession } from "next-auth";
 import { CartItemType } from "@/types";
 import { authOptions } from "@/lib/authOptions";
 import Stripe from "stripe";
+import { GoBackBtn } from "@/components/custom-ui/reuseables";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   typescript: true,
@@ -24,8 +25,6 @@ const CheckoutPage = async () => {
 
 
   const amountInCents = Math.round(totalPrice * 100);
-  console.log("Amount in cent", amountInCents)
-  console.log("Total amount in cart", totalPrice)
   const paymentIntent = await stripe.paymentIntents.create({
     amount: amountInCents,
     currency: "USD",
@@ -46,21 +45,27 @@ const CheckoutPage = async () => {
   }
 
   return (
-    <section className="w-full">
-      <div className="max-w-7xl py-10 px-8 md:px-12 mx-auto ">
-        <div>
-          <h2 className='text-lg md:text-2xl pt-4 pb-8 font-semibold'>All your orders in one place</h2>
-          <div className="grid grid-rows-2 md:grid-rows-2 lg:grid-cols-2 w-full gap-12">
-            <div className="grid">
-              <CartItems />
-            </div>
-            <div className="grid">
-              <CheckoutForm
-                clientSecret={paymentIntent.client_secret}
-                priceInCent={amountInCents}
-                userId={userId}
-              />
-            </div>
+    <section className="w-full my-10">
+      <div className="max-w-7xl px-8 md:px-12 mx-auto ">
+        <div className="flex gap-4 items-center pb-12">
+          <div>
+            <GoBackBtn />
+          </div>
+          <h2 className="text-lg md:text-2xl font-semibold">
+            All your orders in one place
+          </h2>
+        </div>
+
+        <div className="grid grid-rows-2 md:grid-rows-2 lg:grid-cols-2 w-full gap-12">
+          <div className="grid">
+            <CartItems />
+          </div>
+          <div className="grid">
+            <CheckoutForm
+              clientSecret={paymentIntent.client_secret}
+              priceInCent={amountInCents}
+              userId={userId}
+            />
           </div>
         </div>
       </div>

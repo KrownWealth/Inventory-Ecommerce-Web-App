@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, Suspense } from 'react';
-import { CartItemCard, CheckoutButton } from '@/components/custom-ui/reuseables';
+import { CartItemCard, CheckoutButton, GoBackBtn } from '@/components/custom-ui/reuseables';
 import { useCart } from '@/context/CartContext';
 import { CartItemType, ProductType } from '@/types';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -72,8 +72,6 @@ export const CartItems = () => {
     debouncedFetchCartItems();
   }, [debouncedFetchCartItems]);
 
-
-
   const incrementQuantity = async (itemId: number) => {
     setQuantityCount((prevCount) => {
       const newQuantity = (prevCount[itemId] || 1) + 1;
@@ -88,22 +86,21 @@ export const CartItems = () => {
 
   const decrementQuantity = async (itemId: number) => {
     setQuantityCount((prevCount) => {
-      const newQuantity = (prevCount[itemId] || 1) - 1;
-      if (newQuantity <= 0) return prevCount;
+      const newQuantity = (prevCount[itemId] || 0) - 1;
+      if (newQuantity < 1) return prevCount;
       return { ...prevCount, [itemId]: newQuantity };
     });
 
     const existingItem = cartItems.find(item => item.id === itemId);
     if (existingItem) {
       const updatedQuantity = existingItem.quantity - 1;
-      if (updatedQuantity <= 0) {
+      if (updatedQuantity < 1) {
         await removeFromCart(itemId);
       } else {
         await addToCart({ ...existingItem, quantity: updatedQuantity });
       }
     }
   };
-
 
   const calculateTotalUnits = (cartItems: CartItemType[]) =>
     cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -155,7 +152,7 @@ export const CartItems = () => {
   return (
     <Card className="">
       <CardHeader>
-        <CardTitle className='text-sm md:text-lg'>Cart Items</CardTitle>
+        <CardTitle className='text-sm md:text-lg'> Cart Items</CardTitle>
       </CardHeader>
       <CardContent>
         {cartItems.length === 0 ? (
