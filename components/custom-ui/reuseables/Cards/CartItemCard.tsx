@@ -7,13 +7,14 @@ import { CartItemType, ProductType } from "@/types";
 
 interface CartItemCardProps {
   item: CartItemType;
+  quantity: number;
   productDetail: ProductType | null;
   onIncrement: (item: CartItemType) => void;
   onDecrement: (item: CartItemType) => void;
   onRemove: (productId: string) => void;
 }
 
-const CartItemCard = ({ item, productDetail, onIncrement, onDecrement, onRemove }: CartItemCardProps) => {
+const CartItemCard = ({ item, productDetail, onIncrement, onDecrement, onRemove, quantity }: CartItemCardProps) => {
 
   return (
     <div className="flex flex-col md:flex-row justify-start md:justify-between items-start">
@@ -37,7 +38,7 @@ const CartItemCard = ({ item, productDetail, onIncrement, onDecrement, onRemove 
           variant="outline" size="sm" onClick={() => onDecrement(item)}>
           <FaMinus className="h-2 w-2" />
         </Button>
-        <span>{item.quantity}</span>
+        <span>{quantity}</span>
         <Button aria-label="increment" variant="outline" size="sm" onClick={() => onIncrement(item)}>
           <FaPlus className="h-2 w-2" />
         </Button>

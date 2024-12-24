@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { cn, FormattedPrice, toastNotification } from "@/lib";
@@ -10,13 +10,15 @@ import { useRouter } from "next/navigation";
 import { useCart } from '@/context/CartContext';
 import { useSession } from "next-auth/react";
 import { FaMinus, FaPlus } from "react-icons/fa";
-import DetailedProductSkeleton from "../Skeleton/detailProductSkleton";
 import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 
 interface DetailedProductCardProps {
   slug: string;
+  initialProductData: ProductType;
+  initialReviews: any[];
 }
+
 
 export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }) => {
   const [product, setProduct] = useState<ProductType | null>(null);
@@ -88,6 +90,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
   const handleBuyNow = async () => {
     if (product && userId !== null) {
       const cartItem = {
+        id: parseInt(product.id),
         productId: product.id,
         name: product.name,
         image: product.image || '/default-image.jpg',
@@ -117,8 +120,8 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
   if (loading) return (
     <div className="flex items-center justify-center h-screen">
-      <div className="text-center">
-        <ThreeDotsLoader color="#ffffff" />
+      <div className="text-center items-center">
+        <ThreeDotsLoader color="#000000" />
         <p className="text-muted-foreground mt-2">Laoding product details...</p>
       </div>
     </div>
@@ -196,6 +199,7 @@ export const DetailedProductCard: React.FC<DetailedProductCardProps> = ({ slug }
 
           <div className="flex gap-4">
             <Button
+              disabled={loading}
               aria-label="buy-now"
               onClick={handleBuyNow}
               className="font-satoshi-medium text-white bg-[#010101] font-bold w-full mb-4">

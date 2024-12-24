@@ -1,6 +1,8 @@
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
+
 export const getCartItemsForUser = async (userId: string) => {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/cart`, {
+    const response = await fetch(`${baseUrl}/api/cart`, {
         method: "GET",
         headers: { "user-id": String(userId) },
     });
