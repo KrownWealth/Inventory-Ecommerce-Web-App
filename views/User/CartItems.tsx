@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, useEffect, Suspense } from 'react';
-import { CartItemCard, CheckoutButton, GoBackBtn } from '@/components/custom-ui/reuseables';
+import { CartItemCard, CheckoutButton } from '@/components/custom-ui/reuseables';
 import { useCart } from '@/context/CartContext';
 import { CartItemType, ProductType } from '@/types';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
@@ -10,6 +10,7 @@ import { CartItemSkeleton } from '@/components/custom-ui/reuseables';
 import { usePathname } from 'next/navigation';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
+
 
 export const CartItems = () => {
   const { fetchCartItems, addToCart, removeFromCart, cartItems,
@@ -82,9 +83,10 @@ export const CartItems = () => {
       <div data-testid="loading-cart"
         style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {Array.from({ length: cartItems.length }).map((_, index) => (
-          <Suspense fallback={
-            <CartItemSkeleton key={index} />
-          }>
+          <Suspense key={index}
+            fallback={
+              <CartItemSkeleton key={index} />
+            }>
             <CartItemSkeleton key={index} />
           </Suspense>
 
@@ -128,8 +130,8 @@ export const CartItems = () => {
                   item={item}
                   productDetail={productDetail}
                   quantity={item.quantity || 1}
-                  onIncrement={() => handleCartQtyIncrease}
-                  onDecrement={() => handleCartQtyDecrease}
+                  onIncrement={handleCartQtyIncrease}
+                  onDecrement={handleCartQtyDecrease}
                   onRemove={() => item.id && removeFromCart(item.id)}
                 />
               );

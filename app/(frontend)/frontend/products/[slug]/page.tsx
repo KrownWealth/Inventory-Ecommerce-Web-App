@@ -69,13 +69,16 @@ const SingleProductPage: React.FC<SingleProductPageProps> = async ({ params }) =
           <div className="flex flex-col lg:flex-row gap-12">
 
             <ProductReview productId={productId} />
+
             <hr className="hidden lg:inline-block w-[2px] h-auto bg-gray-200" />
+
             <div className="space-y-8 items-start">
               <h2 className='font-semibold text-lg pb-4'>Customer Reviews</h2>
               <div className="flex flex-col gap-4">
-                <p className="flex gap-2 items-center">Total Rating:   <StarRating rating={averageRating} />
+                <div className="flex gap-2 items-center">Total Rating:
+                  <StarRating rating={averageRating} />
                   <span> {averageRating.toFixed(1)} ({reviewCount} reviews)</span>
-                </p>
+                </div>
               </div>
               {reviews.length > 0 ? (
                 reviews.map((review, index) => (

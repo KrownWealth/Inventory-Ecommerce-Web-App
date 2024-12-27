@@ -164,7 +164,7 @@ export async function PUT(req: Request) {
         });
       } if (!existingItem) {
   console.warn(`Item with productId ${item.productId} not found.`);
-  return null; // Skip this item.
+  return null; 
 }
 
     });

@@ -13,6 +13,7 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import ThreeDotsLoader from "../Loader/threeDotLoader";
 
 
+
 interface DetailedProductCardProps {
   slug: string;
   averageRating: number;
