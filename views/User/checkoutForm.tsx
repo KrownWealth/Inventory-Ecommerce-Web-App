@@ -16,9 +16,7 @@ interface CheckoutProps {
 
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY as string);
 
-// const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"
-
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 const CheckoutForm: React.FC<CheckoutProps> = ({ clientSecret, priceInCent, userId }) => {
   const { cartItems } = useCart();
