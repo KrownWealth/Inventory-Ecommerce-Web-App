@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import { CartItemType } from "@/types";
 import { useSession } from "next-auth/react";
 import { toastNotification } from "@/lib";
@@ -9,7 +9,9 @@ interface CartContextType {
   cartItems: CartItemType[];
   fetchCartItems: () => Promise<void>;
   addToCart: (item: CartItemType) => Promise<void>;
-  removeFromCart: (itemId: number) => Promise<void>;
+  removeFromCart: (productId: number) => Promise<void>;
+  handleCartQtyIncrease: (productId: number) => Promise<void>;
+  handleCartQtyDecrease: (productId: number) => Promise<void>;
   clearCart: () => Promise<void>;
   totalPrice: number;
   loading: boolean;
@@ -33,6 +35,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const newTotalPrice = cartItems.reduce((total, item) => total + item.sellingPrice * item.quantity, 0);
     setTotalPrice(newTotalPrice);
   }, [cartItems]);
+
 
 
   const fetchCartItems = async () => {
@@ -127,16 +130,16 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const removeFromCart = async (itemId: number) => {
+  const removeFromCart = async (productId: number) => {
     try {
       const response = await fetch(`${baseUrl}/api/cart`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemId }),
+        body: JSON.stringify({ productId }),
       });
 
       if (response.ok) {
-        const updatedItems = cartItems.filter(item => item.id !== itemId);
+        const updatedItems = cartItems.filter(item => item.id !== productId);
         setCartItems(updatedItems);
 
         const newTotalPrice = updatedItems.reduce(
@@ -178,12 +181,65 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       });
     }
   };
+  const handleCartQtyIncrease = async (productId: number) => {
+    try {
+      const updatedCartItems = cartItems.map(item =>
+        String(item.productId) === String(productId)
+          ? { ...item, quantity: item.quantity + 1 }
+          : item
+      );
+
+      setCartItems(updatedCartItems);
+
+      await fetch(`${baseUrl}/api/cart`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId,
+          quantity: updatedCartItems.find(item => String(item.productId) === String(productId))?.quantity,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to increase item quantity:", error);
+      toastNotification("error", "top-right", undefined, {
+        message: "Failed to increase item quantity",
+      });
+    }
+  };
+
+  const handleCartQtyDecrease = async (productId: number) => {
+    try {
+      const updatedCartItems = cartItems.map(item =>
+        String(item.productId) === String(productId)
+          ? { ...item, quantity: Math.max(1, item.quantity - 1) }
+          : item
+      );
+
+
+      setCartItems(updatedCartItems);
+
+      await fetch(`${baseUrl}/api/cart`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          productId,
+          quantity: updatedCartItems.find(item => String(item.productId) === String(productId))?.quantity,
+        }),
+      });
+    } catch (error) {
+      console.error("Failed to decrease item quantity:", error);
+      toastNotification("error", "top-right", undefined, {
+        message: "Failed to decrease item quantity",
+      });
+    }
+  };
 
 
   return (
     <CartContext.Provider value={{
       cartItems, fetchCartItems, addToCart, removeFromCart,
-      clearCart, totalPrice, loading
+      clearCart, totalPrice, loading, handleCartQtyIncrease,
+      handleCartQtyDecrease
     }}>
       {children}
     </CartContext.Provider>

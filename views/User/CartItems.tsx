@@ -12,10 +12,10 @@ import { usePathname } from 'next/navigation';
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 export const CartItems = () => {
-  const { fetchCartItems, addToCart, removeFromCart, cartItems, loading, totalPrice } = useCart();
+  const { fetchCartItems, addToCart, removeFromCart, cartItems,
+    loading, totalPrice, handleCartQtyIncrease, handleCartQtyDecrease } = useCart();
   const [error, setError] = useState<string | null>(null);
   const [products, setProducts] = useState<ProductType[]>([]);
-  const [quantityCount, setQuantityCount] = useState<{ [itemId: number]: number }>({});
   const pathname = usePathname();
 
   useEffect(() => {
@@ -46,18 +46,6 @@ export const CartItems = () => {
   }, []);
 
 
-  useEffect(() => {
-    const initialQuantities = cartItems.reduce((acc, item) => {
-      if (item.id !== undefined) {
-        acc[item.id] = item.quantity;
-      }
-      return acc;
-    }, {} as { [itemId: number]: number });
-
-    setQuantityCount(initialQuantities);
-  }, [cartItems]);
-
-
   const debouncedFetchCartItems = useDebouncedCallback(async () => {
     setError(null);
     try {
@@ -72,35 +60,6 @@ export const CartItems = () => {
     debouncedFetchCartItems();
   }, [debouncedFetchCartItems]);
 
-  const incrementQuantity = async (itemId: number) => {
-    setQuantityCount((prevCount) => {
-      const newQuantity = (prevCount[itemId] || 1) + 1;
-      return { ...prevCount, [itemId]: newQuantity };
-    });
-
-    const existingItem = cartItems.find(item => item.id === itemId);
-    if (existingItem) {
-      await addToCart({ ...existingItem, quantity: (existingItem.quantity || 1) + 1 });
-    }
-  };
-
-  const decrementQuantity = async (itemId: number) => {
-    setQuantityCount((prevCount) => {
-      const newQuantity = (prevCount[itemId] || 0) - 1;
-      if (newQuantity < 1) return prevCount;
-      return { ...prevCount, [itemId]: newQuantity };
-    });
-
-    const existingItem = cartItems.find(item => item.id === itemId);
-    if (existingItem) {
-      const updatedQuantity = existingItem.quantity - 1;
-      if (updatedQuantity < 1) {
-        await removeFromCart(itemId);
-      } else {
-        await addToCart({ ...existingItem, quantity: updatedQuantity });
-      }
-    }
-  };
 
   const calculateTotalUnits = (cartItems: CartItemType[]) =>
     cartItems.reduce((sum, item) => sum + item.quantity, 0);
@@ -168,9 +127,9 @@ export const CartItems = () => {
                   key={item.productId}
                   item={item}
                   productDetail={productDetail}
-                  quantity={quantityCount[item.id] || 0}
-                  onIncrement={() => item.id && incrementQuantity(item.id)}
-                  onDecrement={() => item.id && decrementQuantity(item.id)}
+                  quantity={item.quantity || 1}
+                  onIncrement={() => handleCartQtyIncrease}
+                  onDecrement={() => handleCartQtyDecrease}
                   onRemove={() => item.id && removeFromCart(item.id)}
                 />
               );

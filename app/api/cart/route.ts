@@ -130,7 +130,7 @@ export async function PATCH(req: Request) {
       },
     });
 
-    return NextResponse.json(updatedItem, { status: 200 });
+   return NextResponse.json({ message: "Cart item updated successfully", updatedItem }, { status: 200 });
   } catch (error) {
     console.error("Error updating cart item:", error);
     return NextResponse.json(
@@ -162,9 +162,11 @@ export async function PUT(req: Request) {
             totalPrice: item.quantity * unitPrice,
           },
         });
-      } else {
-        throw new Error("Item not found");
-      }
+      } if (!existingItem) {
+  console.warn(`Item with productId ${item.productId} not found.`);
+  return null; // Skip this item.
+}
+
     });
 
     await Promise.all(updatePromises);
