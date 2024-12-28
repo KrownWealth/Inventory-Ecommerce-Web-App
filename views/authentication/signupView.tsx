@@ -67,7 +67,7 @@ export default function SignupView() {
 
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col w-full">
       <form onSubmit={handleSubmit} className="space-y-4">
         <FormField
           id="username"
