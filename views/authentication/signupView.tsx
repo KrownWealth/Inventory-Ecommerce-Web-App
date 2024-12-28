@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import FormField from "@/components/form/formField";
 import { FormSchema, toastNotification, useFormField } from "@/lib";
 import Link from "next/link";
-import { FaRegEnvelope } from "react-icons/fa";
+import { FaRegEnvelope, FaRegUser } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
 import { useRouter } from "next/navigation";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -69,7 +69,7 @@ export default function SignupView() {
 
   return (
     <div className="flex flex-col">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="space-y-4">
         <FormField
           id="username"
           label="Username"
@@ -81,6 +81,7 @@ export default function SignupView() {
           isInvalid={!!usernameError}
           errorMessage={usernameError}
           onChange={handleUsernameChange}
+          endContent={<FaRegUser className="w-4 h-4" />}
           required
         />
         <FormField
@@ -107,7 +108,7 @@ export default function SignupView() {
           value={password}
           isInvalid={!!passwordError}
           errorMessage={passwordError}
-          onChange={handlePasswordChange}
+          onChange={(value) => handlePasswordChange(value)}
         />
 
 
