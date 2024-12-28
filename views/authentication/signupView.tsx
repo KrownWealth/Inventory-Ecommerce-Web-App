@@ -12,7 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ThreeDotsLoader } from "@/components/custom-ui/reuseables";
 
 
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || "https://inventory-ecommerce-web.vercel.app"
 
 export default function SignupView() {
   const router = useRouter();

@@ -7,7 +7,7 @@ export default function SingUp() {
   return (
     <div className="w-full bg-white">
       <div className="flex flex-row min-h-screen">
-        <div className="w-1/2 px-12 p-8">
+        <div className="w-full lg:w-1/2 px-12 p-8">
           <div className="w-full flex flex-col gap-8">
 
             <div className="flex flex-col space-y-8">
