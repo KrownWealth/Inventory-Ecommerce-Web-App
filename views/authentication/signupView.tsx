@@ -8,7 +8,6 @@ import Link from "next/link";
 import { FaRegEnvelope, FaRegUser } from "react-icons/fa";
 import PasswordField from "@/components/form/passwordField";
 import { useRouter } from "next/navigation";
-import { Checkbox } from "@/components/ui/checkbox";
 import { ThreeDotsLoader } from "@/components/custom-ui/reuseables";
 
 
@@ -111,18 +110,9 @@ export default function SignupView() {
           onChange={(value) => handlePasswordChange(value)}
         />
 
-
         <div className="flex justify-between text-pricesageBlack">
-          <div className="flex items-center space-x-2">
-            <Checkbox id="terms" />
-            <label
-              htmlFor="terms"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Accept terms and conditions
-            </label>
-          </div>
-          <Link href="/auth/login">
+          {/* <Link href="/auth/login">Forget Password?</Link> */}
+          <Link href="/auth/sign-in">
             Already have an account?
             <span className="text-pricesageOrange font-semibold pl-2">
               Login
