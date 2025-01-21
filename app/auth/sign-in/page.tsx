@@ -1,7 +1,7 @@
 import { SignupWithGoogle, Quote } from "@/components/custom-ui/reuseables";
 import LoginView from "@/views/authentication/loginView";
 import { Logo } from "@/views/Navigation/Logo";
-import Image from "next/image";
+
 
 export default function Login() {
   return (
