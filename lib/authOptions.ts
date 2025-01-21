@@ -24,7 +24,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: '/auth/sign-in',
-    error: '/auth/error'
   },
   providers: [
     GoogleProvider({
@@ -80,11 +79,12 @@ export const authOptions: NextAuthOptions = {
   callbacks: {
     async jwt({ token, user }: { token: JWT; user?: ExtendedUser }) {
       if (user) {
-       
-      token.id = user.id;
-      token.email = user.email;
-      token.username = user.username;
-      token.role = user.role;
+        return { ...token, ...user };
+        // token.id = user.id;
+        // token.email = user.email;
+        // token.username = user.username;
+        // token.role = user.role;
+        // accessToken: user.accessToken
       }
       return token;
     },

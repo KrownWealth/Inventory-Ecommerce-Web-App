@@ -14,7 +14,7 @@ export default function Login() {
 
             <p className="pb-2 text-sm">For admin login please make use of <strong>Email:</strong> superadmin@gmail.com, and <strong>Password:</strong> superadmin</p>
             <LoginView />
-            <SignupWithGoogle />
+            {/* <SignupWithGoogle /> */}
           </div>
         </div>
         <Quote />
