@@ -60,6 +60,7 @@ export default function SignupView() {
       console.log("Signup successful", data);
     } catch (error) {
       console.error("User registeration fail", error);
+      console.log("Error during signup", error)
     } finally {
       setLoading(false);
     }

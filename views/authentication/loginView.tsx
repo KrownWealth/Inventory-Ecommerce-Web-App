@@ -67,6 +67,7 @@ export default function LoginView() {
         message: error.message || "Failed to Login",
       });
       console.error("Login failed", error);
+      console.log("Error login", error)
       setLoading(false);
     } finally {
       setLoading(false);
