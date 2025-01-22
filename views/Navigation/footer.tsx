@@ -1,3 +1,4 @@
+import Link from "next/link"
 
 export const Footer = () => {
   return (
@@ -7,7 +8,10 @@ export const Footer = () => {
           <h2 className="font-satoshi-black flex items-center justify-start text-2xl capitalize leading-snug mb-4">
             Hometung <br />Furniture.</h2>
         </div>
-
+        <div>
+          <Link href="/privacy-policy" />
+          <Link href="/terms-and-conditions" />
+        </div>
         <div> <p>2024 All right reserved</p></div>
       </div>
     </footer>

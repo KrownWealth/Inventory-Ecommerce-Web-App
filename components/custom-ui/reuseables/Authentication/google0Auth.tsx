@@ -27,6 +27,7 @@ const SignupWithGoogle = () => {
       }
     } catch (error) {
       console.error("Google Sign-In Error", error);
+      console.log("Google Sign-In Error", error);
       toastNotification("error", "top-right", undefined, {
         message: "An error occurred during Google login. Please try again.",
       });
