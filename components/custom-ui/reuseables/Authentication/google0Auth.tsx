@@ -15,19 +15,27 @@ const SignupWithGoogle = () => {
   const handleSigninWithGoogle = async () => {
     setIsLoading(true);
     try {
-      const result = await signIn("google", { callbackUrl: "/auth/sign-in" });
+      const result = await signIn("google", { redirect: false });
 
       if (result?.ok) {
+        const response = await fetch("/api/auth/session");
+        const { isNewUser } = await response.json();
+
         toastNotification("success", "top-right", undefined, {
           message: "Login Successful",
         });
-        // router.replace("/frontend");
+
+        if (isNewUser) {
+          router.replace("/frontend");
+        } else {
+          router.replace("/frontend");
+        }
       } else {
         throw new Error("Login failed.");
       }
     } catch (error) {
       console.error("Google Sign-In Error", error);
-      console.log("Google Sign-In Error", error);
+      console.log("Error signup", error)
       toastNotification("error", "top-right", undefined, {
         message: "An error occurred during Google login. Please try again.",
       });

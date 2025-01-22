@@ -13,11 +13,13 @@ declare module "next-auth" {
   }
 
   interface Session {
-    user: User
+    user: User;
+    isNewUser?: boolean;
   }
 
   interface JWT {
     role: string; 
     accessToken?: string;
+    isNewUser?: boolean;
   }
 }

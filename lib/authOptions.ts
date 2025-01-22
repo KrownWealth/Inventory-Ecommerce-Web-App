@@ -15,6 +15,8 @@ interface ExtendedUser extends User {
   role: string;
 }
 
+
+
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(db),
   secret: process.env.NEXTAUTH_SECRET,
@@ -29,14 +31,14 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID!,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-       profile(profile) {
-          return {
-            id: profile.sub,
-            username: `${profile.given_name} ${profile.family_name}`,
-            email: profile.email,
-            role: 'NORMAL_USER',
-          };
-        },
+      profile(profile) {
+        return {
+          id: profile.sub,
+          username: `${profile.given_name} ${profile.family_name}`,
+          email: profile.email,
+          role: 'NORMAL_USER',
+        };
+      },
     }),
     CredentialsProvider({
       id: "credentials",
@@ -77,14 +79,17 @@ export const authOptions: NextAuthOptions = {
     })
   ],
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: ExtendedUser }) {
-      if (user) {
-        return { ...token, ...user };
-        // token.id = user.id;
-        // token.email = user.email;
-        // token.username = user.username;
-        // token.role = user.role;
-        // accessToken: user.accessToken
+    async jwt({ token, user, account }: { token: JWT; user?: ExtendedUser; account?: any }) {
+      if (account?.provider === 'google' && user) {
+        const isNewUser = (await db.user.findUnique({ where: { email: user.email } })) === null;
+        token.isNewUser = isNewUser;
+      }
+          
+  if (user) {
+        token.id = user.id;
+        token.email = user.email;
+        token.username = user.username;
+        token.role = user.role;
       }
       return token;
     },
@@ -96,6 +101,8 @@ export const authOptions: NextAuthOptions = {
         username: token.username,
         role: token.role,
       } as ExtendedUser;
+
+      session.isNewUser = token.isNewUser as boolean | undefined;
       return session;
     }
 
