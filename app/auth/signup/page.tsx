@@ -12,7 +12,7 @@ export default function Signup() {
             <h2 className="text-2xl md:text-4xl font-semibold text-black pb-4">Register</h2>
 
             <SignupView />
-            {/* <SignupWithGoogle /> */}
+            <SignupWithGoogle />
           </div>
         </div>
         <Quote />
