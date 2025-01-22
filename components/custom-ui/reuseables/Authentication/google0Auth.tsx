@@ -15,13 +15,13 @@ const SignupWithGoogle = () => {
   const handleSigninWithGoogle = async () => {
     setIsLoading(true);
     try {
-      const result = await signIn("google", { callbackUrl: "/frontend" });
+      const result = await signIn("google", { callbackUrl: "/auth/sign-in" });
 
       if (result?.ok) {
         toastNotification("success", "top-right", undefined, {
           message: "Login Successful",
         });
-        //router.push("/frontend");
+        // router.replace("/frontend");
       } else {
         throw new Error("Login failed.");
       }
