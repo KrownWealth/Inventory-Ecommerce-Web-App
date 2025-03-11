@@ -29,13 +29,13 @@ const OnboardingScreen = () => {
           >
             Access User Interface
           </button>
-          {/* <button
+          <button
             onClick={() => router.push("/dashboard")}
             className="w-full py-3 bg-pricesageBurntOrange hover:bg-pricesageOrange text-white font-semibold rounded-md transition-all duration-300 shadow-md hover:shadow-lg"
           >
             Access Admin Dashboard
           </button>
-          */}
+         
         </div>
       </Card>
     </div>
